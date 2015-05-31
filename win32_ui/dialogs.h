@@ -21,7 +21,9 @@
 
 // For Unicode columns in ListView
 #define ListView_InsertColumnW(hwnd, iCol, pcol) \
-	(int)::SendMessageW((hwnd), LVM_INSERTCOLUMNW, (WPARAM)(int)(iCol), (LPARAM)(const LV_COLUMN *)(pcol))
+	(int)::SendMessageW((hwnd), LVM_INSERTCOLUMNW, (WPARAM)(int)(iCol), (LPARAM)(const LV_COLUMNW *)(pcol))
+#define ListView_SetColumnW(hwnd, iCol, pcol) \
+    (BOOL)::SendMessageW((hwnd), LVM_SETCOLUMNW, (WPARAM)(int)(iCol), (LPARAM)(const LV_COLUMNW *)(pcol))
 
 static int rom_size_tbl[]={2,4,8,16,32,64,128,256,512};
 
@@ -1175,22 +1177,22 @@ static BOOL CALLBACK KeyProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		for (i=0;i<16;i++){
 			dev=key[map[i]*2];
 			if (dev==DI_KEYBOARD)
-				swprintf(buf, L"%s", keyboad_map[key[map[i] * 2 + 1]]);
+				swprintf(buf, 20, L"%s", keyboad_map[key[map[i] * 2 + 1]]);
 			else if (dev==DI_MOUSE_X)
 				wcscpy(buf,key[map[i]*2+1]?L"Mouse -X":L"Mouse +X");
 			else if (dev==DI_MOUSE_Y)
 				wcscpy(buf, key[map[i] * 2 + 1] ? L"Mouse -Y" : L"Mouse +Y");
 			else if (dev==DI_MOUSE)
-				swprintf(buf, L"Mouse %d", key[map[i] * 2 + 1]);
+				swprintf(buf, 20, L"Mouse %d", key[map[i] * 2 + 1]);
 			else{
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					swprintf(buf, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-X" : "+X");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-X" : "+X");
 				else if (pad_dir==1)
-					swprintf(buf, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-Y" : "+Y");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-Y" : "+Y");
 				else
-					swprintf(buf, L"Pad%d %d", pad_id, key[map[i] * 2 + 1]);
+					swprintf(buf, 20, L"Pad%d %d", pad_id, key[map[i] * 2 + 1]);
 			}
 			SetDlgItemTextW(hwnd,IDC_1A+i,buf);
 		}
@@ -1201,22 +1203,22 @@ static BOOL CALLBACK KeyProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		for (i=0;i<5;i++){
 			dev=tmp_type[i];
 			if (dev==DI_KEYBOARD)
-				swprintf(buf, L"%s", keyboad_map[tmp_code[i]]);
+				swprintf(buf, 20, L"%s", keyboad_map[tmp_code[i]]);
 			else if (dev==DI_MOUSE_X)
 				wcscpy(buf, tmp_code[i] ? L"Mouse -X" : L"Mouse +X");
 			else if (dev==DI_MOUSE_Y)
 				wcscpy(buf, tmp_code[i] ? L"Mouse -Y" : L"Mouse +Y");
 			else if (dev==DI_MOUSE)
-				swprintf(buf, L"Mouse %d", tmp_code[i]);
+				swprintf(buf, 20, L"Mouse %d", tmp_code[i]);
 			else{
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					swprintf(buf, L"Pad%d %s", pad_id, tmp_code[i] ? "-X" : "+X");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? "-X" : "+X");
 				else if (pad_dir==1)
-					swprintf(buf, L"Pad%d %s", pad_id, tmp_code[i] ? "-Y" : "+Y");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? "-Y" : "+Y");
 				else
-					swprintf(buf, L"Pad%d %d", pad_id, tmp_code[i]);
+					swprintf(buf, 20, L"Pad%d %d", pad_id, tmp_code[i]);
 			}
 			SetDlgItemTextW(hwnd,IDC_1A+16+i,buf);
 		}
@@ -1594,22 +1596,22 @@ static BOOL CALLBACK KorokoroProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		for (i=0;i<4;i++){
 			dev=config->koro_key[i*2];
 			if (dev==DI_KEYBOARD)
-				swprintf(buf,L"%s",keyboad_map[config->koro_key[i*2+1]]);
+				swprintf(buf,16,L"%s",keyboad_map[config->koro_key[i*2+1]]);
 			else if (dev==DI_MOUSE_X)
 				wcscpy(buf,config->koro_key[i*2+1]?L"Mouse -X":L"Mouse +X");
 			else if (dev==DI_MOUSE_Y)
 				wcscpy(buf,config->koro_key[i*2+1]?L"Mouse -Y":L"Mouse +Y");
 			else if (dev==DI_MOUSE)
-				swprintf(buf,L"Mouse %d",config->koro_key[i*2+1]);
+				swprintf(buf,16,L"Mouse %d",config->koro_key[i*2+1]);
 			else{
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					swprintf(buf,L"Pad%d %s",pad_id,config->koro_key[i*2+1]?"-X":"+X");
+					swprintf(buf,16,L"Pad%d %s",pad_id,config->koro_key[i*2+1]?"-X":"+X");
 				else if (pad_dir==1)
-					swprintf(buf,L"Pad%d %s",pad_id,config->koro_key[i*2+1]?"-Y":"+Y");
+					swprintf(buf,16,L"Pad%d %s",pad_id,config->koro_key[i*2+1]?"-Y":"+Y");
 				else
-					swprintf(buf,L"Pad%d %d",pad_id,config->koro_key[i*2+1]);
+					swprintf(buf,16,L"Pad%d %d",pad_id,config->koro_key[i*2+1]);
 			}
 			SetDlgItemTextW(hwnd,IDC_KUP+i,buf);
 		}
@@ -2364,7 +2366,7 @@ static BOOL CALLBACK CheatProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					ListView_GetItemText(hlist,sel,2,buf,256);
 					std::list<cheat_dat>::iterator ite=g_gb[0]->get_cheat()->find_cheat(buf);
 					ite->enable=!ite->enable;
-					ListView_SetItemText(hlist,sel,0,ite->enable?" ○":" ×");
+					ListView_SetItemText(hlist,sel,0,ite->enable?" O":" X");
 				}
 			}
 			else if (pnm->code==NM_RCLICK){
@@ -2857,7 +2859,7 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			CheckDlgButton(hwnd,IDC_SERVER,BST_CHECKED);
 			EnableWindow(GetDlgItem(hwnd,IDC_IPADDR),FALSE);
 
-			SetDlgItemText(hwnd,IDC_STATUS,"未接続です");
+			SetDlgItemTextW(hwnd,IDC_STATUS,L"未接続です");
 			EnableWindow(GetDlgItem(hwnd,IDC_START),TRUE);
 			EnableWindow(GetDlgItem(hwnd,IDC_TERMINATE),FALSE);
 
@@ -2880,7 +2882,7 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			return TRUE;
 		}
 		else if (LOWORD(wParam)==IDC_TERMINATE){
-			SetDlgItemText(hwnd,IDC_STATUS,"未接続です");
+			SetDlgItemTextW(hwnd,IDC_STATUS,L"未接続です");
 			EnableWindow(GetDlgItem(hwnd,IDC_START),TRUE);
 			EnableWindow(GetDlgItem(hwnd,IDC_TERMINATE),FALSE);
 		}
@@ -2916,14 +2918,14 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 				GetDlgItemText(hwnd,IDC_PORT,tmp,sizeof(tmp));
 				port=atoi(tmp);
 				if (port<1024||port>65535){
-					SetDlgItemText(hwnd,IDC_STATUS,"ポート番号が不正です");
+					SetDlgItemTextW(hwnd,IDC_STATUS,L"ポート番号が不正です");
 					return TRUE;
 				}
 			}
 			char target[256];
 			SendDlgItemMessage(hwnd,IDC_IPADDR,WM_GETTEXT,256,(LPARAM)target);
 			if (!b_server&&target[0]=='\0'){
-				SetDlgItemText(hwnd,IDC_STATUS,"IPアドレスを入力してください");
+				SetDlgItemTextW(hwnd,IDC_STATUS,L"IPアドレスを入力してください");
 				return TRUE;
 			}
 
@@ -2941,12 +2943,12 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			if (!load_rom_only(my_rom,0)||!load_rom_only(tar_rom,1)){
 				delete g_gb[0];g_gb[0]=NULL;
 				delete g_gb[1];g_gb[1]=NULL;
-				SetDlgItemText(hwnd,IDC_STATUS,"ROMイメージが読み込めません");
+				SetDlgItemTextW(hwnd,IDC_STATUS,L"ROMイメージが読み込めません");
 				return TRUE;
 			}
 
 			if (b_server){
-				SetDlgItemText(hwnd,IDC_STATUS,"接続を待っています...");
+				SetDlgItemTextW(hwnd,IDC_STATUS,L"接続を待っています...");
 
 				// とりあえずサーバを起動
 				net=new tgb_netplay(port);
@@ -2963,7 +2965,7 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 					strcpy(p[j],p[j-1]);
 				strcpy(p[0],target);
 
-				SetDlgItemText(hwnd,IDC_STATUS,"接続しています...");
+				SetDlgItemTextW(hwnd,IDC_STATUS,L"接続しています...");
 				// クライアント起動
 				net=new tgb_netplay(string(target),port);
 				net->send_sram((char*)g_gb[0]->get_rom()->get_sram(),

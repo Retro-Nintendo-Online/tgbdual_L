@@ -22,7 +22,7 @@ LRESULT CALLBACK MyRegEditProcA(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -45,8 +45,8 @@ LRESULT CALLBACK MyRegEditProcA(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 
@@ -115,7 +115,7 @@ LRESULT CALLBACK MyRegEditProcF(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -138,8 +138,8 @@ LRESULT CALLBACK MyRegEditProcF(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 
@@ -208,7 +208,7 @@ LRESULT CALLBACK MyRegEditProcB(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -231,8 +231,8 @@ LRESULT CALLBACK MyRegEditProcB(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 
@@ -301,7 +301,7 @@ LRESULT CALLBACK MyRegEditProcC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -324,8 +324,8 @@ LRESULT CALLBACK MyRegEditProcC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 
@@ -394,7 +394,7 @@ LRESULT CALLBACK MyRegEditProcD(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -417,8 +417,8 @@ LRESULT CALLBACK MyRegEditProcD(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 
@@ -487,7 +487,7 @@ LRESULT CALLBACK MyRegEditProcE(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -510,8 +510,8 @@ LRESULT CALLBACK MyRegEditProcE(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 
@@ -580,7 +580,7 @@ LRESULT CALLBACK MyRegEditProcH(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -603,8 +603,8 @@ LRESULT CALLBACK MyRegEditProcH(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 
@@ -673,7 +673,7 @@ LRESULT CALLBACK MyRegEditProcL(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -696,8 +696,8 @@ LRESULT CALLBACK MyRegEditProcL(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 
@@ -766,7 +766,7 @@ LRESULT CALLBACK MyRegEditProcSP(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -790,8 +790,8 @@ LRESULT CALLBACK MyRegEditProcSP(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 
@@ -871,7 +871,7 @@ LRESULT CALLBACK MyRegEditProcPC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 {
 	int start, end;
 	
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -895,8 +895,8 @@ LRESULT CALLBACK MyRegEditProcPC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return 0;
 			}
 

@@ -273,7 +273,7 @@ static void network_mode()
 		// チャットウインドウを壊す
 		DestroyWindow(chat_hwnd);
 
-		MessageBox(hWnd,"接続が切断されました","TGB Dual NetPlay Notification",MB_OK);
+		MessageBoxW(hWnd,L"接続が切断されました",L"TGB Dual NetPlay Notification",MB_OK);
 		cur_mode=UNLOADED;
 		return;
 	}
@@ -849,76 +849,76 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		case ID_CONNECT:
 			if (cur_mode==NETWORK_MODE||cur_mode==NETWORK_PREPARING) break;
 			if ((!g_gb[0])&&(!g_gb[1])){
-				trans_hwnd=CreateDialog(hInstance,MAKEINTRESOURCE(IDD_CONNECT),hwnd,ConnectProc);
+				trans_hwnd=CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_CONNECT),hwnd,ConnectProc);
 				ShowWindow(trans_hwnd,SW_SHOW);
 			}
 			break;
 		case ID_SHOWLOG:
 			if (!mes_hwnd)
-				mes_hwnd=CreateDialog(hInstance,MAKEINTRESOURCE(IDD_LOG),hwnd,LogProc);
+				mes_hwnd=CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_LOG),hwnd,LogProc);
 			ShowWindow(mes_hwnd,SW_SHOW);
 			break;
 		case ID_KEY:
 			ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_KEY),hwnd,KeyProc),SW_SHOW);
 			break;
 		case ID_SOUND:
-			ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_SOUND),hwnd,SoundProc),SW_SHOW);
+			ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_SOUND),hwnd,SoundProc),SW_SHOW);
 			break;
 		case ID_SPEED:
-			ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_SPEED),hwnd,SpeedProc),SW_SHOW);
+			ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_SPEED),hwnd,SpeedProc),SW_SHOW);
 			break;
 		case ID_FILTER:
-			ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_FILTER),hwnd,FilterProc),SW_SHOW);
+			ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_FILTER),hwnd,FilterProc),SW_SHOW);
 			break;
 		case ID_KOROKORO:
-			ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_KOROKORO),hwnd,KorokoroProc),SW_SHOW);
+			ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_KOROKORO),hwnd,KorokoroProc),SW_SHOW);
 			break;
 		case ID_REALTIMECLOCK:
 			if (g_gb[0]&&((g_gb[0]->get_rom()->get_info()->cart_type==0x0f)||(g_gb[0]->get_rom()->get_info()->cart_type==0x10)))
-				ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_CLOCK),hwnd,ClockProc),SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_CLOCK),hwnd,ClockProc),SW_SHOW);
 			break;
 		case ID_DIRECTORY:
-			ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_DIRECTORY),hwnd,DirectoryProc),SW_SHOW);
+			ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_DIRECTORY),hwnd,DirectoryProc),SW_SHOW);
 			break;
 		case ID_PAR:
 			if (g_gb[0])
-				ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_PAR),hwnd,ParProc),SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_PAR),hwnd,ParProc),SW_SHOW);
 			break;
 		case ID_PAR_KAI:
 			if (g_gb[0])
-				ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_PAR_KAI),hwnd,ParKaiProc),SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_PAR_KAI),hwnd,ParKaiProc),SW_SHOW);
 			break;
 		case ID_CHEAT:
 			if (g_gb[0])
-				ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_CHEAT),hwnd,CheatProc),SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_CHEAT),hwnd,CheatProc),SW_SHOW);
 			break;
 		case ID_DBG_MEMDUMP:
 			if (g_gb[0])
-				ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_MEM_DUMP_KAI),hwnd,MemDumpKaiProc),SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_MEM_DUMP_KAI),hwnd,MemDumpKaiProc),SW_SHOW);
 			break;
 		case ID_S2_DBG_MEMDUMP:
 			if (g_gb[1])
-				ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_MEM_DUMP_KAI),hwnd,MemDumpKaiProc2),SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_MEM_DUMP_KAI),hwnd,MemDumpKaiProc2),SW_SHOW);
 			break;
 		case ID_MEM_DUMP:
 			if (g_gb[0])
-				ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_MEM_DUMP),hwnd,MemProc),SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_MEM_DUMP),hwnd,MemProc),SW_SHOW);
 			break;
 		case ID_NOMEM_DUMP:
 			if (g_gb[0])
-				ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_MEM_DUMP),hwnd,NoMemProc),SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_MEM_DUMP),hwnd,NoMemProc),SW_SHOW);
 			break;
 		case ID_VERSION:
-			ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_VERSION),hwnd,VerProc),SW_SHOW);
+			ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_VERSION),hwnd,VerProc),SW_SHOW);
 			break;
 		case ID_DEBUG:
-			DialogBox(hInstance, MAKEINTRESOURCE(IDD_DEBUGMENU), hwnd, DbgMenuProc);
+			DialogBoxW(hInstance, MAKEINTRESOURCEW(IDD_DEBUGMENU), hwnd, DbgMenuProc);
 			break;
 		case ID_DBG_BSET:
-			ShowWindow(CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DBG_BR_SET), hwnd, DbgBrSetProc), SW_SHOW);
+			ShowWindow(CreateDialogW(hInstance, MAKEINTRESOURCEW(IDD_DBG_BR_SET), hwnd, DbgBrSetProc), SW_SHOW);
 			break;
 		case ID_DBG_BDEL:
-			ShowWindow(CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DBG_BR_DEL), hwnd, DbgBrDelProc), SW_SHOW);
+			ShowWindow(CreateDialogW(hInstance, MAKEINTRESOURCEW(IDD_DBG_BR_DEL), hwnd, DbgBrDelProc), SW_SHOW);
 			break;
 		case ID_DEBUGSTARTSTOP:
 			// fall through
@@ -940,17 +940,17 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			break;
 		case ID_DBG_LOGOPEN:
 			if (g_gb[0])
-				ShowWindow(CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DBG_LOGVIEW), hwnd, DbgLogViewProc), SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance, MAKEINTRESOURCEW(IDD_DBG_LOGVIEW), hwnd, DbgLogViewProc), SW_SHOW);
 			break;
 		case ID_DBG_INFORMATION:
 			if (cur_mode==NETWORK_MODE||cur_mode==NETWORK_PREPARING)
 			{
-				MessageBox(hwnd, "ネットワークモードでは利用できません。",
-					"現在のモードでは利用できません", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"ネットワークモードでは利用できません。",
+					L"現在のモードでは利用できません", MB_OK | MB_ICONEXCLAMATION);
 				break;
 			}
 			if (g_gb[0])
-				ShowWindow(CreateDialog(hInstance, MAKEINTRESOURCE(IDD_DBG_REGISTER), hwnd, DbgRegisterProc), SW_SHOW);
+				ShowWindow(CreateDialogW(hInstance, MAKEINTRESOURCEW(IDD_DBG_REGISTER), hwnd, DbgRegisterProc), SW_SHOW);
 			break;
 		case ID_FULLSCREEN:
 			render[0]->pause_sound();
@@ -1011,7 +1011,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			if (render[1]) render[1]->set_render_pass(2);
 			break;
 		case ID_PROCESS_REALTIME:
-			if (MessageBox(hwnd,"OSの応答が非常に悪くなる可能性があります。よろしいですか？","TGB Dual",MB_YESNO)==IDYES){
+			if (MessageBoxW(hwnd,L"OSの応答が非常に悪くなる可能性があります。よろしいですか？",L"TGB Dual",MB_YESNO)==IDYES){
 				config->priority_class=0;
 				SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 			}
@@ -1399,8 +1399,8 @@ LRESULT CALLBACK WndProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 void PAUSEprocess(void)
 {
 	if ((cur_mode == NETWORK_MODE) || (cur_mode == NETWORK_PREPARING)) {
-		MessageBox(hWnd, "ネットワークモードでは利用できません。",
-			"現在のモードでは利用できません", MB_OK | MB_ICONEXCLAMATION);
+		MessageBoxW(hWnd, L"ネットワークモードでは利用できません。",
+			L"現在のモードでは利用できません", MB_OK | MB_ICONEXCLAMATION);
 		return;
 	}
 

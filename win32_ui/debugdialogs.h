@@ -258,7 +258,7 @@ static int ShowInfoEdit(HWND hwnd, SCROLLINFO *sidbgi, int sadr, int eadr, int l
 	if (home < 0 || home > dasmssize)
 	{
 		SetDlgItemText(hwnd, IDC_INFO_MAIN, infostr);
-		MessageBox(hwnd, "スクロールポジションのエラー", "エラーの発生", MB_OK | MB_ICONEXCLAMATION);
+		MessageBoxW(hwnd, L"スクロールポジションのエラー", L"エラーの発生", MB_OK | MB_ICONEXCLAMATION);
 		return 0;
 	}
 
@@ -368,7 +368,7 @@ static int InfoWindowSelectJump(HWND hwnd, SCROLLINFO *sidbgi, word jumpaddress)
 	}
 	if (ret < 0)
 	{
-		MessageBox(hwnd, "原因不明のエラー001", "エラーの発生", MB_OK | MB_ICONEXCLAMATION);
+		MessageBoxW(hwnd, L"原因不明のエラー001", L"エラーの発生", MB_OK | MB_ICONEXCLAMATION);
 		ret = 0;
 		return dasmunderpos;
 	}
@@ -407,14 +407,14 @@ static BOOL CALLBACK DbgBrSetProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			{
 				if (gBreakermemb.set(wbrmemadr) == -1)
 				{
-					MessageBox(hwnd, "設定数を超えています。\n他を削除した後もう一度登録してください。",
-						"設定数オーバー", MB_OK | MB_ICONEXCLAMATION);
+					MessageBoxW(hwnd, L"設定数を超えています。\n他を削除した後もう一度登録してください。",
+						L"設定数オーバー", MB_OK | MB_ICONEXCLAMATION);
 				}
 			}
 			else
 			{
-				MessageBox(hwnd, "0xA000〜0xDFFFの範囲で16進で入力してください。",
-					"入力エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"0xA000〜0xDFFFの範囲で16進で入力してください。",
+					L"入力エラー", MB_OK | MB_ICONEXCLAMATION);
 			}
 			SetDlgItemText(hwnd, IDC_ED_BR_SET1, "");
 			return TRUE;
@@ -427,14 +427,14 @@ static BOOL CALLBACK DbgBrSetProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			{
 				if (gBreakerreadb.set(wbrreadadr) == -1)
 				{
-					MessageBox(hwnd, "設定数を超えています。\n他を削除した後もう一度登録してください。",
-						"設定数オーバー", MB_OK | MB_ICONEXCLAMATION);
+					MessageBoxW(hwnd, L"設定数を超えています。\n他を削除した後もう一度登録してください。",
+						L"設定数オーバー", MB_OK | MB_ICONEXCLAMATION);
 				}
 			}
 			else
 			{
-				MessageBox(hwnd, "0x0000〜0xFFFFの範囲で16進で入力してください。",
-					"入力エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"0x0000〜0xFFFFの範囲で16進で入力してください。",
+					L"入力エラー", MB_OK | MB_ICONEXCLAMATION);
 			}
 			SetDlgItemText(hwnd, IDC_ED_BR_SET3, "");
 			return TRUE;
@@ -447,14 +447,14 @@ static BOOL CALLBACK DbgBrSetProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			{
 				if (gBreakerb.set(wbradr) == -1)
 				{
-					MessageBox(hwnd, "設定数を超えています。\n他を削除した後もう一度登録してください。",
-						"設定数オーバー", MB_OK | MB_ICONEXCLAMATION);
+					MessageBoxW(hwnd, L"設定数を超えています。\n他を削除した後もう一度登録してください。",
+						L"設定数オーバー", MB_OK | MB_ICONEXCLAMATION);
 				}
 			}
 			else
 			{
-				MessageBox(hwnd, "0x0000〜0x7FFFの範囲で16進数値を入力してください。",
-				"入力エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"0x0000〜0x7FFFの範囲で16進数値を入力してください。",
+				L"入力エラー", MB_OK | MB_ICONEXCLAMATION);
 			}
 			SetDlgItemText(hwnd, IDC_ED_BR_SET2, "");
 			return TRUE;
@@ -562,8 +562,8 @@ static BOOL CALLBACK DbgMenuProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			ilogsize = LogSizeCheck(slogsize);
 			if (ilogsize == 0)
 			{
-				MessageBox(hwnd, "1000〜30000の範囲で入力してください。",
-					"入力エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"1000〜30000の範囲で入力してください。",
+					L"入力エラー", MB_OK | MB_ICONEXCLAMATION);
 				SetDlgItemText(hwnd, IDC_ED_LOG, "");
 				return TRUE;
 			}
@@ -620,14 +620,14 @@ static BOOL CALLBACK DbgBrDelProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		{
 			index = SendMessage(GetDlgItem(hwnd, IDC_COMBO2), CB_GETCURSEL, 0L, 0L);
 			if (index == CB_ERR)
-				MessageBox(hwnd, "対象を正しく選択してください。",
-					"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"対象を正しく選択してください。",
+					L"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
 			else if (wbreakaddres[index] > 0xffff)
-				MessageBox(hwnd, "対象を正しく選択してください。",
-					"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"対象を正しく選択してください。",
+					L"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
 			else if (gBreakerb.del(wbreakaddres[index]) == -1)
-				MessageBox(hwnd, "その値は現在登録されていません。\r\n最新の状態を確認してください。",
-					"不正な値が選択されました。", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"その値は現在登録されていません。\r\n最新の状態を確認してください。",
+					L"不正な値が選択されました。", MB_OK | MB_ICONEXCLAMATION);
 
 			BrAdrSetCmbBox(hwnd, wbreakaddres);
 			return TRUE;
@@ -637,14 +637,14 @@ static BOOL CALLBACK DbgBrDelProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		{
 			index = SendMessage(GetDlgItem(hwnd, IDC_COMBO3), CB_GETCURSEL, 0L, 0L);
 			if (index == CB_ERR)
-				MessageBox(hwnd, "対象を正しく選択してください。",
-					"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"対象を正しく選択してください。",
+					L"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
 			else if (wbreakreadaddres[index] > 0xffff)
-				MessageBox(hwnd, "対象を正しく選択してください。",
-					"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"対象を正しく選択してください。",
+					L"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
 			else if (gBreakerreadb.del(wbreakreadaddres[index]) == -1)
-				MessageBox(hwnd, "その値は現在登録されていません。\r\n最新の状態を確認してください。",
-					"不正な値が選択されました。", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"その値は現在登録されていません。\r\n最新の状態を確認してください。",
+					L"不正な値が選択されました。", MB_OK | MB_ICONEXCLAMATION);
 
 			BrReadAdrSetCmbBox(hwnd, wbreakreadaddres);
 			return TRUE;
@@ -654,14 +654,14 @@ static BOOL CALLBACK DbgBrDelProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		{
 			index = SendMessage(GetDlgItem(hwnd, IDC_COMBO1), CB_GETCURSEL, 0L, 0L);
 			if (index == CB_ERR)
-				MessageBox(hwnd, "対象を正しく選択してください。",
-					"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"対象を正しく選択してください。",
+					L"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
 			else if (wbreakmemaddres[index] > 0xffff)
-				MessageBox(hwnd, "対象を正しく選択してください。",
-					"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"対象を正しく選択してください。",
+					L"対象指定エラー", MB_OK | MB_ICONEXCLAMATION);
 			else if (gBreakermemb.del(wbreakmemaddres[index]) == -1)
-				MessageBox(hwnd, "その値は現在登録されていません。\r\n最新の状態を確認してください。",
-					"不正な値が選択されました。", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"その値は現在登録されていません。\r\n最新の状態を確認してください。",
+					L"不正な値が選択されました。", MB_OK | MB_ICONEXCLAMATION);
 
 			BrMemAdrSetCmbBox(hwnd, wbreakmemaddres);
 			return TRUE;
@@ -766,8 +766,8 @@ static BOOL CALLBACK DbgRegisterProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lP
 			GetDlgItemText(hwnd, IDC_EDIT_JUMP, buf, 10);
 			if (! Adrstow(buf, wadr))
 			{
-				MessageBox(hwnd, "0x0000〜0x7FFFの範囲で16進数値を入力してください。",
-					"入力エラー", MB_OK | MB_ICONEXCLAMATION);
+				MessageBoxW(hwnd, L"0x0000〜0x7FFFの範囲で16進数値を入力してください。",
+					L"入力エラー", MB_OK | MB_ICONEXCLAMATION);
 				SetDlgItemText(hwnd, IDC_EDIT_JUMP, "");
 				return TRUE;
 			}
@@ -880,7 +880,7 @@ word MemDumpGetBaseAddress(HWND hwnd)
 {
 	char selbuf[MEMDUMPSTARTPOS];
 	char address[5];
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char *tocheck;
 	int i;
 	word baddress;
@@ -889,16 +889,16 @@ word MemDumpGetBaseAddress(HWND hwnd)
 	strncpy(address, &selbuf[MEMDUMPSTARTLINE], 4);
 	for (i = 0; i < 4; i++) {
 		if (!isxdigit((int)address[i])) {
-			sprintf(strbuf, "正常にアドレスが取得できませんでした。buf[%d] = %c", i, address[i]);
-			MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+			swprintf(strbuf, 256, L"正常にアドレスが取得できませんでした。buf[%d] = %c", i, address[i]);
+			MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 			return 0;
 		}
 	}
 	address[4] = '\0';
 	baddress = (word)strtol(address, &tocheck, 16);
 	if (tocheck == &address[0]) {
-		sprintf(strbuf, "正常にアドレスが取得できませんでした。文字列 = %s", address);
-		MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+		swprintf(strbuf, 256, L"正常にアドレスが取得できませんでした。文字列 = %s", address);
+		MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 		return 0;
 	}
 
@@ -1014,7 +1014,7 @@ LRESULT CALLBACK MyMemEditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 	static bool pause = false;
 	int start, end, high;
 
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -1043,8 +1043,8 @@ LRESULT CALLBACK MyMemEditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16);
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return TRUE;
 			}
 
@@ -1295,7 +1295,7 @@ LRESULT CALLBACK MyMemEditProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 	static bool pause = false;
 	int start, end, high;
 
-	char strbuf[256];
+	wchar_t strbuf[256];
 	char num[2];
 	char *tocheck;
 
@@ -1324,8 +1324,8 @@ LRESULT CALLBACK MyMemEditProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16);
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "入力文字が不正です。文字 = %c", num[0]);
-				MessageBox( hwnd, strbuf, "メッセージ", MB_OK );
+				swprintf(strbuf, 256, L"入力文字が不正です。文字 = %c", num[0]);
+				MessageBoxW( hwnd, strbuf, L"メッセージ", MB_OK );
 				return TRUE;
 			}
 
@@ -1450,7 +1450,7 @@ static BOOL CALLBACK MemDumpKaiProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lP
 		old_medit_proc = (WNDPROC)GetWindowLong( hMEdit, GWL_WNDPROC );
 		SetWindowLong( hMEdit, GWL_WNDPROC, (LONG)MyMemEditProc2 );
 
-		SetWindowText(hwnd, "メモリダンプ(スロット2)");
+		SetWindowTextW(hwnd, L"メモリダンプ(スロット2)");
 
 		return TRUE;
 
@@ -1821,7 +1821,7 @@ static BOOL CALLBACK ParKaiProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 	static char filename[256]="";
 
 	HWND hList = GetDlgItem(hwnd, IDC_CODELIST);
-	LV_COLUMN lvcol;
+	LV_COLUMNW lvcol;
 	cheat_dat tmp_dat, *cur;
 	std::list<cheat_dat>::iterator ite;
 
@@ -1833,25 +1833,25 @@ static BOOL CALLBACK ParKaiProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		lvcol.fmt = LVCFMT_CENTER;
 		
 		lvcol.cx = 100;
-		lvcol.pszText = "アドレス";
+		lvcol.pszText = L"アドレス";
 		lvcol.iSubItem = 0;
-		ListView_InsertColumn(hList, 0, &lvcol);
-		ListView_SetColumn(hList, 0, &lvcol);	// 最初のカラムを中央揃えにするため必要。
+		ListView_InsertColumnW(hList, 0, &lvcol);
+		ListView_SetColumnW(hList, 0, &lvcol);	// 最初のカラムを中央揃えにするため必要。
 
 		lvcol.cx = 100;
-		lvcol.pszText = "前回の値";
+		lvcol.pszText = L"前回の値";
 		lvcol.iSubItem = 1;
-		ListView_InsertColumn(hList, 1, &lvcol);
+		ListView_InsertColumnW(hList, 1, &lvcol);
 
 		lvcol.cx = 100;
-		lvcol.pszText = "現在値";
+		lvcol.pszText = L"現在値";
 		lvcol.iSubItem = 2;
-		ListView_InsertColumn(hList, 2, &lvcol);
+		ListView_InsertColumnW(hList, 2, &lvcol);
 
 		lvcol.cx = 160;
-		lvcol.pszText = "バンク(sram:10-25)";
+		lvcol.pszText = L"バンク(sram:10-25)";
 		lvcol.iSubItem = 3;
-		ListView_InsertColumn(hList, 3, &lvcol);
+		ListView_InsertColumnW(hList, 3, &lvcol);
 
 		ListView_SetExtendedListViewStyle(hList, LVS_EX_FULLROWSELECT);
 
