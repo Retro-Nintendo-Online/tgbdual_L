@@ -18,7 +18,7 @@
 */
 
 //------------------------------------------------------
-// interface renderer ‚Ì DirectX‚ğ—p‚¢‚½À‘•
+// interface renderer ã® DirectXã‚’ç”¨ã„ãŸå®Ÿè£…
 
 #include "dx_renderer.h"
 #include "resource.h"
@@ -56,7 +56,7 @@ dx_renderer::dx_renderer(HWND hwnd,HINSTANCE hInst)
 	movie_start=mov_cur_pos=0;
 	movie_file=NULL;
 
-	output_log("DirectX ƒŒƒ“ƒ_ƒ‰ ‰Šú‰»Š®—¹\n\n");
+	output_log("DirectX ãƒ¬ãƒ³ãƒ€ãƒ© åˆæœŸåŒ–å®Œäº†\n\n");
 }
 
 dx_renderer::~dx_renderer()
@@ -67,7 +67,7 @@ dx_renderer::~dx_renderer()
 	uninit_dd();
 	uninit_ds();
 	uninit_di();
-	output_log("DirectX ƒŒƒ“ƒ_ƒ‰ ”jŠü‚µ‚Ü‚µ‚½\n\n");
+	output_log("DirectX ãƒ¬ãƒ³ãƒ€ãƒ© ç ´æ£„ã—ã¾ã—ãŸ\n\n");
 }
 
 void dx_renderer::graphics_record(char *file)
@@ -137,12 +137,12 @@ word dx_renderer::map_color(word gb_col)
 	gb_col=(r2>>3)|((g2>>3)<<5)|((b2>>3)<<10);
 
 #endif
-	// xBBBBBGG GGGRRRRR ‚©‚ç•ÏŠ·
-	if (color_type==0) // ->RRRRRGGG GGxBBBBB ‚É•ÏŠ· (565)
+	// xBBBBBGG GGGRRRRR ã‹ã‚‰å¤‰æ›
+	if (color_type==0) // ->RRRRRGGG GGxBBBBB ã«å¤‰æ› (565)
 		return ((gb_col&0x1F)<<11)|((gb_col&0x3e0)<<1)|((gb_col&0x7c00)>>10)|((gb_col&0x8000)>>10);
-	if (color_type==1) // ->xRRRRRGG GGGBBBBB ‚É•ÏŠ· (1555)
+	if (color_type==1) // ->xRRRRRGG GGGBBBBB ã«å¤‰æ› (1555)
 		return ((gb_col&0x1F)<<10)|(gb_col&0x3e0)|((gb_col&0x7c00)>>10)|(gb_col&0x8000);
-	if (color_type==2) // ->RRRRRGGG GGBBBBBx ‚É•ÏŠ· (5551)
+	if (color_type==2) // ->RRRRRGGG GGBBBBBx ã«å¤‰æ› (5551)
 		return ((gb_col&0x1F)<<11)|((gb_col&0x3e0)<<1)|((gb_col&0x7c00)>>9)|(gb_col>>15);
 	else
 		return gb_col;
@@ -150,12 +150,12 @@ word dx_renderer::map_color(word gb_col)
 
 word dx_renderer::unmap_color(word gb_col)
 {
-	// xBBBBBGG GGGRRRRR ‚Ö•ÏŠ·
-	if (color_type==0) // ->RRRRRGGG GGxBBBBB ‚©‚ç•ÏŠ· (565)
+	// xBBBBBGG GGGRRRRR ã¸å¤‰æ›
+	if (color_type==0) // ->RRRRRGGG GGxBBBBB ã‹ã‚‰å¤‰æ› (565)
 		return (gb_col>>11)|((gb_col&0x7c0)>>1)|(gb_col<<10)|((gb_col&0x40)<<10);
-	if (color_type==1) // ->xRRRRRGG GGGBBBBB ‚©‚ç•ÏŠ· (1555)
+	if (color_type==1) // ->xRRRRRGG GGGBBBBB ã‹ã‚‰å¤‰æ› (1555)
 		return ((gb_col&0x7c00)>>10)|(gb_col&0x3e0)|((gb_col&0x1f)<<10)|(gb_col&0x8000);
-	if (color_type==2) // ->RRRRRGGG GGBBBBBx ‚©‚ç•ÏŠ· (5551)
+	if (color_type==2) // ->RRRRRGGG GGBBBBBx ã‹ã‚‰å¤‰æ› (5551)
 		return (gb_col>>11)|((gb_col&0x7c0)>>1)|((gb_col&0x3e)<<9)|(gb_col<<15);
 	else
 		return gb_col;
@@ -167,9 +167,9 @@ static dword convert_to_second(SYSTEMTIME *sys)
 	static int month_days[]={31,28,31,30,31,30,31,31,30,31,30,31};
 
 	for (i=1;i+1950<sys->wYear;i++)
-		if ((i&3)==0) // ‰[”N
-			if ((i%100)==0) // ‰[”N—áŠO
-				if ((i%400)==0) // ‚â‚Á‚Ï‰[”N
+		if ((i&3)==0) // é–å¹´
+			if ((i%100)==0) // é–å¹´ä¾‹å¤–
+				if ((i%400)==0) // ã‚„ã£ã±é–å¹´
 					ret+=366;
 				else
 					ret+=365;
@@ -195,7 +195,7 @@ static dword convert_to_second(SYSTEMTIME *sys)
 
 	ret+=sys->wDay-1;
 
-	ret*=24*60*60; // •b‚É•ÏŠ·
+	ret*=24*60*60; // ç§’ã«å¤‰æ›
 
 	ret+=sys->wHour*60*60;
 	ret+=sys->wMinute*60;
@@ -219,15 +219,15 @@ byte dx_renderer::get_time(int type)
 	dword now=(b_time_fix?fixed_time:time(NULL))-cur_time;
 
 	switch(type){
-	case 8: // •b
+	case 8: // ç§’
 		return (byte)(now%60);
-	case 9: // •ª
+	case 9: // åˆ†
 		return (byte)((now/60)%60);
-	case 10: // 
+	case 10: // æ™‚
 		return (byte)((now/(60*60))%24);
-	case 11: // “ú(L)
+	case 11: // æ—¥(L)
 		return (byte)((now/(24*60*60))&0xff);
-	case 12: // “ú(H)
+	case 12: // æ—¥(H)
 		return (byte)((now/(256*24*60*60))&1);
 	}
 	return 0;
@@ -242,19 +242,19 @@ void dx_renderer::set_time(int type,byte dat)
 	dword adj=now-cur_time;
 
 	switch(type){
-	case 8: // •b
+	case 8: // ç§’
 		adj=(adj/60)*60+(dat%60);
 		break;
-	case 9: // •ª
+	case 9: // åˆ†
 		adj=(adj/(60*60))*60*60+(dat%60)*60+(adj%60);
 		break;
-	case 10: // 
+	case 10: // æ™‚
 		adj=(adj/(24*60*60))*24*60*60+(dat%24)*60*60+(adj%(60*60));
 		break;
-	case 11: // “ú(L)
+	case 11: // æ—¥(L)
 		adj=(adj/(256*24*60*60))*256*24*60*60+(dat*24*60*60)+(adj%(24*60*60));
 		break;
-	case 12: // “ú(H)
+	case 12: // æ—¥(H)
 		adj=(dat&1)*256*24*60*60+(adj%(256*24*60*60));
 		break;
 	}
@@ -281,7 +281,7 @@ word dx_renderer::get_sensor(bool x_y)
 void dx_renderer::init_dd()
 {
 	if (DirectDrawCreate(NULL,&m_pdd,NULL)!=DD_OK){
-		MessageBox(m_hwnd,"Direct Draw ƒIƒuƒWƒFƒNƒg¶¬‚É¸”s‚µ‚Ü‚µ‚½","ƒŒƒ“ƒ_ƒ‰[ƒGƒ‰[",MB_OK);
+		MessageBox(m_hwnd,"Direct Draw ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆã«å¤±æ•—ã—ã¾ã—ãŸ","ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¨ãƒ©ãƒ¼",MB_OK);
 		return;
 	}
 
@@ -339,7 +339,7 @@ void dx_renderer::init_surface()
 		ddsd.dwBackBufferCount=1;
 
 		if (m_pdd->CreateSurface(&ddsd,&m_pps,NULL)!=DD_OK){
-			MessageBox(m_hwnd,"ƒvƒ‰ƒCƒ}ƒŠƒT[ƒtƒF[ƒX‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ","ƒŒƒ“ƒ_ƒ‰[ƒGƒ‰[",MB_OK);
+			MessageBox(m_hwnd,"ãƒ—ãƒ©ã‚¤ãƒãƒªã‚µãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãŒå–å¾—ã§ãã¾ã›ã‚“","ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¨ãƒ©ãƒ¼",MB_OK);
 			return;
 		}
 
@@ -348,7 +348,7 @@ void dx_renderer::init_surface()
 		ddscaps.dwCaps=DDSCAPS_BACKBUFFER;
 		if (m_pps->GetAttachedSurface(&ddscaps,&m_pbs)!=DD_OK){
 			m_pps->Release();
-			MessageBox(m_hwnd,"ƒoƒbƒNƒT[ƒtƒF[ƒX‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ","ƒŒƒ“ƒ_ƒ‰[ƒGƒ‰[",MB_OK);
+			MessageBox(m_hwnd,"ãƒãƒƒã‚¯ã‚µãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãŒå–å¾—ã§ãã¾ã›ã‚“","ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¨ãƒ©ãƒ¼",MB_OK);
 			return;
 		}
 
@@ -367,7 +367,7 @@ void dx_renderer::init_surface()
 			ddsd.ddsCaps.dwCaps=DDSCAPS_OFFSCREENPLAIN|DDSCAPS_SYSTEMMEMORY;
 			if (m_pdd->CreateSurface(&ddsd,&m_pss,NULL)!=DD_OK){
 				m_pps->Release();
-				MessageBox(m_hwnd,"ƒoƒbƒNƒT[ƒtƒF[ƒX‚ªì¬‚Å‚«‚Ü‚¹‚ñ","ƒŒƒ“ƒ_ƒ‰[ƒGƒ‰[",MB_OK);
+				MessageBox(m_hwnd,"ãƒãƒƒã‚¯ã‚µãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãŒä½œæˆã§ãã¾ã›ã‚“","ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¨ãƒ©ãƒ¼",MB_OK);
 				return;
 			}
 			m_pss2=NULL;
@@ -376,7 +376,7 @@ void dx_renderer::init_surface()
 			ddsd.ddsCaps.dwCaps=DDSCAPS_OFFSCREENPLAIN;
 			if (m_pdd->CreateSurface(&ddsd,&m_pss,NULL)!=DD_OK){
 				m_pps->Release();
-				MessageBox(m_hwnd,"ƒoƒbƒNƒT[ƒtƒF[ƒX‚ªì¬‚Å‚«‚Ü‚¹‚ñ","ƒŒƒ“ƒ_ƒ‰[ƒGƒ‰[",MB_OK);
+				MessageBox(m_hwnd,"ãƒãƒƒã‚¯ã‚µãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãŒä½œæˆã§ãã¾ã›ã‚“","ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¨ãƒ©ãƒ¼",MB_OK);
 				return;
 			}
 			m_pss2=NULL;
@@ -385,13 +385,13 @@ void dx_renderer::init_surface()
 			ddsd.ddsCaps.dwCaps=DDSCAPS_OFFSCREENPLAIN|DDSCAPS_SYSTEMMEMORY;
 			if (m_pdd->CreateSurface(&ddsd,&m_pss,NULL)!=DD_OK){
 				m_pps->Release();
-				MessageBox(m_hwnd,"ƒoƒbƒNƒT[ƒtƒF[ƒX‚ªì¬‚Å‚«‚Ü‚¹‚ñ","ƒŒƒ“ƒ_ƒ‰[ƒGƒ‰[",MB_OK);
+				MessageBox(m_hwnd,"ãƒãƒƒã‚¯ã‚µãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãŒä½œæˆã§ãã¾ã›ã‚“","ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¨ãƒ©ãƒ¼",MB_OK);
 				return;
 			}
 			ddsd.ddsCaps.dwCaps=DDSCAPS_OFFSCREENPLAIN;
 			if (m_pdd->CreateSurface(&ddsd,&m_pss2,NULL)!=DD_OK){
 				m_pps->Release();
-				MessageBox(m_hwnd,"ƒoƒbƒNƒT[ƒtƒF[ƒX‚ªì¬‚Å‚«‚Ü‚¹‚ñ","ƒŒƒ“ƒ_ƒ‰[ƒGƒ‰[",MB_OK);
+				MessageBox(m_hwnd,"ãƒãƒƒã‚¯ã‚µãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãŒä½œæˆã§ãã¾ã›ã‚“","ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¨ãƒ©ãƒ¼",MB_OK);
 				return;
 			}
 		}
@@ -412,13 +412,13 @@ void dx_renderer::init_surface()
 		ddsd.ddsCaps.dwCaps=DDSCAPS_PRIMARYSURFACE;
 
 		if (m_pdd->CreateSurface(&ddsd,&m_pps,NULL)!=DD_OK){
-			MessageBox(m_hwnd,"ƒvƒ‰ƒCƒ}ƒŠƒT[ƒtƒF[ƒX‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ","ƒŒƒ“ƒ_ƒ‰[ƒGƒ‰[",MB_OK);
+			MessageBox(m_hwnd,"ãƒ—ãƒ©ã‚¤ãƒãƒªã‚µãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãŒå–å¾—ã§ãã¾ã›ã‚“","ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¨ãƒ©ãƒ¼",MB_OK);
 			return;
 		}
 
 		if (m_pdd->CreateClipper(0,&m_pclip,NULL)!=DD_OK){
 			m_pps->Release();
-			MessageBox(m_hwnd,"ƒNƒŠƒbƒp‚ªì¬‚Å‚«‚Ü‚¹‚ñ","ƒŒƒ“ƒ_ƒ‰[ƒGƒ‰[",MB_OK);
+			MessageBox(m_hwnd,"ã‚¯ãƒªãƒƒãƒ‘ãŒä½œæˆã§ãã¾ã›ã‚“","ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¨ãƒ©ãƒ¼",MB_OK);
 			return;
 		}
 
@@ -853,14 +853,14 @@ void dx_renderer::update_sound()
 	void *p1,*p2;
 	DWORD s1,s2;
 
-	m_pmix->GetCurrentPosition(&cur_play,NULL); //Œã‚ë‚Ì‚Í‚¢‚ç‚È‚¢
+	m_pmix->GetCurrentPosition(&cur_play,NULL); //å¾Œã‚ã®ã¯ã„ã‚‰ãªã„
 
 	if (bef!=(cur_play*2/size)){
 		bef=(cur_play*2/size);
 
 		start=(!bef)?size/2:0;
 
-		m_pmix->Lock(start,size/2,&p1,&s1,&p2,&s2,0); // zŠÂ‚·‚é‚±‚Æ‚Í‚ ‚è‚¦‚È‚¢
+		m_pmix->Lock(start,size/2,&p1,&s1,&p2,&s2,0); // å¾ªç’°ã™ã‚‹ã“ã¨ã¯ã‚ã‚Šãˆãªã„
 
 		if (!snd_render)
 			memset(p1,0,size/2);
@@ -931,11 +931,11 @@ void dx_renderer::init_di()
 		pw.dwData=5000;
 		pr.lMin=-100;
 		pr.lMax=+100;
-		/* ‚w²‚Ìİ’è */
+		/* ï¼¸è»¸ã®è¨­å®š */
 		pw.diph.dwObj = pr.diph.dwObj = DIJOFS_X;
 		m_pjoystick[i]->SetProperty(DIPROP_RANGE,&pr.diph);
 //		m_pjoystick[i]->SetProperty(DIPROP_DEADZONE,&pw.diph);
-		/* ‚x²‚Ìİ’è */
+		/* ï¼¹è»¸ã®è¨­å®š */
 		pw.diph.dwObj = pr.diph.dwObj = DIJOFS_Y;
 		m_pjoystick[i]->SetProperty(DIPROP_RANGE,&pr.diph);
 //		m_pjoystick[i]->SetProperty(DIPROP_DEADZONE,&pw.diph);
@@ -1164,7 +1164,7 @@ void dx_renderer::update_pad()
 #define MAX_VAL 2047+150
 #define MIN_VAL 2047-150
 
-	// ƒ‚[ƒVƒ‡ƒ“ƒZƒ“ƒT[
+	// ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚»ãƒ³ã‚µãƒ¼
 	if (!b_koro_analog){
 		if (check_press(koro_key_config+2)){
 			now_sensor_x+=3;
@@ -1258,25 +1258,25 @@ bool dx_renderer::check_press(key_dat *dat)
 {
 	int pad_id,pad_dir;
 
-	if(dat->device_type==DI_KEYBOARD){ // ƒL[ƒ{[ƒh
+	if(dat->device_type==DI_KEYBOARD){ // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰
 		return (key_state[dat->key_code]&0x80)?true:false;
 	}
-	else if (dat->device_type>=DI_PAD_X){ // ƒWƒ‡ƒCƒXƒeƒBƒbƒN
+	else if (dat->device_type>=DI_PAD_X){ // ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯
 		pad_id=(dat->device_type-DI_PAD_X)/NEXT_PAD;
 		pad_dir=(dat->device_type-DI_PAD_X)%NEXT_PAD;
-		if (pad_dir==0){ // X²
-			if (!dat->key_code) // ³•ûŒü
+		if (pad_dir==0){ // Xè»¸
+			if (!dat->key_code) // æ­£æ–¹å‘
 				return (js[pad_id].lX>50)?true:false;
-			else // •‰•ûŒü
+			else // è² æ–¹å‘
 				return (js[pad_id].lX<-50)?true:false;
 		}
-		else if (pad_dir==1){ // Y²
-			if (!dat->key_code) // ³•ûŒü
+		else if (pad_dir==1){ // Yè»¸
+			if (!dat->key_code) // æ­£æ–¹å‘
 				return (js[pad_id].lY>50)?true:false;
-			else // •‰•ûŒü
+			else // è² æ–¹å‘
 				return (js[pad_id].lY<-50)?true:false;
 		}
-		else if (pad_dir==2){ // ƒ{ƒ^ƒ“
+		else if (pad_dir==2){ // ãƒœã‚¿ãƒ³
 			return (js[pad_id].rgbButtons[dat->key_code]&0x80)?true:false;
 		}
 	}

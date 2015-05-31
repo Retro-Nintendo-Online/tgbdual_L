@@ -47,9 +47,9 @@
 static HINSTANCE hInstance;
 static HWND hWnd,hWnd_sub,mes_hwnd,trans_hwnd,chat_hwnd;
 static bool sram_transfer_rest=false;
-bool b_running = true;		// false = “®ì’â~
-bool gstepflag = false;		// true  = 1–½—ßÀs
-bool gnframeflag = false;	// true  = 1ƒtƒŒ[ƒ€Às
+bool b_running = true;		// false = å‹•ä½œåœæ­¢
+bool gstepflag = false;		// true  = 1å‘½ä»¤å®Ÿè¡Œ
+bool gnframeflag = false;	// true  = 1ãƒ•ãƒ¬ãƒ¼ãƒ å®Ÿè¡Œ
 
 MSG msg;
 HACCEL hAccel;
@@ -64,15 +64,15 @@ dmy_renderer *dmy_render;
 setting *config;
 std::list<char*> mes_list,chat_list;
 
-void PAUSEprocess(void);		// ’â~ˆ—
+void PAUSEprocess(void);		// åœæ­¢å‡¦ç†
 
-GbCodeLoging gLoging(10000);	// ƒƒK[
-// ƒuƒŒ[ƒNˆ—
+GbCodeLoging gLoging(10000);	// ãƒ­ã‚¬ãƒ¼
+// ãƒ–ãƒ¬ãƒ¼ã‚¯å‡¦ç†
 ProcessBreakerb gBreakerb;		
 ProcessBreakerb gBreakermemb;
 ProcessBreakerb gBreakerreadb;
 
-CodeSearch gCodesearch;			// ƒ`[ƒg‰ü
+CodeSearch gCodesearch;			// ãƒãƒ¼ãƒˆæ”¹
 
 LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
 LRESULT CALLBACK WndProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
@@ -112,14 +112,14 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hPrev,LPSTR lpCmdLine,int nCmdSho
 		return 0;
 	os_check();
 
-	// ‚Ù‚©‚Ì‰Šú‰»‚Éæ‹ì‚¯‚Äİ’è‚ğ“Ç‚İ‚Ş
+	// ã»ã‹ã®åˆæœŸåŒ–ã«å…ˆé§†ã‘ã¦è¨­å®šã‚’èª­ã¿è¾¼ã‚€
 	config=new setting();
 	srand(time(NULL));
 
-	// winsock‰Šú‰»
+	// winsockåˆæœŸåŒ–
 	winsock_initializer ws_init;
 
-	// ƒEƒCƒ“ƒhƒE‚Ìì¬
+	// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½œæˆ
 	WNDCLASS wc={CS_HREDRAW|CS_VREDRAW,WndProc,0,0,hInst,LoadIcon(hInst,MAKEINTRESOURCE(IDI_MAIN)),LoadCursor(NULL,IDC_ARROW),
 		(HBRUSH)GetStockObject(BLACK_BRUSH),MAKEINTRESOURCE(IDR_MENU),"gb emu \"tgb\""};
 	RegisterClass(&wc);
@@ -137,7 +137,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hPrev,LPSTR lpCmdLine,int nCmdSho
 
 	mes_list.push_back("TGB Dual Ver.  Vol.8'''\n");
 
-	// ƒvƒƒZƒX‚Ìƒvƒ‰ƒCƒIƒŠƒeƒB
+	// ãƒ—ãƒ­ã‚»ã‚¹ã®ãƒ—ãƒ©ã‚¤ã‚ªãƒªãƒ†ã‚£
 	static DWORD priol[]={REALTIME_PRIORITY_CLASS,HIGH_PRIORITY_CLASS,0x00008000,NORMAL_PRIORITY_CLASS,0x00004000,IDLE_PRIORITY_CLASS};
 	SetPriorityClass(GetCurrentProcess(),priol[config->priority_class]);
 
@@ -172,7 +172,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hPrev,LPSTR lpCmdLine,int nCmdSho
 
 	purse_cmdline(lpCmdLine);
 
-	// ƒƒbƒZ[ƒWƒ‹[ƒv
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ«ãƒ¼ãƒ—
 	for(;;){
 		if (PeekMessage(&msg,NULL,0,0,PM_REMOVE)){
 			if (msg.message==WM_QUIT)
@@ -206,7 +206,7 @@ static void normal_mode()
 	if (GetActiveWindow()) render[0]->enable_check_pad();
 	else render[0]->disable_check_pad();
 
-	// ‚Æ‚è‚ ‚¦‚¸Às
+	// ã¨ã‚Šã‚ãˆãšå®Ÿè¡Œ
 	for (int line=0;line<154;line++){
 		if (g_gb[0])
 			g_gb[0]->run();
@@ -216,7 +216,7 @@ static void normal_mode()
 	if (g_gbr)
 		g_gbr->run();
 
-	// ƒtƒŒ[ƒ€ƒXƒLƒbƒvü‚è‚Ìˆ—
+	// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚¹ã‚­ãƒƒãƒ—å‘¨ã‚Šã®å‡¦ç†
 	key_dat tmp_key;
 	tmp_key.device_type=config->fast_forwerd[0];
 	tmp_key.key_code=config->fast_forwerd[1];
@@ -233,15 +233,15 @@ static void normal_mode()
 static void network_preparing()
 {
 	if (!net->done_prepare()){
-		Sleep(10); // “K“–‚É‹x‚İ‚ğ‚¢‚ê‚é
+		Sleep(10); // é©å½“ã«ä¼‘ã¿ã‚’ã„ã‚Œã‚‹
 		return;
 	}
 
-	// SRAM‚ğ“K—p
+	// SRAMã‚’é©ç”¨
 	pair<char*,int> p=net->get_sram();
 	memcpy(g_gb[1]->get_rom()->get_sram(),p.first,p.second);
 
-	ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_CHAT),hWnd,ChatProc),SW_SHOW);
+	ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_CHAT),hWnd,ChatProc),SW_SHOW);
 
 	{
 		static char buf[256];
@@ -253,7 +253,7 @@ static void network_preparing()
 	render[0]->set_timer_state(0);
 	render[0]->set_time_fix(true);
 
-	// Ú‘±€”õƒEƒCƒ“ƒhƒE‚ğ•Â‚¶‚é
+	// æ¥ç¶šæº–å‚™ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
 	if (trans_hwnd)
 		DestroyWindow(trans_hwnd);
 }
@@ -263,28 +263,28 @@ static void network_mode()
 	static int cnt=0;
 	int send_limit=net->network_delay()/2*60/1000+1;
 
-	// Ø‚ç‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ì”»•Ê
+	// åˆ‡ã‚‰ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹ã®åˆ¤åˆ¥
 	if (!net->connected()){
 		delete net;
 		net=NULL;
-		// FXŠJ•ú
+		// è‰²ã€…é–‹æ”¾
 		free_rom(0);
 		free_rom(1);
-		// ƒ`ƒƒƒbƒgƒEƒCƒ“ƒhƒE‚ğ‰ó‚·
+		// ãƒãƒ£ãƒƒãƒˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’å£Šã™
 		DestroyWindow(chat_hwnd);
 
-		MessageBox(hWnd,"Ú‘±‚ªØ’f‚³‚ê‚Ü‚µ‚½","TGB Dual NetPlay Notification",MB_OK);
+		MessageBox(hWnd,"æ¥ç¶šãŒåˆ‡æ–­ã•ã‚Œã¾ã—ãŸ","TGB Dual NetPlay Notification",MB_OK);
 		cur_mode=UNLOADED;
 		return;
 	}
 
-	// ƒ`ƒƒƒbƒg‚Ìˆ—
+	// ãƒãƒ£ãƒƒãƒˆã®å‡¦ç†
 	while(net->get_message_num()>0){
 		string s=net->get_message();
 		send_chat_message(s);
 	}
 
-	// ‚Æ‚è‚ ‚¦‚¸¡‚Ì‚Æ‚±‚ë‚ÍƒL[‚ª—ˆŸ‘æg—p‚µ‚Ä‚¢‚­
+	// ã¨ã‚Šã‚ãˆãšä»Šã®ã¨ã“ã‚ã¯ã‚­ãƒ¼ãŒæ¥æ¬¡ç¬¬ä½¿ç”¨ã—ã¦ã„ã
 	if (net->get_keydata_num()>0){
 		pair<netplay_data,netplay_data> p=net->pop_keydata();
 
@@ -308,7 +308,7 @@ static void network_mode()
 		sended++;
 	}
 
-	elapse_time(60); // ‚Æ‚è‚ ‚¦‚¸ŒÅ’è‚Æ‚¢‚¤‚±‚Æ‚Å
+	elapse_time(60); // ã¨ã‚Šã‚ãˆãšå›ºå®šã¨ã„ã†ã“ã¨ã§
 }
 
 static void menu_save_state(HMENU hMenu, int slot, UINT_PTR id, const char *ext)
@@ -517,7 +517,7 @@ static void call_load_state(LPARAM lParam, int slot, const char *ext)
 
 LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
-	int has_bat[]={0,0,0,1,0,0,1,0,0,1,0,0,1,1,0,1,1,0,0,1,0,0,0,0,0,0,0,1,0,1,1,0, 0,0,0,0,0,0,0,0}; // 0x20ˆÈ‰º
+	int has_bat[]={0,0,0,1,0,0,1,0,0,1,0,0,1,1,0,1,1,0,0,1,0,0,0,0,0,0,0,1,0,1,1,0, 0,0,0,0,0,0,0,0}; // 0x20ä»¥ä¸‹
 	int n=0;
 
 	switch( uMsg )
@@ -859,7 +859,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			ShowWindow(mes_hwnd,SW_SHOW);
 			break;
 		case ID_KEY:
-			ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_KEY),hwnd,KeyProc),SW_SHOW);
+			ShowWindow(CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_KEY),hwnd,KeyProc),SW_SHOW);
 			break;
 		case ID_SOUND:
 			ShowWindow(CreateDialog(hInstance,MAKEINTRESOURCE(IDD_SOUND),hwnd,SoundProc),SW_SHOW);
@@ -945,8 +945,8 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		case ID_DBG_INFORMATION:
 			if (cur_mode==NETWORK_MODE||cur_mode==NETWORK_PREPARING)
 			{
-				MessageBox(hwnd, "ƒlƒbƒgƒ[ƒNƒ‚[ƒh‚Å‚Í—˜—p‚Å‚«‚Ü‚¹‚ñB",
-					"Œ»İ‚Ìƒ‚[ƒh‚Å‚Í—˜—p‚Å‚«‚Ü‚¹‚ñ", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã§ã¯åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚",
+					"ç¾åœ¨ã®ãƒ¢ãƒ¼ãƒ‰ã§ã¯åˆ©ç”¨ã§ãã¾ã›ã‚“", MB_OK | MB_ICONEXCLAMATION);
 				break;
 			}
 			if (g_gb[0])
@@ -1011,7 +1011,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			if (render[1]) render[1]->set_render_pass(2);
 			break;
 		case ID_PROCESS_REALTIME:
-			if (MessageBox(hwnd,"OS‚Ì‰“š‚ª”ñí‚Éˆ«‚­‚È‚é‰Â”\«‚ª‚ ‚è‚Ü‚·B‚æ‚ë‚µ‚¢‚Å‚·‚©H","TGB Dual",MB_YESNO)==IDYES){
+			if (MessageBox(hwnd,"OSã®å¿œç­”ãŒéå¸¸ã«æ‚ªããªã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ","TGB Dual",MB_YESNO)==IDYES){
 				config->priority_class=0;
 				SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 			}
@@ -1298,11 +1298,11 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			mii.fState=(config->priority_class==5)?MFS_CHECKED:MFS_UNCHECKED;
 			SetMenuItemInfo(hMenu,ID_PROCESS_IDLE,FALSE,&mii);
 		}
-		else if ((HMENU)wParam == search_menu(hMenu, ID_SAVE_DMY)/*GetSubMenu(GetSubMenu(hMenu,0),2)*/){ // ƒZ[ƒu‚Ì‚Ù‚¤
+		else if ((HMENU)wParam == search_menu(hMenu, ID_SAVE_DMY)/*GetSubMenu(GetSubMenu(hMenu,0),2)*/){ // ã‚»ãƒ¼ãƒ–ã®ã»ã†
 			hMenu = search_menu(hMenu, ID_SAVE_DMY);
 			menu_save_state(hMenu, SLOT1, ID_SAVE_DMY, S1EXT);
 		}
-		else if ((HMENU)wParam == search_menu(hMenu, ID_LOAD_DMY)/*GetSubMenu(GetSubMenu(hMenu,0),3)*/){ // ƒ[ƒh‚Ì‚Ù‚¤
+		else if ((HMENU)wParam == search_menu(hMenu, ID_LOAD_DMY)/*GetSubMenu(GetSubMenu(hMenu,0),3)*/){ // ãƒ­ãƒ¼ãƒ‰ã®ã»ã†
 			hMenu = search_menu(hMenu, ID_LOAD_DMY);
 			menu_load_state(hMenu, SLOT1, ID_LOAD_DMY, S1EXT);
 		}
@@ -1399,8 +1399,8 @@ LRESULT CALLBACK WndProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 void PAUSEprocess(void)
 {
 	if ((cur_mode == NETWORK_MODE) || (cur_mode == NETWORK_PREPARING)) {
-		MessageBox(hWnd, "ƒlƒbƒgƒ[ƒNƒ‚[ƒh‚Å‚Í—˜—p‚Å‚«‚Ü‚¹‚ñB",
-			"Œ»İ‚Ìƒ‚[ƒh‚Å‚Í—˜—p‚Å‚«‚Ü‚¹‚ñ", MB_OK | MB_ICONEXCLAMATION);
+		MessageBox(hWnd, "ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰ã§ã¯åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚",
+			"ç¾åœ¨ã®ãƒ¢ãƒ¼ãƒ‰ã§ã¯åˆ©ç”¨ã§ãã¾ã›ã‚“", MB_OK | MB_ICONEXCLAMATION);
 		return;
 	}
 

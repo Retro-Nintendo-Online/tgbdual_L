@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// ƒŒƒ“ƒ_ƒ‰‚Ìƒ_ƒ~[À‘•
+// ãƒ¬ãƒ³ãƒ€ãƒ©ã®ãƒ€ãƒŸãƒ¼å®Ÿè£…
 
 #include "dmy_renderer.h"
 
@@ -55,15 +55,15 @@ byte dmy_renderer::get_time(int type)
 	dword now=fixed_time-cur_time;
 
 	switch(type){
-	case 8: // •b
+	case 8: // ç§’
 		return (byte)(now%60);
-	case 9: // •ª
+	case 9: // åˆ†
 		return (byte)((now/60)%60);
-	case 10: // 
+	case 10: // æ™‚
 		return (byte)((now/(60*60))%24);
-	case 11: // “ú(L)
+	case 11: // æ—¥(L)
 		return (byte)((now/(24*60*60))&0xff);
-	case 12: // “ú(H)
+	case 12: // æ—¥(H)
 		return (byte)((now/(256*24*60*60))&1);
 	}
 	return 0;
@@ -75,19 +75,19 @@ void dmy_renderer::set_time(int type,byte dat)
 	dword adj=now-cur_time;
 
 	switch(type){
-	case 8: // •b
+	case 8: // ç§’
 		adj=(adj/60)*60+(dat%60);
 		break;
-	case 9: // •ª
+	case 9: // åˆ†
 		adj=(adj/(60*60))*60*60+(dat%60)*60+(adj%60);
 		break;
-	case 10: // 
+	case 10: // æ™‚
 		adj=(adj/(24*60*60))*24*60*60+(dat%24)*60*60+(adj%(60*60));
 		break;
-	case 11: // “ú(L)
+	case 11: // æ—¥(L)
 		adj=(adj/(256*24*60*60))*256*24*60*60+(dat*24*60*60)+(adj%(24*60*60));
 		break;
-	case 12: // “ú(H)
+	case 12: // æ—¥(H)
 		adj=(dat&1)*256*24*60*60+(adj%(256*24*60*60));
 		break;
 	}

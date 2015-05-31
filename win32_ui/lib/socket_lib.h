@@ -63,7 +63,7 @@ public:
 			return ref;
 		}
 	};
-	// ‚±‚êAŒÄ‚Ño‚³‚µ‚½‚ç‘¦delete‚³‚ê‚é
+	// ã“ã‚Œã€å‘¼ã³å‡ºã•ã—ãŸã‚‰å³deleteã•ã‚Œã‚‹
 	static void delete_instance(){
 		if (ref){
 			delete ref;
@@ -134,7 +134,7 @@ public:
 	}
 
 	bool connected(){
-		return valid&&s!=INVALID_SOCKET; // ‚â‚âç’·‚Å‚ ‚é‚ª
+		return valid&&s!=INVALID_SOCKET; // ã‚„ã‚„å†—é•·ã§ã‚ã‚‹ãŒ
 	}
 	bool ready_to_receive(){
 		if (connected()){
@@ -149,7 +149,7 @@ public:
 	}
 	void set_no_delay(bool b){
 		if (connected()){
-			// NagleƒAƒ‹ƒSƒŠƒYƒ€‚ğ–³Œø‚É‚·‚é
+			// Nagleã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 			int t=b?1:0;
 			setsockopt(s,IPPROTO_TCP,TCP_NODELAY,(const char *)&t,sizeof(t));
 		}
@@ -165,12 +165,12 @@ public:
 		return ::recv(s,(char*)buf,size,0);
 	}
 
-	// ‚«‚Á‚©‚èsize‚¾‚¯“Ç‚İ‚ŞBI‚í‚é‚Ü‚ÅƒuƒƒbƒN‚·‚éB
+	// ãã£ã‹ã‚Šsizeã ã‘èª­ã¿è¾¼ã‚€ã€‚çµ‚ã‚ã‚‹ã¾ã§ãƒ–ãƒ­ãƒƒã‚¯ã™ã‚‹ã€‚
 	void read(void *buf,int size){ // throws socket_exception
 		for (int recieved=0;recieved!=size;){
 			int len=recv((char*)buf+recieved,size-recieved);
 			if (len==0){
-				// Ú‘±‚ªØ‚ê‚Ä‚¢‚é‚Æ‚«
+				// æ¥ç¶šãŒåˆ‡ã‚Œã¦ã„ã‚‹ã¨ã
 				valid=false;
 				closesocket(s);
 				s=INVALID_SOCKET;

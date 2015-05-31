@@ -34,7 +34,7 @@ setting::setting()
 	char *p,q[256],*r=NULL;
 	p=GetCommandLine();
 
-	// ƒtƒ@ƒCƒ‹–¼’Šo
+	// ãƒ•ã‚¡ã‚¤ãƒ«åæŠ½å‡º
 	if (p[0]=='"'){
 		strcpy(q,p+1);
 		p=q;
@@ -50,7 +50,7 @@ setting::setting()
 
 	p=q;
 
-	// ƒfƒBƒŒƒNƒgƒŠ’Šo
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªæŠ½å‡º
 	for (int i=0;p[i]!='\0';i++)
 		if (p[i]=='\\')
 			r=p+i;
@@ -69,7 +69,7 @@ setting::setting()
 		strcat(ini_name,"\\TGB.ini");
 	}
 
-	// ƒL[î•ñ (a,b,select,start,down,up,left,right ‚Ì‡)
+	// ã‚­ãƒ¼æƒ…å ± (a,b,select,start,down,up,left,right ã®é †)
 	key_setting[0][0]=GetPrivateProfileInt("key_1","a_type",1,ini_name);
 	key_setting[0][1]=GetPrivateProfileInt("key_1","a_code",DIK_Z,ini_name);
 	key_setting[0][2]=GetPrivateProfileInt("key_1","b_type",1,ini_name);
@@ -104,7 +104,7 @@ setting::setting()
 	key_setting[1][14]=GetPrivateProfileInt("key_2","right_type",1,ini_name);
 	key_setting[1][15]=GetPrivateProfileInt("key_2","right_code",DIK_NUMPAD6,ini_name);
 
-	// ƒVƒXƒeƒ€ƒL[
+	// ã‚·ã‚¹ãƒ†ãƒ ã‚­ãƒ¼
 	fast_forwerd[0]=GetPrivateProfileInt("sys_key","fast_type",1,ini_name);
 	fast_forwerd[1]=GetPrivateProfileInt("sys_key","fast_code",DIK_TAB,ini_name);
 	save_key[0]=GetPrivateProfileInt("sys_key","save_type",1,ini_name);
@@ -116,7 +116,7 @@ setting::setting()
 	pause_key[0]=GetPrivateProfileInt("sys_key","pause_type",1,ini_name);
 	pause_key[1]=GetPrivateProfileInt("sys_key","pause_code",0x9d,ini_name);
 
-	// ƒRƒƒRƒƒJ[ƒrƒB
+	// ã‚³ãƒ­ã‚³ãƒ­ã‚«ãƒ¼ãƒ“ã‚£
 	koro_use_analog=GetPrivateProfileInt("korokoro","use_analog",0,ini_name)?true:false;
 	koro_sensitive=GetPrivateProfileInt("korokoro","sensitivity",100,ini_name);
 	koro_key[0]=GetPrivateProfileInt("korokoro","up_type",1,ini_name);
@@ -128,7 +128,7 @@ setting::setting()
 	koro_key[6]=GetPrivateProfileInt("korokoro","right_type",1,ini_name);
 	koro_key[7]=GetPrivateProfileInt("korokoro","right_code",DIK_NUMPAD6,ini_name);
 
-	// ‚»‚Ì‘¼
+	// ãã®ä»–
 	use_ffb=GetPrivateProfileInt("special","use_ffb",0,ini_name)?true:false;
 	gb_type=GetPrivateProfileInt("special","gb_type",0,ini_name);
 	use_gba=GetPrivateProfileInt("special","use_gba",0,ini_name)?true:false;
@@ -136,13 +136,13 @@ setting::setting()
 	priority_class=GetPrivateProfileInt("special","priority_class",3,ini_name);
 	vsync=GetPrivateProfileInt("special","vsync",0,ini_name)?true:false;
 
-	// ƒEƒCƒ“ƒhƒEˆÊ’u
+	// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä½ç½®
 	win_pos[0]=GetPrivateProfileInt("win_pos","left",100,ini_name);
 	win_pos[1]=GetPrivateProfileInt("win_pos","top",100,ini_name);
 	win_pos[2]=GetPrivateProfileInt("win_pos","width",(GetSystemMetrics(SM_CXFIXEDFRAME)+1)*2+320,ini_name);
 	win_pos[3]=GetPrivateProfileInt("win_pos","height",(GetSystemMetrics(SM_CYFIXEDFRAME)+GetSystemMetrics(SM_CYMENU)+1)*2+288,ini_name);
 
-	// ‘¬“x
+	// é€Ÿåº¦
 	frame_skip=GetPrivateProfileInt("speed","normal_frame_skip",0,ini_name);
 	virtual_fps=GetPrivateProfileInt("speed","normal_fps",60,ini_name);
 	speed_limit=(GetPrivateProfileInt("speed","normal_limit",1,ini_name))?true:false;
@@ -151,7 +151,7 @@ setting::setting()
 	fast_speed_limit=(GetPrivateProfileInt("speed","fast_limit",0,ini_name))?true:false;
 	show_fps=(GetPrivateProfileInt("speed","show_fps",0,ini_name))?true:false;
 
-	// ƒJƒ‰[ƒtƒBƒ‹ƒ^
+	// ã‚«ãƒ©ãƒ¼ãƒ•ã‚£ãƒ«ã‚¿
 	r_def=GetPrivateProfileInt("filter","r_def",0,ini_name);
 	g_def=GetPrivateProfileInt("filter","g_def",0,ini_name);
 	b_def=GetPrivateProfileInt("filter","b_def",0,ini_name);
@@ -168,7 +168,7 @@ setting::setting()
 	b_g=GetPrivateProfileInt("filter","b_g",0,ini_name);
 	b_b=GetPrivateProfileInt("filter","b_b",256,ini_name);
 
-	// ƒTƒEƒ“ƒh
+	// ã‚µã‚¦ãƒ³ãƒ‰
 	sound_enable[0]=GetPrivateProfileInt("sound","sq_wav1",1,ini_name);
 	sound_enable[1]=GetPrivateProfileInt("sound","sq_wav2",1,ini_name);
 	sound_enable[2]=GetPrivateProfileInt("sound","sq_voluntary",1,ini_name);
@@ -177,13 +177,13 @@ setting::setting()
 	b_echo=GetPrivateProfileInt("sound","echo",0,ini_name)?true:false;
 	b_lowpass=GetPrivateProfileInt("sound","lowpass_filter",1,ini_name)?true:false;
 
-	// IP ƒAƒhƒŒƒX
+	// IP ã‚¢ãƒ‰ãƒ¬ã‚¹
 	GetPrivateProfileString("ip_addr","addr_1","",ip_addrs[0],20,ini_name);
 	GetPrivateProfileString("ip_addr","addr_2","",ip_addrs[1],20,ini_name);
 	GetPrivateProfileString("ip_addr","addr_3","",ip_addrs[2],20,ini_name);
 	GetPrivateProfileString("ip_addr","addr_4","",ip_addrs[3],20,ini_name);
 
-	// ƒfƒBƒŒƒNƒgƒŠ
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	char tmp_save[256];
 
 	strcpy(tmp_save,home_dir);
@@ -215,13 +215,13 @@ setting::~setting()
 	strcpy(ini_name,home_dir);
 	strcat(ini_name,"\\TGB.ini");
 
-	// ƒfƒBƒŒƒNƒgƒŠ
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	GetCurrentDirectory(256,tmp);
 	WritePrivateProfileString("directory","last_load",tmp,ini_name);
 	WritePrivateProfileString("directory","save_dir",save_dir,ini_name);
 	WritePrivateProfileString("directory","media_dir",media_dir,ini_name);
 
-	// ƒL[î•ñ
+	// ã‚­ãƒ¼æƒ…å ±
 	sprintf(tmp,"%d",key_setting[0][0]);
 	WritePrivateProfileString("key_1","a_type",tmp,ini_name);
 	sprintf(tmp,"%d",key_setting[0][1]);
@@ -288,7 +288,7 @@ setting::~setting()
 	sprintf(tmp,"%d",key_setting[1][15]);
 	WritePrivateProfileString("key_2","right_code",tmp,ini_name);
 
-	// ƒVƒXƒeƒ€ƒL[
+	// ã‚·ã‚¹ãƒ†ãƒ ã‚­ãƒ¼
 	sprintf(tmp,"%d",fast_forwerd[0]);
 	WritePrivateProfileString("sys_key","fast_type",tmp,ini_name);
 	sprintf(tmp,"%d",fast_forwerd[1]);
@@ -310,7 +310,7 @@ setting::~setting()
 	sprintf(tmp,"%d",pause_key[1]);
 	WritePrivateProfileString("sys_key","pause_code",tmp,ini_name);
 
-	// ƒRƒƒRƒƒJ[ƒrƒB
+	// ã‚³ãƒ­ã‚³ãƒ­ã‚«ãƒ¼ãƒ“ã‚£
 	sprintf(tmp,"%d",koro_use_analog?1:0);
 	WritePrivateProfileString("korokoro","use_analog",tmp,ini_name);
 	sprintf(tmp,"%d",koro_sensitive);
@@ -332,7 +332,7 @@ setting::~setting()
 	sprintf(tmp,"%d",koro_key[7]);
 	WritePrivateProfileString("korokoro","right_code",tmp,ini_name);
 
-	// ‚»‚Ì‘¼
+	// ãã®ä»–
 	sprintf(tmp,"%d",use_ffb?1:0);
 	WritePrivateProfileString("special","use_ffb",tmp,ini_name);
 	sprintf(tmp,"%d",gb_type);
@@ -346,7 +346,7 @@ setting::~setting()
 	sprintf(tmp,"%d",vsync?1:0);
 	WritePrivateProfileString("special","vsync",tmp,ini_name);
 
-	// ƒEƒCƒ“ƒhƒEˆÊ’u
+	// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä½ç½®
 	sprintf(tmp,"%d",win_pos[0]);
 	WritePrivateProfileString("win_pos","left",tmp,ini_name);
 	sprintf(tmp,"%d",win_pos[1]);
@@ -356,7 +356,7 @@ setting::~setting()
 	sprintf(tmp,"%d",win_pos[3]);
 	WritePrivateProfileString("win_pos","height",tmp,ini_name);
 
-	// ‘¬“x
+	// é€Ÿåº¦
 	sprintf(tmp,"%d",frame_skip);
 	WritePrivateProfileString("speed","normal_frame_skip",tmp,ini_name);
 	sprintf(tmp,"%d",virtual_fps);
@@ -372,7 +372,7 @@ setting::~setting()
 	sprintf(tmp,"%d",show_fps?1:0);
 	WritePrivateProfileString("speed","show_fps",tmp,ini_name);
 
-	// ƒJƒ‰[ƒtƒBƒ‹ƒ^
+	// ã‚«ãƒ©ãƒ¼ãƒ•ã‚£ãƒ«ã‚¿
 	sprintf(tmp,"%d",r_def);
 	WritePrivateProfileString("filter","r_def",tmp,ini_name);
 	sprintf(tmp,"%d",g_def);
@@ -404,7 +404,7 @@ setting::~setting()
 	sprintf(tmp,"%d",b_b);
 	WritePrivateProfileString("filter","b_b",tmp,ini_name);
 
-	// ƒTƒEƒ“ƒh
+	// ã‚µã‚¦ãƒ³ãƒ‰
 	sprintf(tmp,"%d",sound_enable[0]);
 	WritePrivateProfileString("sound","sq_wav1",tmp,ini_name);
 	sprintf(tmp,"%d",sound_enable[1]);
@@ -420,7 +420,7 @@ setting::~setting()
 	sprintf(tmp,"%d",b_lowpass?1:0);
 	WritePrivateProfileString("sound","lowpass_filter",tmp,ini_name);
 
-	// IP ƒAƒhƒŒƒX
+	// IP ã‚¢ãƒ‰ãƒ¬ã‚¹
 	WritePrivateProfileString("ip_addr","addr_1",ip_addrs[0],ini_name);
 	WritePrivateProfileString("ip_addr","addr_2",ip_addrs[1],ini_name);
 	WritePrivateProfileString("ip_addr","addr_3",ip_addrs[2],ini_name);

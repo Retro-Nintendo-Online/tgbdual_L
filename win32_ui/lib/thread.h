@@ -28,21 +28,21 @@ public:
 	virtual void run()=0;
 };
 
-// java‚Á‚Û‚¢‚â‚ÂB‚»‚ê‚æ‚è‚Í‚©‚È‚è‚µ‚å‚Ú‚¢‚ªB
-// g‚¢•û‚É’ˆÓBnew thread(r)->start(); ‚Æ‚©‚ÅƒXƒŒƒbƒhì¬B
-// delete‚·‚é‚ÆƒXƒŒƒbƒh‚ª–³ğŒ‚Å€‚ÊB
+// javaã£ã½ã„ã‚„ã¤ã€‚ãã‚Œã‚ˆã‚Šã¯ã‹ãªã‚Šã—ã‚‡ã¼ã„ãŒã€‚
+// ä½¿ã„æ–¹ã«æ³¨æ„ã€‚new thread(r)->start(); ã¨ã‹ã§ã‚¹ãƒ¬ãƒƒãƒ‰ä½œæˆã€‚
+// deleteã™ã‚‹ã¨ã‚¹ãƒ¬ãƒƒãƒ‰ãŒç„¡æ¡ä»¶ã§æ­»ã¬ã€‚
 class thread : public runnable{
 public:
 	thread(){
-		r=this; // ‚±‚ê‚Å‚¢‚Ì‚©H
+		r=this; // ã“ã‚Œã§ã„ã®ã‹ï¼Ÿ
 	}
-	thread(runnable *r){ // r‚ÌŠ—LŒ ‚à—a‚¯‚é
+	thread(runnable *r){ // rã®æ‰€æœ‰æ¨©ã‚‚é ã‘ã‚‹
 		this->r=r;
 	}
 
 	~thread(){
 		if (thread_handle!=-1L){
-			// ‚Æ‚è‚ ‚¦‚¸ƒXƒŒƒbƒh‚ğ“¹˜A‚ê‚É
+			// ã¨ã‚Šã‚ãˆãšã‚¹ãƒ¬ãƒƒãƒ‰ã‚’é“é€£ã‚Œã«
 			TerminateThread((HANDLE)thread_handle,0);
 		}
 		if (r!=this) delete r;
@@ -74,7 +74,7 @@ public:
 		::Sleep(0);
 	}
 
-	void run(){} // ‚Æ‚è‚ ‚¦‚¸‹ó‚ÌÀ‘•
+	void run(){} // ã¨ã‚Šã‚ãˆãšç©ºã®å®Ÿè£…
 
 private:
 	static void invoke(void *arg){

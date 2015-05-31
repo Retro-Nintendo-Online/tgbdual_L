@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// ƒlƒbƒgƒ[ƒN‘Îí—p
+// ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯å¯¾æˆ¦ç”¨
 #pragma once
 
 #include "./lib/socket_lib.h"
@@ -33,7 +33,7 @@ template <class T>
 class netplay : public thread{
 public:
 	typedef T data_type;
-	// ƒT[ƒo[—p‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚µãƒ¼ãƒãƒ¼ç”¨ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	netplay(int port){
 		server=true;
 		host="";
@@ -43,7 +43,7 @@ public:
 		prepared=false;
 		start();
 	}
-	// ƒNƒ‰ƒCƒAƒ“ƒg—p‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆç”¨ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	netplay(string &host,int port){
 		server=false;
 		this->host=host;
@@ -59,31 +59,31 @@ public:
 		if (my_sram) delete []ms;
 		if (opp_sram) delete []os;
 
-		// ƒXƒŒƒbƒhI—¹‚Ü‚Å‘Ò‹@
+		// ã‚¹ãƒ¬ãƒƒãƒ‰çµ‚äº†ã¾ã§å¾…æ©Ÿ
 		if (running()){
 			if (done_prepare()){
 				alive=false;
 				join();
 			}
 			else{
-				// ‘Ê–Ú‚Å‚·‚Èc‚±‚Ì‚Ü‚ÜI‚í‚ê‚ÎƒXƒŒƒbƒh‚ğTerminate‚µ‚Ä‚­‚ê‚é‚Í‚¸
+				// é§„ç›®ã§ã™ãªâ€¦ã“ã®ã¾ã¾çµ‚ã‚ã‚Œã°ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’Terminateã—ã¦ãã‚Œã‚‹ã¯ãš
 			}
 		}
 	}
 
-	// ƒT[ƒo[H
+	// ã‚µãƒ¼ãƒãƒ¼ï¼Ÿ
 	bool is_server(){ return server; }
 
-	// €”õŠ®—¹‚µ‚Ä‚¢‚éH
+	// æº–å‚™å®Œäº†ã—ã¦ã„ã‚‹ï¼Ÿ
 	bool done_prepare(){ return prepared; }
 
-	// ƒlƒbƒgƒ[ƒN’x‰„ ‰•œ˜H
+	// ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯é…å»¶ å¾€å¾©è·¯
 	int network_delay(){ return delay; }
 
-	// Ú‘±’†‚©H
+	// æ¥ç¶šä¸­ã‹ï¼Ÿ
 	bool connected(){ return s!=NULL; }
 
-	// SRAM‚Ì‘—óM
+	// SRAMã®é€å—ä¿¡
 	void send_sram(char *data,int size){
 		my_sram_size=size;
 		char *tmp=new char[size];
@@ -94,7 +94,7 @@ public:
 		return pair<char*,int>((char*)opp_sram,(int)opp_sram_size);
 	}
 
-	// ƒL[ƒf[ƒ^‚Ì‘—óM
+	// ã‚­ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®é€å—ä¿¡
 	void send_keydata(data_type &dat){
 		try{
 			critical_lock cl(cs);
@@ -114,7 +114,7 @@ public:
 		return pair<data_type,data_type>(f,s);
 	}
 
-	// ƒ`ƒƒƒbƒgƒf[ƒ^‚Ì‘—óM
+	// ãƒãƒ£ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã®é€å—ä¿¡
 	void send_message(string &msg){
 		try{
 			critical_lock cl(cs);
@@ -131,13 +131,13 @@ public:
 		else return string("");
 	}
 
-	// “à•”ˆ—
+	// å†…éƒ¨å‡¦ç†
 	void run(){
-		// ‚Ü‚¸‚ÍÚ‘±
+		// ã¾ãšã¯æ¥ç¶š
 		if (server){
 			server_socket *ss=new server_socket(port);
 			s=ss->accept();
-			delete ss; // ƒT[ƒo[ƒ\ƒPƒbƒg‚Á‚Ä•Â‚¶‚Ä‚à‘åä•vH
+			delete ss; // ã‚µãƒ¼ãƒãƒ¼ã‚½ã‚±ãƒƒãƒˆã£ã¦é–‰ã˜ã¦ã‚‚å¤§ä¸ˆå¤«ï¼Ÿ
 		}
 		else{
 			s=new socket_obj(host,port);
@@ -145,12 +145,12 @@ public:
 
 		s->set_no_delay(true);
 
-		// SRAM“]‘——v‹‚ª‚«‚Ä‚½‚ç‘—óM
+		// SRAMè»¢é€è¦æ±‚ãŒãã¦ãŸã‚‰é€å—ä¿¡
 		while(my_sram==NULL) thread::sleep(10);
 		send_packet(packet("SRAM",my_sram_size,(char*)my_sram));
 
 		packet p=recv_packet();
-		if (p.tag!="SRAM"){ // ‚Ç‚È‚¢‚µ‚æc
+		if (p.tag!="SRAM"){ // ã©ãªã„ã—ã‚ˆâ€¦
 			delete s;
 			s=NULL;
 			return;
@@ -158,7 +158,7 @@ public:
 		opp_sram=p.dat;
 		opp_sram_size=p.size;
 
-		// ’x‰„‘¬“x‚ğŒv‘ª‚µ‚Ä‚¨‚­ 20‰ñ‚®‚ç‚¢‚ÌƒƒfƒBƒAƒ“‚Å‚¢‚¢‚©
+		// é…å»¶é€Ÿåº¦ã‚’è¨ˆæ¸¬ã—ã¦ãŠã 20å›ãã‚‰ã„ã®ãƒ¡ãƒ‡ã‚£ã‚¢ãƒ³ã§ã„ã„ã‹
 		{
 			data_type dmy;
 			if (server){
@@ -188,7 +188,7 @@ public:
 
 		prepared=true;
 
-		// ƒpƒPƒbƒgˆ—ƒ‹[ƒv
+		// ãƒ‘ã‚±ãƒƒãƒˆå‡¦ç†ãƒ«ãƒ¼ãƒ—
 		while (alive){
 			if (!s->connected())
 				break;
@@ -205,13 +205,13 @@ public:
 						push_opp_key(*(data_type*)p.dat);
 				}
 				else if (p.tag=="MSG "){
-					if (p.size==strlen(p.dat)+1) // ‚Ğ‚Æ‚Ü‚¸ŠÈ’P‚Èƒ`ƒFƒbƒN‚ğ
+					if (p.size==strlen(p.dat)+1) // ã²ã¨ã¾ãšç°¡å˜ãªãƒã‚§ãƒƒã‚¯ã‚’
 						message.push(string(p.dat));
 				}
 				delete []p.dat;
 			}
 			else
-				sleep(4); // “K“x‚É‘Ò‚Â
+				sleep(4); // é©åº¦ã«å¾…ã¤
 		}
 
 		delete s;
@@ -219,7 +219,7 @@ public:
 	}
 
 private:
-	// ƒpƒPƒbƒgˆ—ü‚è
+	// ãƒ‘ã‚±ãƒƒãƒˆå‡¦ç†å‘¨ã‚Š
 	class packet{
 	public:
 		packet(char *tag="",int size=0,char *dat=NULL){
@@ -232,13 +232,13 @@ private:
 		char *dat;
 	};
 	void send_packet(packet p){
-		if (s==NULL) return; // ‚Æ‚è‚ ‚¦‚¸–³‹‚·‚é‚Æ‚¢‚¤‚±‚Æ‚ÅB
-		if (p.tag.length()!=4) return; // ‚±‚ê‚à
+		if (s==NULL) return; // ã¨ã‚Šã‚ãˆãšç„¡è¦–ã™ã‚‹ã¨ã„ã†ã“ã¨ã§ã€‚
+		if (p.tag.length()!=4) return; // ã“ã‚Œã‚‚
 		try{
 			s->send((void*)p.tag.c_str(),4);
 			s->send(&p.size,4);
 			s->send(p.dat,p.size);
-		}catch(socket_exception&){ /* –³‹‚·‚é */ }
+		}catch(socket_exception&){ /* ç„¡è¦–ã™ã‚‹ */ }
 	}
 	packet recv_packet(){
 		if (s==NULL) return packet();
@@ -257,27 +257,27 @@ private:
 		return p;
 	}
 
-	// SRAMü‚è
+	// SRAMå‘¨ã‚Š
 	volatile char *my_sram,*opp_sram;
 	volatile int my_sram_size,opp_sram_size;
 
-	// ƒL[ƒf[ƒ^‚ÌŠi”[
+	// ã‚­ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®æ ¼ç´
 	queue<data_type> my_keydata,opp_keydata;
 	void push_opp_key(data_type &dat){
 		critical_lock cl(cs);
 		opp_keydata.push(dat);
 	}
 
-	// ƒ`ƒƒƒbƒgƒf[ƒ^Ši”[
+	// ãƒãƒ£ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿æ ¼ç´
 	queue<string> message;
 
-	// Ú‘±ü‚è
+	// æ¥ç¶šå‘¨ã‚Š
 	bool server;
 	string host;
 	int port;
 	socket_obj *s;
 
-	// ƒfƒBƒŒƒC (in ms)
+	// ãƒ‡ã‚£ãƒ¬ã‚¤ (in ms)
 	volatile int delay;
 
 	volatile bool prepared;

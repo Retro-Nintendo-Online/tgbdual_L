@@ -1,7 +1,7 @@
-// 2010/09/13»ì
-// ƒNƒ‰ƒX‰»‚â’ŠÛ‰»‚Å‚«‚»‚¤‚É‚È‚¢‚Ì‚Å
-// ŠeƒŒƒWƒXƒgƒŠ—p‚Ìˆ—ŠÖ”‚ğŒÂ•Ê‚Éì¬B
-// ‚à‚µˆ—“à—e‚É•ÏX‚ª‚ ‚Á‚½‚ç‘S‚Ä•ÏX‚·‚é•K—v‚ ‚èB
+// 2010/09/13è£½ä½œ
+// ã‚¯ãƒ©ã‚¹åŒ–ã‚„æŠ½è±¡åŒ–ã§ããã†ã«ãªã„ã®ã§
+// å„ãƒ¬ã‚¸ã‚¹ãƒˆãƒªç”¨ã®å‡¦ç†é–¢æ•°ã‚’å€‹åˆ¥ã«ä½œæˆã€‚
+// ã‚‚ã—å‡¦ç†å†…å®¹ã«å¤‰æ›´ãŒã‚ã£ãŸã‚‰å…¨ã¦å¤‰æ›´ã™ã‚‹å¿…è¦ã‚ã‚Šã€‚
 
 int RegEditSelCheck(HWND hwnd, int selpos) {
 	int strlen;
@@ -37,7 +37,7 @@ LRESULT CALLBACK MyRegEditProcA(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -45,8 +45,8 @@ LRESULT CALLBACK MyRegEditProcA(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -56,12 +56,12 @@ LRESULT CALLBACK MyRegEditProcA(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			else
 				REGD_A = chgdata + (olddata & 0xf0);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			ShowRegister(GetParent(hwnd));
 
-			if (! start && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (! start && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -88,13 +88,13 @@ LRESULT CALLBACK MyRegEditProcA(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		::CallWindowProc( old_redit_procA, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:
@@ -130,7 +130,7 @@ LRESULT CALLBACK MyRegEditProcF(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -138,8 +138,8 @@ LRESULT CALLBACK MyRegEditProcF(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -149,12 +149,12 @@ LRESULT CALLBACK MyRegEditProcF(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			else
 				REGD_F = chgdata + (olddata & 0xf0);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			ShowRegister(GetParent(hwnd));
 
-			if (!start && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (!start && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -181,13 +181,13 @@ LRESULT CALLBACK MyRegEditProcF(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		::CallWindowProc( old_redit_procF, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:
@@ -223,7 +223,7 @@ LRESULT CALLBACK MyRegEditProcB(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -231,8 +231,8 @@ LRESULT CALLBACK MyRegEditProcB(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -242,12 +242,12 @@ LRESULT CALLBACK MyRegEditProcB(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			else
 				REGD_B = chgdata + (olddata & 0xf0);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			ShowRegister(GetParent(hwnd));
 
-			if (! start && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (! start && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -274,13 +274,13 @@ LRESULT CALLBACK MyRegEditProcB(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		::CallWindowProc( old_redit_procB, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:
@@ -316,7 +316,7 @@ LRESULT CALLBACK MyRegEditProcC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -324,8 +324,8 @@ LRESULT CALLBACK MyRegEditProcC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -335,12 +335,12 @@ LRESULT CALLBACK MyRegEditProcC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			else
 				REGD_C = chgdata + (olddata & 0xf0);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			ShowRegister(GetParent(hwnd));
 
-			if (! start && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (! start && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -367,13 +367,13 @@ LRESULT CALLBACK MyRegEditProcC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		::CallWindowProc( old_redit_procC, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:
@@ -409,7 +409,7 @@ LRESULT CALLBACK MyRegEditProcD(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -417,8 +417,8 @@ LRESULT CALLBACK MyRegEditProcD(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -428,12 +428,12 @@ LRESULT CALLBACK MyRegEditProcD(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			else
 				REGD_D = chgdata + (olddata & 0xf0);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			ShowRegister(GetParent(hwnd));
 
-			if (! start && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (! start && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -460,13 +460,13 @@ LRESULT CALLBACK MyRegEditProcD(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		::CallWindowProc( old_redit_procD, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:
@@ -502,7 +502,7 @@ LRESULT CALLBACK MyRegEditProcE(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -510,8 +510,8 @@ LRESULT CALLBACK MyRegEditProcE(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -521,12 +521,12 @@ LRESULT CALLBACK MyRegEditProcE(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			else
 				REGD_E = chgdata + (olddata & 0xf0);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			ShowRegister(GetParent(hwnd));
 
-			if (! start && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (! start && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -553,13 +553,13 @@ LRESULT CALLBACK MyRegEditProcE(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		::CallWindowProc( old_redit_procE, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:
@@ -595,7 +595,7 @@ LRESULT CALLBACK MyRegEditProcH(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -603,8 +603,8 @@ LRESULT CALLBACK MyRegEditProcH(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -614,12 +614,12 @@ LRESULT CALLBACK MyRegEditProcH(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			else
 				REGD_H = chgdata + (olddata & 0xf0);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			ShowRegister(GetParent(hwnd));
 
-			if (! start && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (! start && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -646,13 +646,13 @@ LRESULT CALLBACK MyRegEditProcH(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		::CallWindowProc( old_redit_procH, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:
@@ -688,7 +688,7 @@ LRESULT CALLBACK MyRegEditProcL(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -696,8 +696,8 @@ LRESULT CALLBACK MyRegEditProcL(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -707,12 +707,12 @@ LRESULT CALLBACK MyRegEditProcL(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			else
 				REGD_L = chgdata + (olddata & 0xf0);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			ShowRegister(GetParent(hwnd));
 
-			if (! start && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (! start && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -739,13 +739,13 @@ LRESULT CALLBACK MyRegEditProcL(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		::CallWindowProc( old_redit_procL, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:
@@ -782,7 +782,7 @@ LRESULT CALLBACK MyRegEditProcSP(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -790,8 +790,8 @@ LRESULT CALLBACK MyRegEditProcSP(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -812,12 +812,12 @@ LRESULT CALLBACK MyRegEditProcSP(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 				break;
 			}
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			ShowRegister(GetParent(hwnd));
 
-			if (start < 3 && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (start < 3 && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -844,13 +844,13 @@ LRESULT CALLBACK MyRegEditProcSP(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		::CallWindowProc( old_redit_procSP, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:
@@ -887,7 +887,7 @@ LRESULT CALLBACK MyRegEditProcPC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!RegEditSelCheck(hwnd, start))
 				return 0;
 
@@ -895,8 +895,8 @@ LRESULT CALLBACK MyRegEditProcPC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16); 
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return 0;
 			}
 
@@ -917,12 +917,12 @@ LRESULT CALLBACK MyRegEditProcPC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 				break;
 			}
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			SendMessage(GetParent(hwnd), WM_USER+2, 0, 0);
 
-			if (start < 3 && RegEditSelCheck(hwnd, start + 1)) // ãˆÊƒrƒbƒg‚Ìê‡‰ºˆÊ‚ÉˆÚ“®‚³‚¹‚é
+			if (start < 3 && RegEditSelCheck(hwnd, start + 1)) // ä¸Šä½ãƒ“ãƒƒãƒˆã®å ´åˆä¸‹ä½ã«ç§»å‹•ã•ã›ã‚‹
 				SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-			else // ‰ºˆÊƒrƒbƒg‚Å‚ ‚ê‚ÎƒtƒH[ƒJƒX‚ğ“n‚·B
+			else // ä¸‹ä½ãƒ“ãƒƒãƒˆã§ã‚ã‚Œã°ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã™ã€‚
 				SetFocus(GetParent(hwnd));
 
 			return 0;
@@ -949,13 +949,13 @@ LRESULT CALLBACK MyRegEditProcPC(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		::CallWindowProc( old_redit_procPC, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (RegEditSelCheck(hwnd, start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			return 0; // ‘I‘ğ‚µ‚Ä‚©‚ç–ß‚é
+			return 0; // é¸æŠã—ã¦ã‹ã‚‰æˆ»ã‚‹
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return 0;
 
 	case WM_CHAR:

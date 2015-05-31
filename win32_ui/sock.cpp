@@ -70,7 +70,7 @@ void sock::uninit()
 	if (target_sock!=INVALID_SOCKET)
 		closesocket(target_sock);	
 	b_connected=false;
-	out_log("�\�P�b�g���N���[�Y���܂���\n\n");
+	out_log("ソケットをクローズしました\n\n");
 }
 
 bool sock::init(bool b_serv)
@@ -99,9 +99,9 @@ bool sock::init(bool b_serv)
 		if ((target_sock=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP))==INVALID_SOCKET)
 			return false;
 
-	out_log("Winsock 1.1 ����������\n\n");
+	out_log("Winsock 1.1 初期化完了\n\n");
 	if (b_server)
-		out_log("�N���C�A���g�̐ڑ���҂��Ă��܂�\n\n");
+		out_log("クライアントの接続を待っています\n\n");
 	return true;
 }
 
@@ -126,7 +126,7 @@ void sock::connect_server(char *ip_addr)
 	WSAAsyncSelect(target_sock,m_hwnd,WM_SOCKET,FD_CONNECT);
 
 	connect(target_sock,(sockaddr*)&server_addr,sizeof(server_addr));
-	out_log("�T�[�o�[�ւ̐ڑ����J�n���܂�\n\n");
+	out_log("サーバーへの接続を開始します\n\n");
 }
 
 void sock::set_blocking(bool block)
@@ -174,12 +174,12 @@ void sock::handle_message(WPARAM wParam,LPARAM lParam)
 		hostent *host;
 		host=gethostbyaddr((char*)&target_addr.sin_addr.s_addr,4,AF_INET);
 		if (host)
-			out_log("�ڑ��m��\nclient : \"%s\"\n\n",host->h_name);
+			out_log("接続確立\nclient : \"%s\"\n\n",host->h_name);
 		WSAAsyncSelect(target_sock,m_hwnd,WM_SOCKET,FD_READ|FD_CLOSE);
 		b_connected=true;
 		break;
 	case FD_CONNECT:
-		out_log("�ڑ��m��\n\n");
+		out_log("接続確立\n\n");
 		WSAAsyncSelect(target_sock,m_hwnd,WM_SOCKET,FD_READ|FD_CLOSE);
 		b_connected=true;
 		break;
@@ -187,7 +187,7 @@ void sock::handle_message(WPARAM wParam,LPARAM lParam)
 		message_size=::recv(target_sock,(char*)buf,256,0);
 		break;
 	case FD_CLOSE:
-		out_log("�ڑ��ؒf\n\n");
+		out_log("接続切断\n\n");
 		b_connected=false;
 		uninit();
 		break;

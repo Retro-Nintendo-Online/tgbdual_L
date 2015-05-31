@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// romƒTƒCƒY-•\¦s”
+// romã‚µã‚¤ã‚º-è¡¨ç¤ºè¡Œæ•°
 #define DBGMAXSCROLLSIZE ROMSIZE-24
 #define DBGDISASMSTARTPOS 30
 #define DBGDISASMENDPOS 20
@@ -76,7 +76,7 @@ typedef struct DISASMSET {
 #include "../debugtool/z80cdisasm.h"
 
 
-// ƒƒ‚ƒŠƒAƒhƒŒƒX’lƒ`ƒFƒbƒN(a000-dfff)
+// ãƒ¡ãƒ¢ãƒªã‚¢ãƒ‰ãƒ¬ã‚¹å€¤ãƒã‚§ãƒƒã‚¯(a000-dfff)
 static bool MemAdrstow(const char *s, word &addres)
 {
 	unsigned long ulbuf;
@@ -95,7 +95,7 @@ static bool MemAdrstow(const char *s, word &addres)
 	return true;
 }
 
-// “Ç‚İƒAƒhƒŒƒX’lƒ`ƒFƒbƒN(0000-ffff)
+// èª­è¾¼ã¿ã‚¢ãƒ‰ãƒ¬ã‚¹å€¤ãƒã‚§ãƒƒã‚¯(0000-ffff)
 static bool ReadAdrstow(const char *s, word &addres)
 {
 	unsigned long ulbuf;
@@ -114,7 +114,7 @@ static bool ReadAdrstow(const char *s, word &addres)
 	return true;
 }
 
-// ƒAƒhƒŒƒX’lƒ`ƒFƒbƒN(0000-7fff)
+// ã‚¢ãƒ‰ãƒ¬ã‚¹å€¤ãƒã‚§ãƒƒã‚¯(0000-7fff)
 static bool Adrstow(const char *s, word &addres)
 {
 	unsigned long ulbuf;
@@ -133,8 +133,8 @@ static bool Adrstow(const char *s, word &addres)
 	return true;
 }
 
-// ƒƒOƒTƒCƒYw’è—p‚Ì’lƒ`ƒFƒbƒN(1000-30000)
-// –ß‚è’lF0 = ”ÍˆÍŠO@‚»‚êˆÈŠO ³í
+// ãƒ­ã‚°ã‚µã‚¤ã‚ºæŒ‡å®šç”¨ã®å€¤ãƒã‚§ãƒƒã‚¯(1000-30000)
+// æˆ»ã‚Šå€¤ï¼š0 = ç¯„å›²å¤–ã€€ãã‚Œä»¥å¤– æ­£å¸¸
 static int LogSizeCheck(const char *slogsize)
 {
 	int ilogsize;
@@ -149,7 +149,7 @@ static void BrAdrSetCmbBox(HWND hwnd, unsigned int *wbradr)
 	char sbradr[3][10];
 	gBreakerb.get(wbradr);
 	
-	// ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì‰Šú‰»
+	// ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®åˆæœŸåŒ–
 	while(SendMessage(GetDlgItem(hwnd, IDC_COMBO2), CB_GETCOUNT, 0, 0) != 0)
 		SendMessage(GetDlgItem(hwnd, IDC_COMBO2), CB_DELETESTRING, 0, 0);
 
@@ -169,7 +169,7 @@ static void BrReadAdrSetCmbBox(HWND hwnd, unsigned int *wbradr)
 	char sbradr[3][10];
 	gBreakerreadb.get(wbradr);
 	
-	// ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì‰Šú‰»
+	// ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®åˆæœŸåŒ–
 	while(SendMessage(GetDlgItem(hwnd, IDC_COMBO3), CB_GETCOUNT, 0, 0) != 0)
 		SendMessage(GetDlgItem(hwnd, IDC_COMBO3), CB_DELETESTRING, 0, 0);
 
@@ -189,7 +189,7 @@ static void BrMemAdrSetCmbBox(HWND hwnd, unsigned int *wbrmemadr)
 	char sbrmemadr[3][10];
 	gBreakermemb.get(wbrmemadr);
 
-	// ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Ì‰Šú‰»
+	// ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®åˆæœŸåŒ–
 	while(SendMessage(GetDlgItem(hwnd, IDC_COMBO1), CB_GETCOUNT, 0, 0) != 0)
 		SendMessage(GetDlgItem(hwnd, IDC_COMBO1), CB_DELETESTRING, 0, 0);
 
@@ -232,8 +232,8 @@ static int DbgInfoDisasm(DASMSET *dasmset, int startadr, int endadr)
 	return j;
 }
 
-// –ß‚è’lF•\¦‚µ‚Ä‚¢‚é‰ğÍŒ‹‰ÊÅŒã”ö‚ÌƒAƒhƒŒƒXB
-// lineposFsidbgi->nPos‚ÌˆÊ’u‚©‚ç•\¦‚µ‚½‚¢s‚Ü‚Å‚Ì·
+// æˆ»ã‚Šå€¤ï¼šè¡¨ç¤ºã—ã¦ã„ã‚‹è§£æçµæœæœ€å¾Œå°¾ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚
+// lineposï¼šsidbgi->nPosã®ä½ç½®ã‹ã‚‰è¡¨ç¤ºã—ãŸã„è¡Œã¾ã§ã®å·®
 static int ShowInfoEdit(HWND hwnd, SCROLLINFO *sidbgi, int sadr, int eadr, int linepos)
 {
 	DASMSET dasmset[DBGDISASMMAXSIZE];
@@ -258,7 +258,7 @@ static int ShowInfoEdit(HWND hwnd, SCROLLINFO *sidbgi, int sadr, int eadr, int l
 	if (home < 0 || home > dasmssize)
 	{
 		SetDlgItemText(hwnd, IDC_INFO_MAIN, infostr);
-		MessageBox(hwnd, "ƒXƒNƒ[ƒ‹ƒ|ƒWƒVƒ‡ƒ“‚ÌƒGƒ‰[", "ƒGƒ‰[‚Ì”­¶", MB_OK | MB_ICONEXCLAMATION);
+		MessageBox(hwnd, "ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒã‚¸ã‚·ãƒ§ãƒ³ã®ã‚¨ãƒ©ãƒ¼", "ã‚¨ãƒ©ãƒ¼ã®ç™ºç”Ÿ", MB_OK | MB_ICONEXCLAMATION);
 		return 0;
 	}
 
@@ -332,15 +332,15 @@ static void ShowRegister(HWND hwnd)
 	SetDlgItemText(hwnd, IDC_EDIT_SP, sregs[8]);
 	SetDlgItemText(hwnd, IDC_EDIT_PC, sregs[9]);
 
-	// TGBDual‚Å‚Íƒtƒ‰ƒOƒŒƒWƒXƒ^‚ªGB‚Ìƒtƒ‰ƒO‚Å‚Í‚È‚­Z80‚Ì‚à‚Ì‚É‚È‚Á‚Ä‚¢‚éB
-	// ’ÊíGB‚Å‚ÍZNHC 0000‚Ìƒrƒbƒg‚Åƒtƒ‰ƒO‚ğŠÇ—‚·‚éBTGB‚Íƒ\[ƒX‚Ì’Ê‚èB
+	// TGBDualã§ã¯ãƒ•ãƒ©ã‚°ãƒ¬ã‚¸ã‚¹ã‚¿ãŒGBã®ãƒ•ãƒ©ã‚°ã§ã¯ãªãZ80ã®ã‚‚ã®ã«ãªã£ã¦ã„ã‚‹ã€‚
+	// é€šå¸¸GBã§ã¯ZNHC 0000ã®ãƒ“ãƒƒãƒˆã§ãƒ•ãƒ©ã‚°ã‚’ç®¡ç†ã™ã‚‹ã€‚TGBã¯ã‚½ãƒ¼ã‚¹ã®é€šã‚Šã€‚
 	SendMessage(GetDlgItem(hwnd, IDC_CHECK_Z), BM_SETCHECK, (WPARAM)(REGD_F & 0x40), 0L);
 	SendMessage(GetDlgItem(hwnd, IDC_CHECK_N), BM_SETCHECK, (WPARAM)(REGD_F & 0x02), 0L);
 	SendMessage(GetDlgItem(hwnd, IDC_CHECK_H), BM_SETCHECK, (WPARAM)(REGD_F & 0x10), 0L);
 	SendMessage(GetDlgItem(hwnd, IDC_CHECK_C), BM_SETCHECK, (WPARAM)(REGD_F & 0x01), 0L);
 }
 
-// –ß‚è’lF•\¦‚µ‚Ä‚¢‚é‰ğÍŒ‹‰ÊÅŒã”ö‚ÌƒAƒhƒŒƒXB
+// æˆ»ã‚Šå€¤ï¼šè¡¨ç¤ºã—ã¦ã„ã‚‹è§£æçµæœæœ€å¾Œå°¾ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚
 static int InfoWindowSelectJump(HWND hwnd, SCROLLINFO *sidbgi, word jumpaddress)
 {
 	FINDTEXT findtext;
@@ -368,7 +368,7 @@ static int InfoWindowSelectJump(HWND hwnd, SCROLLINFO *sidbgi, word jumpaddress)
 	}
 	if (ret < 0)
 	{
-		MessageBox(hwnd, "Œ´ˆö•s–¾‚ÌƒGƒ‰[001", "ƒGƒ‰[‚Ì”­¶", MB_OK | MB_ICONEXCLAMATION);
+		MessageBox(hwnd, "åŸå› ä¸æ˜ã®ã‚¨ãƒ©ãƒ¼001", "ã‚¨ãƒ©ãƒ¼ã®ç™ºç”Ÿ", MB_OK | MB_ICONEXCLAMATION);
 		ret = 0;
 		return dasmunderpos;
 	}
@@ -377,7 +377,7 @@ static int InfoWindowSelectJump(HWND hwnd, SCROLLINFO *sidbgi, word jumpaddress)
 	return dasmunderpos;
 }
 
-// –ß‚è’l: \‘¢‘Ì‚Ìg—p”
+// æˆ»ã‚Šå€¤: æ§‹é€ ä½“ã®ä½¿ç”¨æ•°
 static BOOL CALLBACK DbgBrSetProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
 	char sbrmemadr[5];
@@ -393,7 +393,7 @@ static BOOL CALLBACK DbgBrSetProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		SendMessage(GetDlgItem(hwnd, IDC_ED_BR_SET1), EM_SETLIMITTEXT, (WPARAM)4, 0);
 		SendMessage(GetDlgItem(hwnd, IDC_ED_BR_SET2), EM_SETLIMITTEXT, (WPARAM)4, 0);
 		SendMessage(GetDlgItem(hwnd, IDC_ED_BR_SET3), EM_SETLIMITTEXT, (WPARAM)4, 0);
-		// ©g‚ğƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì‰¡‚ÉˆÚ“®‚³‚¹‚é
+		// è‡ªèº«ã‚’ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®æ¨ªã«ç§»å‹•ã•ã›ã‚‹
 		RECT rect;
 		GetWindowRect(hwnd,&rect);
 		SetWindowPos(hwnd,NULL,rect.right,rect.top,0,0,SWP_NOSIZE|SWP_NOZORDER);
@@ -407,14 +407,14 @@ static BOOL CALLBACK DbgBrSetProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			{
 				if (gBreakermemb.set(wbrmemadr) == -1)
 				{
-					MessageBox(hwnd, "İ’è”‚ğ’´‚¦‚Ä‚¢‚Ü‚·B\n‘¼‚ğíœ‚µ‚½Œã‚à‚¤ˆê“x“o˜^‚µ‚Ä‚­‚¾‚³‚¢B",
-						"İ’è”ƒI[ƒo[", MB_OK | MB_ICONEXCLAMATION);
+					MessageBox(hwnd, "è¨­å®šæ•°ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚\nä»–ã‚’å‰Šé™¤ã—ãŸå¾Œã‚‚ã†ä¸€åº¦ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚",
+						"è¨­å®šæ•°ã‚ªãƒ¼ãƒãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 				}
 			}
 			else
 			{
-				MessageBox(hwnd, "0xA000`0xDFFF‚Ì”ÍˆÍ‚Å16i‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B",
-					"“ü—ÍƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "0xA000ã€œ0xDFFFã®ç¯„å›²ã§16é€²ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚",
+					"å…¥åŠ›ã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 			}
 			SetDlgItemText(hwnd, IDC_ED_BR_SET1, "");
 			return TRUE;
@@ -427,14 +427,14 @@ static BOOL CALLBACK DbgBrSetProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			{
 				if (gBreakerreadb.set(wbrreadadr) == -1)
 				{
-					MessageBox(hwnd, "İ’è”‚ğ’´‚¦‚Ä‚¢‚Ü‚·B\n‘¼‚ğíœ‚µ‚½Œã‚à‚¤ˆê“x“o˜^‚µ‚Ä‚­‚¾‚³‚¢B",
-						"İ’è”ƒI[ƒo[", MB_OK | MB_ICONEXCLAMATION);
+					MessageBox(hwnd, "è¨­å®šæ•°ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚\nä»–ã‚’å‰Šé™¤ã—ãŸå¾Œã‚‚ã†ä¸€åº¦ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚",
+						"è¨­å®šæ•°ã‚ªãƒ¼ãƒãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 				}
 			}
 			else
 			{
-				MessageBox(hwnd, "0x0000`0xFFFF‚Ì”ÍˆÍ‚Å16i‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B",
-					"“ü—ÍƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "0x0000ã€œ0xFFFFã®ç¯„å›²ã§16é€²ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚",
+					"å…¥åŠ›ã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 			}
 			SetDlgItemText(hwnd, IDC_ED_BR_SET3, "");
 			return TRUE;
@@ -447,14 +447,14 @@ static BOOL CALLBACK DbgBrSetProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 			{
 				if (gBreakerb.set(wbradr) == -1)
 				{
-					MessageBox(hwnd, "İ’è”‚ğ’´‚¦‚Ä‚¢‚Ü‚·B\n‘¼‚ğíœ‚µ‚½Œã‚à‚¤ˆê“x“o˜^‚µ‚Ä‚­‚¾‚³‚¢B",
-						"İ’è”ƒI[ƒo[", MB_OK | MB_ICONEXCLAMATION);
+					MessageBox(hwnd, "è¨­å®šæ•°ã‚’è¶…ãˆã¦ã„ã¾ã™ã€‚\nä»–ã‚’å‰Šé™¤ã—ãŸå¾Œã‚‚ã†ä¸€åº¦ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚",
+						"è¨­å®šæ•°ã‚ªãƒ¼ãƒãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 				}
 			}
 			else
 			{
-				MessageBox(hwnd, "0x0000`0x7FFF‚Ì”ÍˆÍ‚Å16i”’l‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B",
-				"“ü—ÍƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "0x0000ã€œ0x7FFFã®ç¯„å›²ã§16é€²æ•°å€¤ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚",
+				"å…¥åŠ›ã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 			}
 			SetDlgItemText(hwnd, IDC_ED_BR_SET2, "");
 			return TRUE;
@@ -486,7 +486,7 @@ static BOOL CALLBACK DbgLogViewProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPa
 
 	switch(uMsg)
 	{
-	case WM_USER+1: // ‰Šú‰»ˆ—‚ğÀs
+	case WM_USER+1: // åˆæœŸåŒ–å‡¦ç†ã‚’å®Ÿè¡Œ
 		/* Fall Through */
 	case WM_INITDIALOG:
 		hedit = GetDlgItem(hwnd, IDC_RICHEDIT23);
@@ -514,7 +514,7 @@ static BOOL CALLBACK DbgLogViewProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPa
 		}
 		SetDlgItemText(hwnd, IDC_RICHEDIT23, logstr);
 
-		// ƒXƒNƒ[ƒ‹ƒ|ƒWƒVƒ‡ƒ“‚ğˆê”ÔÅŒã‚É•ÏX‚·‚é(ƒƒO‚ÌÅŒã‚ªÅV‚Å‚ ‚é‚½‚ß)
+		// ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’ä¸€ç•ªæœ€å¾Œã«å¤‰æ›´ã™ã‚‹(ãƒ­ã‚°ã®æœ€å¾ŒãŒæœ€æ–°ã§ã‚ã‚‹ãŸã‚)
 		SetFocus(hedit);
 		SendMessage(hedit, EM_SETSEL, 0, 0);
 		SendMessage(hedit, EM_SCROLLCARET, 0, 0);
@@ -562,8 +562,8 @@ static BOOL CALLBACK DbgMenuProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			ilogsize = LogSizeCheck(slogsize);
 			if (ilogsize == 0)
 			{
-				MessageBox(hwnd, "1000`30000‚Ì”ÍˆÍ‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B",
-					"“ü—ÍƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "1000ã€œ30000ã®ç¯„å›²ã§å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚",
+					"å…¥åŠ›ã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 				SetDlgItemText(hwnd, IDC_ED_LOG, "");
 				return TRUE;
 			}
@@ -587,7 +587,7 @@ static BOOL CALLBACK DbgMenuProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 static BOOL CALLBACK DbgBrDelProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
 	int index;
-	// “o˜^‰Â”\”‚ªŒ»İŒÅ’è‚³‚ê‚Ä‚¢‚é‚½‚ß”z—ñ‚Æ‚µ‚Äˆµ‚¤
+	// ç™»éŒ²å¯èƒ½æ•°ãŒç¾åœ¨å›ºå®šã•ã‚Œã¦ã„ã‚‹ãŸã‚é…åˆ—ã¨ã—ã¦æ‰±ã†
 	static unsigned int wbreakaddres[3];
 	static unsigned int wbreakreadaddres[3];
 	static unsigned int wbreakmemaddres[3];
@@ -598,7 +598,7 @@ static BOOL CALLBACK DbgBrDelProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		BrAdrSetCmbBox(hwnd, wbreakaddres);
 		BrReadAdrSetCmbBox(hwnd, wbreakreadaddres);
 		BrMemAdrSetCmbBox(hwnd, wbreakmemaddres);
-		// ©g‚ğƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì‰¡‚ÉˆÚ“®‚³‚¹‚é
+		// è‡ªèº«ã‚’ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®æ¨ªã«ç§»å‹•ã•ã›ã‚‹
 		RECT rect;
 		GetWindowRect(hwnd,&rect);
 		SetWindowPos(hwnd,NULL,rect.right,rect.top,0,0,SWP_NOSIZE|SWP_NOZORDER);
@@ -620,14 +620,14 @@ static BOOL CALLBACK DbgBrDelProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		{
 			index = SendMessage(GetDlgItem(hwnd, IDC_COMBO2), CB_GETCURSEL, 0L, 0L);
 			if (index == CB_ERR)
-				MessageBox(hwnd, "‘ÎÛ‚ğ³‚µ‚­‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B",
-					"‘ÎÛw’èƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "å¯¾è±¡ã‚’æ­£ã—ãé¸æŠã—ã¦ãã ã•ã„ã€‚",
+					"å¯¾è±¡æŒ‡å®šã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 			else if (wbreakaddres[index] > 0xffff)
-				MessageBox(hwnd, "‘ÎÛ‚ğ³‚µ‚­‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B",
-					"‘ÎÛw’èƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "å¯¾è±¡ã‚’æ­£ã—ãé¸æŠã—ã¦ãã ã•ã„ã€‚",
+					"å¯¾è±¡æŒ‡å®šã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 			else if (gBreakerb.del(wbreakaddres[index]) == -1)
-				MessageBox(hwnd, "‚»‚Ì’l‚ÍŒ»İ“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB\r\nÅV‚Ìó‘Ô‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B",
-					"•s³‚È’l‚ª‘I‘ğ‚³‚ê‚Ü‚µ‚½B", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "ãã®å€¤ã¯ç¾åœ¨ç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚\r\næœ€æ–°ã®çŠ¶æ…‹ã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚",
+					"ä¸æ­£ãªå€¤ãŒé¸æŠã•ã‚Œã¾ã—ãŸã€‚", MB_OK | MB_ICONEXCLAMATION);
 
 			BrAdrSetCmbBox(hwnd, wbreakaddres);
 			return TRUE;
@@ -637,14 +637,14 @@ static BOOL CALLBACK DbgBrDelProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		{
 			index = SendMessage(GetDlgItem(hwnd, IDC_COMBO3), CB_GETCURSEL, 0L, 0L);
 			if (index == CB_ERR)
-				MessageBox(hwnd, "‘ÎÛ‚ğ³‚µ‚­‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B",
-					"‘ÎÛw’èƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "å¯¾è±¡ã‚’æ­£ã—ãé¸æŠã—ã¦ãã ã•ã„ã€‚",
+					"å¯¾è±¡æŒ‡å®šã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 			else if (wbreakreadaddres[index] > 0xffff)
-				MessageBox(hwnd, "‘ÎÛ‚ğ³‚µ‚­‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B",
-					"‘ÎÛw’èƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "å¯¾è±¡ã‚’æ­£ã—ãé¸æŠã—ã¦ãã ã•ã„ã€‚",
+					"å¯¾è±¡æŒ‡å®šã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 			else if (gBreakerreadb.del(wbreakreadaddres[index]) == -1)
-				MessageBox(hwnd, "‚»‚Ì’l‚ÍŒ»İ“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB\r\nÅV‚Ìó‘Ô‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B",
-					"•s³‚È’l‚ª‘I‘ğ‚³‚ê‚Ü‚µ‚½B", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "ãã®å€¤ã¯ç¾åœ¨ç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚\r\næœ€æ–°ã®çŠ¶æ…‹ã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚",
+					"ä¸æ­£ãªå€¤ãŒé¸æŠã•ã‚Œã¾ã—ãŸã€‚", MB_OK | MB_ICONEXCLAMATION);
 
 			BrReadAdrSetCmbBox(hwnd, wbreakreadaddres);
 			return TRUE;
@@ -654,14 +654,14 @@ static BOOL CALLBACK DbgBrDelProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 		{
 			index = SendMessage(GetDlgItem(hwnd, IDC_COMBO1), CB_GETCURSEL, 0L, 0L);
 			if (index == CB_ERR)
-				MessageBox(hwnd, "‘ÎÛ‚ğ³‚µ‚­‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B",
-					"‘ÎÛw’èƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "å¯¾è±¡ã‚’æ­£ã—ãé¸æŠã—ã¦ãã ã•ã„ã€‚",
+					"å¯¾è±¡æŒ‡å®šã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 			else if (wbreakmemaddres[index] > 0xffff)
-				MessageBox(hwnd, "‘ÎÛ‚ğ³‚µ‚­‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B",
-					"‘ÎÛw’èƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "å¯¾è±¡ã‚’æ­£ã—ãé¸æŠã—ã¦ãã ã•ã„ã€‚",
+					"å¯¾è±¡æŒ‡å®šã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 			else if (gBreakermemb.del(wbreakmemaddres[index]) == -1)
-				MessageBox(hwnd, "‚»‚Ì’l‚ÍŒ»İ“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB\r\nÅV‚Ìó‘Ô‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B",
-					"•s³‚È’l‚ª‘I‘ğ‚³‚ê‚Ü‚µ‚½B", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "ãã®å€¤ã¯ç¾åœ¨ç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚\r\næœ€æ–°ã®çŠ¶æ…‹ã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚",
+					"ä¸æ­£ãªå€¤ãŒé¸æŠã•ã‚Œã¾ã—ãŸã€‚", MB_OK | MB_ICONEXCLAMATION);
 
 			BrMemAdrSetCmbBox(hwnd, wbreakmemaddres);
 			return TRUE;
@@ -690,7 +690,7 @@ static BOOL CALLBACK DbgRegisterProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lP
 		if (b_running)
 			PAUSEprocess();
 
-		// ƒGƒfƒBƒbƒg—Ìˆæ‚Ìˆ—ŠÖ”‚ğ•ÏX
+		// ã‚¨ãƒ‡ã‚£ãƒƒãƒˆé ˜åŸŸã®å‡¦ç†é–¢æ•°ã‚’å¤‰æ›´
 		old_redit_procA = (WNDPROC)GetWindowLong( GetDlgItem( hwnd, IDC_EDIT_A ), GWL_WNDPROC );
 		SetWindowLong( GetDlgItem( hwnd, IDC_EDIT_A ), GWL_WNDPROC, (LONG)MyRegEditProcA );
 
@@ -730,7 +730,7 @@ static BOOL CALLBACK DbgRegisterProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lP
 		SendMessage(GetDlgItem(hwnd, IDC_EDIT_JUMP), EM_SETLIMITTEXT, (WPARAM)4, 0);
 		SendMessage(GetDlgItem(hwnd, IDC_INFO_MAIN), EM_LIMITTEXT, 0x7fff*30, 0);
 
-		// ScrollBar‚Ì‰Šú‰»
+		// ScrollBarã®åˆæœŸåŒ–
 		sidbgi.cbSize = sizeof(SCROLLINFO);
 		sidbgi.fMask = SIF_POS | SIF_RANGE | SIF_DISABLENOSCROLL;
 		sidbgi.nMin = 0;
@@ -766,8 +766,8 @@ static BOOL CALLBACK DbgRegisterProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lP
 			GetDlgItemText(hwnd, IDC_EDIT_JUMP, buf, 10);
 			if (! Adrstow(buf, wadr))
 			{
-				MessageBox(hwnd, "0x0000`0x7FFF‚Ì”ÍˆÍ‚Å16i”’l‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B",
-					"“ü—ÍƒGƒ‰[", MB_OK | MB_ICONEXCLAMATION);
+				MessageBox(hwnd, "0x0000ã€œ0x7FFFã®ç¯„å›²ã§16é€²æ•°å€¤ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚",
+					"å…¥åŠ›ã‚¨ãƒ©ãƒ¼", MB_OK | MB_ICONEXCLAMATION);
 				SetDlgItemText(hwnd, IDC_EDIT_JUMP, "");
 				return TRUE;
 			}
@@ -829,20 +829,20 @@ static BOOL CALLBACK DbgRegisterProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lP
     return FALSE;
 }
 
-// ƒZƒ‹‚ª‘I‘ğ‰Â”\‚ÈˆÊ’u‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚éB
+// ã‚»ãƒ«ãŒé¸æŠå¯èƒ½ãªä½ç½®ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
 int MemDumpSelCheck(int selpos) {
 	int selcheck;
 
-	if (selpos > MEMDUMPMAXSTR) // Å‘å•¶š”ƒI[ƒo[
+	if (selpos > MEMDUMPMAXSTR) // æœ€å¤§æ–‡å­—æ•°ã‚ªãƒ¼ãƒãƒ¼
 		return 0;
 
-	selcheck = selpos - MEMDUMPSTARTPOS; // Å‰‚ÌƒAƒhƒŒƒXŠJnˆÊ’u
+	selcheck = selpos - MEMDUMPSTARTPOS; // æœ€åˆã®ã‚¢ãƒ‰ãƒ¬ã‚¹é–‹å§‹ä½ç½®
 
 	if (0 <= selcheck) {
-		selcheck = (selcheck % MEMDUMPNEXTLINE) + 1; //@1s75•¶š‚Ì‚½‚ß75‚ÅŠ„‚éB0n‚Ü‚è‚È‚Ì‚Å+1
+		selcheck = (selcheck % MEMDUMPNEXTLINE) + 1; //ã€€1è¡Œ75æ–‡å­—ã®ãŸã‚75ã§å‰²ã‚‹ã€‚0å§‹ã¾ã‚Šãªã®ã§+1
 
-		// 2•¶š+‹ó”’1•¶š = 3 * 16ŒÂ‚Å48•¶š
-		// 3•¶š–Ú‚Í‹ó”’‚Ì‚½‚ß3‚Ì”{”‚Í‘I‘ğ•s”\ 
+		// 2æ–‡å­—+ç©ºç™½1æ–‡å­— = 3 * 16å€‹ã§48æ–‡å­—
+		// 3æ–‡å­—ç›®ã¯ç©ºç™½ã®ãŸã‚3ã®å€æ•°ã¯é¸æŠä¸èƒ½ 
 		if (48 >= selcheck && selcheck % 3) {
 			return 1;
 		}
@@ -850,27 +850,27 @@ int MemDumpSelCheck(int selpos) {
 	return 0;
 }
 
-// ƒZƒ‹ˆÊ’u‚©‚çƒAƒhƒŒƒX‚ğæ“¾‚·‚é
+// ã‚»ãƒ«ä½ç½®ã‹ã‚‰ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å–å¾—ã™ã‚‹
 word MemDumpGetAddress(word baddress, int selpos, int *high)
 {
 	int temp, line, column;
 	
-	// sˆÊ’u‚ÌŒˆ’è
+	// è¡Œä½ç½®ã®æ±ºå®š
 	temp = selpos - MEMDUMPSTARTPOS;
 	line = temp / MEMDUMPNEXTLINE;
 
-	// —ñˆÊ’u‚ÌŒˆ’è
+	// åˆ—ä½ç½®ã®æ±ºå®š
 	temp = temp % MEMDUMPNEXTLINE + 1;
-	column = temp - temp / 3; // 3‚ÅŠ„‚é‚±‚Æ‚Å3•¶š–Ú‚Ì‹ó”’‚ğ”ò‚Î‚·
+	column = temp - temp / 3; // 3ã§å‰²ã‚‹ã“ã¨ã§3æ–‡å­—ç›®ã®ç©ºç™½ã‚’é£›ã°ã™
 
-	if (column % 2) //Šï”‚Å‚ ‚ê‚ÎãˆÊƒrƒbƒg
+	if (column % 2) //å¥‡æ•°ã§ã‚ã‚Œã°ä¸Šä½ãƒ“ãƒƒãƒˆ
 		*high = 1;
 	else
 		*high = 0;
 
-	// ãˆÊƒrƒbƒg‚Æ‰ºˆÊƒrƒbƒg‚ğ“‡‚µ‚Ä1ƒoƒCƒg‚Æ‚·‚éB
-	// ‚±‚±‚Å+1‚·‚é‚±‚Æ‚É‚æ‚Á‚ÄŠJnƒAƒhƒŒƒX‚ª2‚Æ‚È‚é
-	// ‚±‚Ìó‘Ô‚Å2‚ÅŠ„‚Á‚Ä‚»‚±‚©‚ç-1ˆø‚¯‚Î0œZ‚ğ‰ñ”ğ‚Å‚«‚éB
+	// ä¸Šä½ãƒ“ãƒƒãƒˆã¨ä¸‹ä½ãƒ“ãƒƒãƒˆã‚’çµ±åˆã—ã¦1ãƒã‚¤ãƒˆã¨ã™ã‚‹ã€‚
+	// ã“ã“ã§+1ã™ã‚‹ã“ã¨ã«ã‚ˆã£ã¦é–‹å§‹ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒ2ã¨ãªã‚‹
+	// ã“ã®çŠ¶æ…‹ã§2ã§å‰²ã£ã¦ãã“ã‹ã‚‰-1å¼•ã‘ã°0é™¤ç®—ã‚’å›é¿ã§ãã‚‹ã€‚
 	column = (column+1) / 2 -1; 
 
 	return baddress + line * 16 + column;
@@ -889,16 +889,16 @@ word MemDumpGetBaseAddress(HWND hwnd)
 	strncpy(address, &selbuf[MEMDUMPSTARTLINE], 4);
 	for (i = 0; i < 4; i++) {
 		if (!isxdigit((int)address[i])) {
-			sprintf(strbuf, "³í‚ÉƒAƒhƒŒƒX‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½Bbuf[%d] = %c", i, address[i]);
-			MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+			sprintf(strbuf, "æ­£å¸¸ã«ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚buf[%d] = %c", i, address[i]);
+			MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 			return 0;
 		}
 	}
 	address[4] = '\0';
 	baddress = (word)strtol(address, &tocheck, 16);
 	if (tocheck == &address[0]) {
-		sprintf(strbuf, "³í‚ÉƒAƒhƒŒƒX‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B•¶š—ñ = %s", address);
-		MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+		sprintf(strbuf, "æ­£å¸¸ã«ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚æ–‡å­—åˆ— = %s", address);
+		MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 		return 0;
 	}
 
@@ -913,7 +913,7 @@ int MemDumpSelUp(HWND hwnd)
 		SendMessage(hwnd, EM_SETSEL, (WPARAM)start - MEMDUMPNEXTLINE, (LPARAM) end - MEMDUMPNEXTLINE);
 	else
 	{
-		SendMessage(GetParent(hwnd), WM_VSCROLL, (WPARAM)SB_LINEUP, (LPARAM)GetDlgItem(GetParent(hwnd), IDC_SCROLL));	// 1‚Âã‚ÉƒXƒNƒ[ƒ‹‚·‚é
+		SendMessage(GetParent(hwnd), WM_VSCROLL, (WPARAM)SB_LINEUP, (LPARAM)GetDlgItem(GetParent(hwnd), IDC_SCROLL));	// 1ã¤ä¸Šã«ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã™ã‚‹
 		SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM)end);
 	}
 	return 0;
@@ -927,7 +927,7 @@ int MemDumpSelDown(HWND hwnd)
 		SendMessage(hwnd, EM_SETSEL, (WPARAM)start + MEMDUMPNEXTLINE, (LPARAM) end + MEMDUMPNEXTLINE);
 	else
 	{
-		SendMessage(GetParent(hwnd), WM_VSCROLL, (WPARAM)SB_LINEDOWN, (LPARAM)GetDlgItem(GetParent(hwnd), IDC_SCROLL));	// 1‚Â‰º‚ÖƒXƒNƒ[ƒ‹‚·‚é
+		SendMessage(GetParent(hwnd), WM_VSCROLL, (WPARAM)SB_LINEDOWN, (LPARAM)GetDlgItem(GetParent(hwnd), IDC_SCROLL));	// 1ã¤ä¸‹ã¸ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã™ã‚‹
 		SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM)end);
 	}
 	return 0;
@@ -961,8 +961,8 @@ int MemDumpSelLineEnd(HWND hwnd)
 
 	selpos = start - MEMDUMPSTARTPOS;
 	selpos = selpos % MEMDUMPNEXTLINE;
-	lineend = start - selpos + 48; //(3*6=48•¶•¶š)
-	lineend -= 2; // 0•¶š‚©‚ç47•¶š‚ÅÅŒã‚ª‹ó”’‚Ì‚½‚ß-2
+	lineend = start - selpos + 48; //(3*6=48æ–‡æ–‡å­—)
+	lineend -= 2; // 0æ–‡å­—ã‹ã‚‰47æ–‡å­—ã§æœ€å¾ŒãŒç©ºç™½ã®ãŸã‚-2
 
 	if (MemDumpSelCheck(lineend))
 		SendMessage(hwnd, EM_SETSEL, (WPARAM)lineend, (LPARAM)lineend+1);
@@ -978,7 +978,7 @@ int MemDumpSelLeft(HWND hwnd)
 	SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 	if (MemDumpSelCheck(start - 1))
 		SendMessage(hwnd, EM_SETSEL, (WPARAM)start - 1, (LPARAM) end - 1);
-	else if (MemDumpSelCheck(start - 2)) // ŠÔ‚É‹ó”’‚ª‚ ‚Á‚½ê‡‚»‚Ì—×‚ÖˆÚ“®‚·‚é‚½‚ß
+	else if (MemDumpSelCheck(start - 2)) // é–“ã«ç©ºç™½ãŒã‚ã£ãŸå ´åˆãã®éš£ã¸ç§»å‹•ã™ã‚‹ãŸã‚
 		SendMessage(hwnd, EM_SETSEL, (WPARAM)start - 2, (LPARAM) end - 2);
 	else
 	{
@@ -997,7 +997,7 @@ int MemDumpSelRight(HWND hwnd)
 	SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 	if (MemDumpSelCheck(start + 1))
 		SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 1, (LPARAM) end + 1);
-	else if (MemDumpSelCheck(start + 2)) // ŠÔ‚É‹ó”’‚ª‚ ‚Á‚½ê‡‚»‚Ì—×‚ÖˆÚ“®‚·‚é‚½‚ß
+	else if (MemDumpSelCheck(start + 2)) // é–“ã«ç©ºç™½ãŒã‚ã£ãŸå ´åˆãã®éš£ã¸ç§»å‹•ã™ã‚‹ãŸã‚
 		SendMessage(hwnd, EM_SETSEL, (WPARAM)start + 2, (LPARAM) end + 2);
 	else
 	{
@@ -1027,7 +1027,7 @@ LRESULT CALLBACK MyMemEditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!MemDumpSelCheck(start))
 				return TRUE;
 
@@ -1043,8 +1043,8 @@ LRESULT CALLBACK MyMemEditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16);
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return TRUE;
 			}
 
@@ -1055,11 +1055,11 @@ LRESULT CALLBACK MyMemEditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 				chgdata = chgdata + (olddata & 0xf0);
 			g_gb[0]->get_cpu()->write_nocheck(seladdress, chgdata);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			SendMessage(hwnd, EM_REPLACESEL, 0, (LPARAM)num);
 
-			// Ÿ‚ÌƒZƒ‹‚ÉˆÚ“®‚·‚é
-			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM)end); // ‘I‘ğ‚ª‰ğœ‚³‚ê‚Ä‚¢‚é‚½‚ß‰ŠúˆÊ’u‚ÉƒZƒbƒg
+			// æ¬¡ã®ã‚»ãƒ«ã«ç§»å‹•ã™ã‚‹
+			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM)end); // é¸æŠãŒè§£é™¤ã•ã‚Œã¦ã„ã‚‹ãŸã‚åˆæœŸä½ç½®ã«ã‚»ãƒƒãƒˆ
 			MemDumpSelRight(hwnd);
 
 			return TRUE;
@@ -1094,7 +1094,7 @@ LRESULT CALLBACK MyMemEditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 			PAUSEprocess();
 			KillTimer(GetParent(hwnd), 789);
 		}
-		else if (!pause) // PAUSEprocess‚ª‘¼‚É‚æ‚Á‚ÄŠù‚És‚í‚ê‚Ä‚¢‚½ê‡ƒ^ƒCƒ}[‚¾‚¯~‚ß‚é
+		else if (!pause) // PAUSEprocessãŒä»–ã«ã‚ˆã£ã¦æ—¢ã«è¡Œã‚ã‚Œã¦ã„ãŸå ´åˆã‚¿ã‚¤ãƒãƒ¼ã ã‘æ­¢ã‚ã‚‹
 		{
 			KillTimer(GetParent(hwnd), 789);
 		}
@@ -1103,14 +1103,14 @@ LRESULT CALLBACK MyMemEditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 		::CallWindowProc( old_medit_proc, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (MemDumpSelCheck(start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			SetFocus(hwnd);			// ƒZƒbƒgƒtƒH[ƒJƒX‚µ‚È‚¢‚ÆƒtƒH[ƒJƒX‚ª•œ‹A‚µ‚È‚¢‚½‚ßC³
+			SetFocus(hwnd);			// ã‚»ãƒƒãƒˆãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã—ãªã„ã¨ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒå¾©å¸°ã—ãªã„ãŸã‚ä¿®æ­£
 			return TRUE;
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return TRUE;
 
 	case WM_KILLFOCUS:
@@ -1164,7 +1164,7 @@ static BOOL CALLBACK MemDumpKaiProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPa
 
 		SetTimer(hwnd, 789, 100, NULL);
 
-		// ƒGƒfƒBƒbƒg—Ìˆæ‚Ìˆ—ŠÖ”‚ğ•ÏX
+		// ã‚¨ãƒ‡ã‚£ãƒƒãƒˆé ˜åŸŸã®å‡¦ç†é–¢æ•°ã‚’å¤‰æ›´
 		hMEdit = GetDlgItem( hwnd, IDC_DUMP );
 		old_medit_proc = (WNDPROC)GetWindowLong( hMEdit, GWL_WNDPROC );
 		SetWindowLong( hMEdit, GWL_WNDPROC, (LONG)MyMemEditProc );
@@ -1238,7 +1238,7 @@ static BOOL CALLBACK MemDumpKaiProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPa
 			return TRUE;
 		}
 		break;
-	case WM_USER+1: // ‰æ–Ê•\¦
+	case WM_USER+1: // ç”»é¢è¡¨ç¤º
 		tmp = (int)wParam;
 		char strbuf[256];
 		unsigned char asciibuf[16];
@@ -1308,7 +1308,7 @@ LRESULT CALLBACK MyMemEditProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		VKNumPadToNum(&wParam);
 		if (isxdigit((int)wParam)) {
 			SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
-			// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+			// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 			if (!MemDumpSelCheck(start))
 				return TRUE;
 
@@ -1324,8 +1324,8 @@ LRESULT CALLBACK MyMemEditProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			num[1] = '\0';
 			chgdata = (byte)strtol(num, &tocheck, 16);
 			if (tocheck == &num[0]) {
-				sprintf(strbuf, "“ü—Í•¶š‚ª•s³‚Å‚·B•¶š = %c", num[0]);
-				MessageBox( hwnd, strbuf, "ƒƒbƒZ[ƒW", MB_OK );
+				sprintf(strbuf, "å…¥åŠ›æ–‡å­—ãŒä¸æ­£ã§ã™ã€‚æ–‡å­— = %c", num[0]);
+				MessageBox( hwnd, strbuf, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", MB_OK );
 				return TRUE;
 			}
 
@@ -1336,11 +1336,11 @@ LRESULT CALLBACK MyMemEditProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 				chgdata = chgdata + (olddata & 0xf0);
 			g_gb[1]->get_cpu()->write_nocheck(seladdress, chgdata);
 
-			// ”’l‚ğV‚µ‚¢‚à‚Ì‚É’u‚«Š·‚¦‚é
+			// æ•°å€¤ã‚’æ–°ã—ã„ã‚‚ã®ã«ç½®ãæ›ãˆã‚‹
 			SendMessage(hwnd, EM_REPLACESEL, 0, (LPARAM)num);
 
-			// Ÿ‚ÌƒZƒ‹‚ÉˆÚ“®‚·‚é
-			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM)end); // ‘I‘ğ‚ª‰ğœ‚³‚ê‚Ä‚¢‚é‚½‚ß‰ŠúˆÊ’u‚ÉƒZƒbƒg
+			// æ¬¡ã®ã‚»ãƒ«ã«ç§»å‹•ã™ã‚‹
+			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM)end); // é¸æŠãŒè§£é™¤ã•ã‚Œã¦ã„ã‚‹ãŸã‚åˆæœŸä½ç½®ã«ã‚»ãƒƒãƒˆ
 			MemDumpSelRight(hwnd);
 
 			return TRUE;
@@ -1375,7 +1375,7 @@ LRESULT CALLBACK MyMemEditProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 			PAUSEprocess();
 			KillTimer(GetParent(hwnd), 789);
 		}
-		else if (!pause) // PAUSEprocess‚ª‘¼‚É‚æ‚Á‚ÄŠù‚És‚í‚ê‚Ä‚¢‚½ê‡ƒ^ƒCƒ}[‚¾‚¯~‚ß‚é
+		else if (!pause) // PAUSEprocessãŒä»–ã«ã‚ˆã£ã¦æ—¢ã«è¡Œã‚ã‚Œã¦ã„ãŸå ´åˆã‚¿ã‚¤ãƒãƒ¼ã ã‘æ­¢ã‚ã‚‹
 		{
 			KillTimer(GetParent(hwnd), 789);
 		}
@@ -1384,14 +1384,14 @@ LRESULT CALLBACK MyMemEditProc2(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		::CallWindowProc( old_medit_proc, hwnd, WM_LBUTTONUP, wParam, lParam );
 		SendMessage(hwnd, EM_GETSEL, (WPARAM)&start, (LPARAM)&end);
 
-		// ‘I‘ğ‰Â”\—Ìˆæ‚©”»’è‚·‚é
+		// é¸æŠå¯èƒ½é ˜åŸŸã‹åˆ¤å®šã™ã‚‹
 		if (MemDumpSelCheck(start)) {
 			SendMessage(hwnd, EM_SETSEL, (WPARAM)start, (LPARAM) end+1);
-			SetFocus(hwnd);			// ƒZƒbƒgƒtƒH[ƒJƒX‚µ‚È‚¢‚ÆƒtƒH[ƒJƒX‚ª•œ‹A‚µ‚È‚¢‚½‚ßC³
+			SetFocus(hwnd);			// ã‚»ãƒƒãƒˆãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã—ãªã„ã¨ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒå¾©å¸°ã—ãªã„ãŸã‚ä¿®æ­£
 			return TRUE;
 		}
 
-		SetFocus(GetParent(hwnd)); // ƒtƒH[ƒJƒX‚ğ“n‚µ‚Ä–ß‚é
+		SetFocus(GetParent(hwnd)); // ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’æ¸¡ã—ã¦æˆ»ã‚‹
 		return TRUE;
 
 	case WM_KILLFOCUS:
@@ -1445,12 +1445,12 @@ static BOOL CALLBACK MemDumpKaiProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lP
 
 		SetTimer(hwnd, 789, 100, NULL);
 
-		// ƒGƒfƒBƒbƒg—Ìˆæ‚Ìˆ—ŠÖ”‚ğ•ÏX
+		// ã‚¨ãƒ‡ã‚£ãƒƒãƒˆé ˜åŸŸã®å‡¦ç†é–¢æ•°ã‚’å¤‰æ›´
 		hMEdit = GetDlgItem( hwnd, IDC_DUMP );
 		old_medit_proc = (WNDPROC)GetWindowLong( hMEdit, GWL_WNDPROC );
 		SetWindowLong( hMEdit, GWL_WNDPROC, (LONG)MyMemEditProc2 );
 
-		SetWindowText(hwnd, "ƒƒ‚ƒŠƒ_ƒ“ƒv(ƒXƒƒbƒg2)");
+		SetWindowText(hwnd, "ãƒ¡ãƒ¢ãƒªãƒ€ãƒ³ãƒ—(ã‚¹ãƒ­ãƒƒãƒˆ2)");
 
 		return TRUE;
 
@@ -1521,7 +1521,7 @@ static BOOL CALLBACK MemDumpKaiProc2(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lP
 			return TRUE;
 		}
 		break;
-	case WM_USER+1: // ‰æ–Ê•\¦
+	case WM_USER+1: // ç”»é¢è¡¨ç¤º
 		tmp = (int)wParam;
 		char strbuf[256];
 		unsigned char asciibuf[16];
@@ -1667,7 +1667,7 @@ void ParKaiGetgCodeButton(HWND hwnd)
 
 void ParKaiSetgCodeButton(HWND hwnd)
 {
-	// ƒT[ƒ`ƒ^ƒCƒvİ’è
+	// ã‚µãƒ¼ãƒã‚¿ã‚¤ãƒ—è¨­å®š
 	if      (IsDlgButtonChecked(hwnd, IDC_SEARCH_EQUAL) == BST_CHECKED)
 		gCodesearch.setstype(CODESEARCH_STYPE_EQU);
 	else if (IsDlgButtonChecked(hwnd, IDC_SEARCH_NEQ) == BST_CHECKED)
@@ -1686,7 +1686,7 @@ void ParKaiSetgCodeButton(HWND hwnd)
 		gCodesearch.setstype(CODESEARCH_STYPE_EQU);
 	}
 
-	// •„†İ’è
+	// ç¬¦å·è¨­å®š
 	if (IsDlgButtonChecked(hwnd, IDC_HEX) == BST_CHECKED)
 		gCodesearch.setntype(CODESEARCH_NTYPE_UNSIGNED);
 	else if (IsDlgButtonChecked(hwnd, IDC_DEC_SIGNED) == BST_CHECKED)
@@ -1699,7 +1699,7 @@ void ParKaiSetgCodeButton(HWND hwnd)
 		gCodesearch.setntype(CODESEARCH_NTYPE_UNSIGNED);
 	}
 
-	// ”’lƒTƒCƒYİ’è
+	// æ•°å€¤ã‚µã‚¤ã‚ºè¨­å®š
 	if      (IsDlgButtonChecked(hwnd, IDC_BYTE) == BST_CHECKED)
 		gCodesearch.setnsize(CODESEARCH_NSIZE_BYTE);
 	else if (IsDlgButtonChecked(hwnd, IDC_WORD) == BST_CHECKED)
@@ -1714,15 +1714,15 @@ void ParKaiSetgCodeButton(HWND hwnd)
 		gCodesearch.setnsize(CODESEARCH_NSIZE_BYTE);
 	}
 
-	// ‘ÎÛİ’è
-	if      (IsDlgButtonChecked(hwnd, IDC_MUCH) == BST_CHECKED)   // ‘O‰ñ’lw’è
+	// å¯¾è±¡è¨­å®š
+	if      (IsDlgButtonChecked(hwnd, IDC_MUCH) == BST_CHECKED)   // å‰å›å€¤æŒ‡å®š
 		gCodesearch.settarget(CODESEARCH_TARGET_OLD);
-	else if (IsDlgButtonChecked(hwnd, IDC_NORMAL) == BST_CHECKED) // ’¼Úw’è
+	else if (IsDlgButtonChecked(hwnd, IDC_NORMAL) == BST_CHECKED) // ç›´æ¥æŒ‡å®š
 	{
 		char buf[256];
 		dword dat;
 
-		// w’è’l‚ğæ“¾
+		// æŒ‡å®šå€¤ã‚’å–å¾—
 		GetDlgItemText(hwnd, IDC_SEARCH_NUM, buf, 256);
 		if (IsDlgButtonChecked(hwnd, IDC_DEC_SIGNED) == BST_CHECKED)
 			dat = strtol(buf, NULL, 10);
@@ -1738,13 +1738,13 @@ void ParKaiSetgCodeButton(HWND hwnd)
 		gCodesearch.settarget(CODESEARCH_TARGET_OLD);
 	}
 
-	// RAMBANKİ’è
+	// RAMBANKè¨­å®š
 	if (IsDlgButtonChecked(hwnd, IDC_RAMBANK) == BST_CHECKED)
 		gCodesearch.setrambankf(1);
 	else
 		gCodesearch.setrambankf(0);
 
-	// SRAMBANKİ’è
+	// SRAMBANKè¨­å®š
 	if (IsDlgButtonChecked(hwnd, IDC_SRAMBANK) == BST_CHECKED)
 		gCodesearch.setsrambankf(1);
 	else
@@ -1757,7 +1757,7 @@ void ParKaiNumToStr(HWND hwnd, char* str, dword num)
 	char format[16];
 	int shift;
 
-	// ƒTƒCƒY‚ğİ’è‚µAnum‚ğ“K³‚È’l‚É•ÏŠ·‚·‚é(BYTEorWORDorFWORDorDWORD)
+	// ã‚µã‚¤ã‚ºã‚’è¨­å®šã—ã€numã‚’é©æ­£ãªå€¤ã«å¤‰æ›ã™ã‚‹(BYTEorWORDorFWORDorDWORD)
 	if      (IsDlgButtonChecked(hwnd, IDC_BYTE) == BST_CHECKED)
 	{
 		strcpy(buf, "%02");
@@ -1791,7 +1791,7 @@ void ParKaiNumToStr(HWND hwnd, char* str, dword num)
 		shift = 0;
 	}
 
-	// ”’lƒ^ƒCƒv‚ğİ’è‚·‚é(16i”or10i”)
+	// æ•°å€¤ã‚¿ã‚¤ãƒ—ã‚’è¨­å®šã™ã‚‹(16é€²æ•°or10é€²æ•°)
 	if      (IsDlgButtonChecked(hwnd, IDC_HEX) == BST_CHECKED)
 	{
 		sprintf(format, "%sX", buf);
@@ -1812,7 +1812,7 @@ void ParKaiNumToStr(HWND hwnd, char* str, dword num)
 		sprintf(format, "%sX", buf);
 	}
 
-	// •¶š—ñ‚É•ÏŠ·‚·‚é
+	// æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹
 	wsprintf(str, format, num);
 }
 
@@ -1833,29 +1833,29 @@ static BOOL CALLBACK ParKaiProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		lvcol.fmt = LVCFMT_CENTER;
 		
 		lvcol.cx = 100;
-		lvcol.pszText = "ƒAƒhƒŒƒX";
+		lvcol.pszText = "ã‚¢ãƒ‰ãƒ¬ã‚¹";
 		lvcol.iSubItem = 0;
 		ListView_InsertColumn(hList, 0, &lvcol);
-		ListView_SetColumn(hList, 0, &lvcol);	// Å‰‚ÌƒJƒ‰ƒ€‚ğ’†‰›‘µ‚¦‚É‚·‚é‚½‚ß•K—vB
+		ListView_SetColumn(hList, 0, &lvcol);	// æœ€åˆã®ã‚«ãƒ©ãƒ ã‚’ä¸­å¤®æƒãˆã«ã™ã‚‹ãŸã‚å¿…è¦ã€‚
 
 		lvcol.cx = 100;
-		lvcol.pszText = "‘O‰ñ‚Ì’l";
+		lvcol.pszText = "å‰å›ã®å€¤";
 		lvcol.iSubItem = 1;
 		ListView_InsertColumn(hList, 1, &lvcol);
 
 		lvcol.cx = 100;
-		lvcol.pszText = "Œ»İ’l";
+		lvcol.pszText = "ç¾åœ¨å€¤";
 		lvcol.iSubItem = 2;
 		ListView_InsertColumn(hList, 2, &lvcol);
 
 		lvcol.cx = 160;
-		lvcol.pszText = "ƒoƒ“ƒN(sram:10-25)";
+		lvcol.pszText = "ãƒãƒ³ã‚¯(sram:10-25)";
 		lvcol.iSubItem = 3;
 		ListView_InsertColumn(hList, 3, &lvcol);
 
 		ListView_SetExtendedListViewStyle(hList, LVS_EX_FULLROWSELECT);
 
-		// ƒ{ƒ^ƒ“‚Ì‰Šúó‘Ô
+		// ãƒœã‚¿ãƒ³ã®åˆæœŸçŠ¶æ…‹
 		ParKaiGetgCodeButton(hwnd);
 		CheckDlgButton(hwnd, IDC_FOREVER, BST_CHECKED);
 
@@ -1882,21 +1882,21 @@ static BOOL CALLBACK ParKaiProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 			switch ( lpDispInfo->item.iSubItem )
 			{
-			case 0:		// ƒAƒhƒŒƒX
+			case 0:		// ã‚¢ãƒ‰ãƒ¬ã‚¹
 				if (lpDispInfo->item.mask & LVIF_TEXT)
 				{
 					wsprintf(szBuf, TEXT("%04X"), gCodesearch.getmlistadr(lpDispInfo->item.iItem));
 					lstrcpy(lpDispInfo->item.pszText, szBuf);
 				}
 				break;
-			case 1:		// ‘O‰ñ‚Ì’l
+			case 1:		// å‰å›ã®å€¤
 				if (lpDispInfo->item.mask & LVIF_TEXT)
 				{
 					ParKaiNumToStr(hwnd, szBuf, gCodesearch.getmlistnum(lpDispInfo->item.iItem));
 					lstrcpy(lpDispInfo->item.pszText, szBuf);
 				}
 				break;
-			case 2:		// Œ»İ’l
+			case 2:		// ç¾åœ¨å€¤
 				if (lpDispInfo->item.mask & LVIF_TEXT)
 				{
 					MEMLIST mlist = gCodesearch.getmlist(lpDispInfo->item.iItem);
@@ -1911,7 +1911,7 @@ static BOOL CALLBACK ParKaiProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					lstrcpy(lpDispInfo->item.pszText, szBuf);
 				}
 				break;
-			case 3:		// ƒoƒ“ƒN
+			case 3:		// ãƒãƒ³ã‚¯
 				if (lpDispInfo->item.mask & LVIF_TEXT)
 				{
 					wsprintf(szBuf, TEXT("%d"), gCodesearch.getmlistbank(lpDispInfo->item.iItem));

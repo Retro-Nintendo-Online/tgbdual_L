@@ -19,6 +19,10 @@
 
 #include "keymap.h"
 
+// For Unicode columns in ListView
+#define ListView_InsertColumnW(hwnd, iCol, pcol) \
+	(int)::SendMessageW((hwnd), LVM_INSERTCOLUMNW, (WPARAM)(int)(iCol), (LPARAM)(const LV_COLUMN *)(pcol))
+
 static int rom_size_tbl[]={2,4,8,16,32,64,128,256,512};
 
 static char tmp_sram_name[2][256];
@@ -42,7 +46,7 @@ static const char mbc_types[0x101][40]={"ROM Only","ROM + MBC1","ROM + MBC1 + RA
 									"","","","","","","","","","","","","","","","",//#DF
 									"","","","","","","","","","","","","","","","",//#EF
 									"","","","","","","","","","","","","","Bandai TAMA5","Hudson HuC-3","Hudson HuC-1",//#FF
-									"mmm01" // “¦‚°
+									"mmm01" // é€ƒã’
 };
 static byte org_gbtype[2];
 static bool sys_win2000;
@@ -70,7 +74,7 @@ void save_sram(BYTE *buf,int size,int num)
 void load_key_config(int num)
 {
 	int buf[16];
-	key_dat keys[8]; // a,b,select,start,down,up,left,right ‚Ì‡
+	key_dat keys[8]; // a,b,select,start,down,up,left,right ã®é †
 
 	config->get_key_setting(buf,num);
 
@@ -149,7 +153,7 @@ BYTE *load_archive(char *path, int *size)
 	if (strstr(path,".lzh")){ // LZH
 		hModule=LoadLibrary("UnLha32.dll");
 		if (!hModule){
-			MessageBox(hWnd,"UnLha32.dll‚ª‘¶İ‚µ‚Ü‚¹‚ñBLZH‘ŒÉ‚ğ‰ğ“€‚Å‚«‚Ü‚¹‚ñB","TGB Dual",MB_OK);
+			MessageBoxW(hWnd,L"UnLha32.dllãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚LZHæ›¸åº«ã‚’è§£å‡ã§ãã¾ã›ã‚“ã€‚",L"TGB Dual",MB_OK);
 			return NULL;
 		}
 		arc=(unarc)GetProcAddress(hModule,"Unlha");
@@ -161,7 +165,7 @@ BYTE *load_archive(char *path, int *size)
 		if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
 			sprintf(ext_filename,"%s*.gbc",tmp_dir,tmp_dir);
 			if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
-				MessageBox(hWnd,"LZH ƒtƒ@ƒCƒ‹‚ª GB ƒtƒ@ƒCƒ‹‚ğŠÜ‚ñ‚Å‚¢‚Ü‚¹‚ñ","TGB Dual",MB_OK);
+				MessageBoxW(hWnd,L"LZH ãƒ•ã‚¡ã‚¤ãƒ«ãŒ GB ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å«ã‚“ã§ã„ã¾ã›ã‚“",L"TGB Dual",MB_OK);
 				FreeLibrary(hModule);
 				return NULL;
 			}
@@ -172,7 +176,7 @@ BYTE *load_archive(char *path, int *size)
 	else if (strstr(path,".zip")){ // ZIP
 		hModule=LoadLibrary("UnZip32.dll");
 		if (!hModule){
-			MessageBox(hWnd,"UnZip32.dll‚ª‘¶İ‚µ‚Ü‚¹‚ñBZIP‘ŒÉ‚ğ‰ğ“€‚Å‚«‚Ü‚¹‚ñB","TGB Dual",MB_OK);
+			MessageBoxW(hWnd,L"UnZip32.dllãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚ZIPæ›¸åº«ã‚’è§£å‡ã§ãã¾ã›ã‚“ã€‚",L"TGB Dual",MB_OK);
 			return NULL;
 		}
 		arc=(unarc)GetProcAddress(hModule,"UnZip");
@@ -187,7 +191,7 @@ BYTE *load_archive(char *path, int *size)
 
 			sprintf(ext_filename,"%s*.gbc",tmp_dir,tmp_dir);
 			if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
-				MessageBox(hWnd,"ZIP ƒtƒ@ƒCƒ‹‚ª GB ƒtƒ@ƒCƒ‹‚ğŠÜ‚ñ‚Å‚¢‚Ü‚¹‚ñ","TGB Dual",MB_OK);
+				MessageBoxW(hWnd,L"ZIP ãƒ•ã‚¡ã‚¤ãƒ«ãŒ GB ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å«ã‚“ã§ã„ã¾ã›ã‚“",L"TGB Dual",MB_OK);
 				FreeLibrary(hModule);
 				return NULL;
 			}
@@ -195,10 +199,10 @@ BYTE *load_archive(char *path, int *size)
 		sprintf(ext_filename,"%s%s",tmp_dir,wfd.cFileName);
 		FindClose(hFind);
 	}
-	else if (strstr(path,".rar")){//RAR‘ŒÉ
+	else if (strstr(path,".rar")){//RARæ›¸åº«
 		hModule=LoadLibrary("UnRAR32.dll");
 		if (!hModule){
-			MessageBox(hWnd,"UnRAR32.dll‚ª‘¶İ‚µ‚Ü‚¹‚ñBRAR‘ŒÉ‚ğ‰ğ“€‚Å‚«‚Ü‚¹‚ñB","TGB Dual",MB_OK);
+			MessageBoxW(hWnd,L"UnRAR32.dllãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚RARæ›¸åº«ã‚’è§£å‡ã§ãã¾ã›ã‚“ã€‚",L"TGB Dual",MB_OK);
 			return NULL;
 		}
 		arc=(unarc)GetProcAddress(hModule,"Unrar");
@@ -213,7 +217,7 @@ BYTE *load_archive(char *path, int *size)
 
 			sprintf(ext_filename,"%s*.gbc",tmp_dir,tmp_dir);
 			if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
-				MessageBox(hWnd,"RAR ƒtƒ@ƒCƒ‹‚ª GB ƒtƒ@ƒCƒ‹‚ğŠÜ‚ñ‚Å‚¢‚Ü‚¹‚ñ","TGB Dual",MB_OK);
+				MessageBoxW(hWnd,L"RAR ãƒ•ã‚¡ã‚¤ãƒ«ãŒ GB ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å«ã‚“ã§ã„ã¾ã›ã‚“",L"TGB Dual",MB_OK);
 				FreeLibrary(hModule);
 				return NULL;
 			}
@@ -221,10 +225,10 @@ BYTE *load_archive(char *path, int *size)
 		sprintf(ext_filename,"%s%s",tmp_dir,wfd.cFileName);
 		FindClose(hFind);
 	}
-	else if (strstr(path,".cab")){//CAB‘ŒÉ
+	else if (strstr(path,".cab")){//CABæ›¸åº«
 		hModule=LoadLibrary("cab32.dll");
 		if (!hModule){
-			MessageBox(hWnd,"cab32.dll‚ª‘¶İ‚µ‚Ü‚¹‚ñBcab‘ŒÉ‚ğ‰ğ“€‚Å‚«‚Ü‚¹‚ñB","TGB Dual",MB_OK);
+			MessageBoxW(hWnd,L"cab32.dllãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚cabæ›¸åº«ã‚’è§£å‡ã§ãã¾ã›ã‚“ã€‚",L"TGB Dual",MB_OK);
 			return NULL;
 		}
 		arc=(unarc)GetProcAddress(hModule,"Cab");
@@ -239,7 +243,7 @@ BYTE *load_archive(char *path, int *size)
 
 			sprintf(ext_filename,"%s*.gbc",tmp_dir,tmp_dir);
 			if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
-				MessageBox(hWnd,"CAB ƒtƒ@ƒCƒ‹‚ª GB ƒtƒ@ƒCƒ‹‚ğŠÜ‚ñ‚Å‚¢‚Ü‚¹‚ñ","TGB Dual",MB_OK);
+				MessageBoxW(hWnd,L"CAB ãƒ•ã‚¡ã‚¤ãƒ«ãŒ GB ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å«ã‚“ã§ã„ã¾ã›ã‚“",L"TGB Dual",MB_OK);
 				FreeLibrary(hModule);
 				return NULL;
 			}
@@ -248,7 +252,7 @@ BYTE *load_archive(char *path, int *size)
 		FindClose(hFind);
 	}
 	else{
-		//MessageBox(hWnd,"‚±‚Ìƒtƒ@ƒCƒ‹‚ğÀs‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñ","TGB Dual",MB_OK);
+		//MessageBoxW(hWnd,L"ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å®Ÿè¡Œã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“",L"TGB Dual",MB_OK);
 		return NULL;
 	}
 
@@ -366,7 +370,7 @@ bool load_rom(char *buf,int num)
 			SendMessage(hWnd,WM_OUTLOG,0,(LPARAM)tmp);
 		}
 		else{
-			MessageBox(hWnd,"tgbr_dll.dll‚ª‘¶İ‚µ‚Ü‚¹‚ñB‚±‚Ìƒtƒ@ƒCƒ‹‚ÍÀs‚Å‚«‚Ü‚¹‚ñB","TGB Dual Notice",MB_OK);
+			MessageBoxW(hWnd,L"tgbr_dll.dllãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¯å®Ÿè¡Œã§ãã¾ã›ã‚“ã€‚",L"TGB Dual Notice",MB_OK);
 		}
 		SetCurrentDirectory(cur_di);
 
@@ -425,7 +429,7 @@ bool load_rom(char *buf,int num)
 		g_gbr=NULL;
 	}
 
-	int tbl_ram[]={1,1,1,4,16,8};//0‚Æ1‚Í•ÛŒ¯
+	int tbl_ram[]={1,1,1,4,16,8};//0ã¨1ã¯ä¿é™º
 	char sram_name[256],cur_di[256],sv_dir[256];
 	BYTE *ram;
 	int ram_size=0x2000*tbl_ram[dat[0x149]];
@@ -446,7 +450,7 @@ bool load_rom(char *buf,int num)
 		char tmp_sram[256];
 		strcpy(tmp_sram,sram_name);
 
-		// ‚»‚Ì‚Ü‚ÜAæ“ª‚ÌƒsƒŠƒIƒh‚©‚çŠg’£q‚ÉA‚³‚ç‚É‚»‚ê‚ğŠg’£qRAM‰»A‚Ì3’Ê‚è‚µ‚ç‚×‚È‚¢‚©‚ñc
+		// ãã®ã¾ã¾ã€å…ˆé ­ã®ãƒ”ãƒªã‚ªãƒ‰ã‹ã‚‰æ‹¡å¼µå­ã«ã€ã•ã‚‰ã«ãã‚Œã‚’æ‹¡å¼µå­RAMåŒ–ã€ã®3é€šã‚Šã—ã‚‰ã¹ãªã„ã‹ã‚“â€¦
 		int i;
 		for (i=0;i<3;i++){
 			if (i==1) strcpy(strstr(tmp_sram,"."),suffix);
@@ -528,7 +532,7 @@ bool load_rom_only(char *buf,int num)
 		if (!(dat=load_archive(buf,&size)))
 			return false;
 
-	int tbl_ram[]={1,1,1,4,16,8};//0‚Æ1‚Í•ÛŒ¯
+	int tbl_ram[]={1,1,1,4,16,8};//0ã¨1ã¯ä¿é™º
 	char sram_name[256],cur_di[256],sv_dir[256];
 	BYTE *ram;
 	int ram_size=0x2000*tbl_ram[dat[0x149]];
@@ -549,7 +553,7 @@ bool load_rom_only(char *buf,int num)
 		char tmp_sram[256];
 		strcpy(tmp_sram,sram_name);
 
-		// ‚»‚Ì‚Ü‚ÜAæ“ª‚ÌƒsƒŠƒIƒh‚©‚çŠg’£q‚ÉA‚³‚ç‚É‚»‚ê‚ğŠg’£qRAM‰»A‚Ì3’Ê‚è‚µ‚ç‚×‚È‚¢‚©‚ñc
+		// ãã®ã¾ã¾ã€å…ˆé ­ã®ãƒ”ãƒªã‚ªãƒ‰ã‹ã‚‰æ‹¡å¼µå­ã«ã€ã•ã‚‰ã«ãã‚Œã‚’æ‹¡å¼µå­RAMåŒ–ã€ã®3é€šã‚Šã—ã‚‰ã¹ãªã„ã‹ã‚“â€¦
 		int i;
 		for (i=0;i<3;i++){
 			if (i==1) strcpy(strstr(tmp_sram,"."),suffix);
@@ -608,7 +612,7 @@ void free_rom(int slot)
 {
 	if (render[slot]){
 		render[slot]->set_sound_renderer(NULL);
-		// ¡‚È‚Á‚Ä‚¢‚é‰¹‚ğÁ‚·B‚±‚ê‚à‚æ‚­‚È‚¢‚È‚ŸB
+		// ä»Šãªã£ã¦ã„ã‚‹éŸ³ã‚’æ¶ˆã™ã€‚ã“ã‚Œã‚‚ã‚ˆããªã„ãªãã€‚
 		render[slot]->pause_sound();
 		render[slot]->resume_sound();
 	}
@@ -865,7 +869,7 @@ static void construct_help_menu(HMENU menu)
 		InsertMenuItem(menu,count,TRUE,&mii);
 	}
 
-	AppendMenu(menu,MF_ENABLED,ID_VERSION,"ƒo[ƒWƒ‡ƒ“î•ñ(&V)");
+	AppendMenuW(menu,MF_ENABLED,ID_VERSION,L"ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±(&V)");
 
 	SetCurrentDirectory(buf);
 }
@@ -889,14 +893,14 @@ static void view_help(HWND hwnd,char *name)
 		dat[size]='\0';
 		HWND text_hwnd;
 
-		ShowWindow(text_hwnd=CreateDialog(hInstance,MAKEINTRESOURCE(IDD_TEXTVIEW),hwnd,TextProc),SW_SHOW);
+		ShowWindow(text_hwnd=CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_TEXTVIEW),hwnd,TextProc),SW_SHOW);
 		SendMessage(text_hwnd,WM_OUTLOG,0,(LPARAM)dat);
 		delete []dat;
 	}
 }
 
 //------------------------------------------------------------
-// ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‰ğÍ
+// ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³è§£æ
 
 static void purse_cmdline(char *cmdline)
 {
@@ -974,7 +978,7 @@ static void purse_cmdline(char *cmdline)
 }
 
 //------------------------------------------------------------
-// ‘½d‹N“®‹Ö~
+// å¤šé‡èµ·å‹•ç¦æ­¢
 
 static HANDLE hMutex;
 
@@ -993,7 +997,7 @@ static void trash_process()
 }
 
 //------------------------------------------------------------
-// OS î•ñæ“¾
+// OS æƒ…å ±å–å¾—
 
 static void os_check()
 {
@@ -1008,7 +1012,7 @@ static void os_check()
 }
 
 //------------------------------------------------------------
-// ƒnƒ“ƒhƒ‰‚Ì—Ş
+// ãƒãƒ³ãƒ‰ãƒ©ã®é¡
 
 static BOOL CALLBACK VerProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
@@ -1128,7 +1132,7 @@ static BOOL CALLBACK KeyProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 	static const int map[]={0,1,3,2,5,4,6,7,8,9,11,10,13,12,14,15};
 	int key[32];
 	int dev;
-	char buf[20];
+	wchar_t buf[20];
 	int pad_id,pad_dir;
 	int i;
 	WORD any;
@@ -1171,24 +1175,24 @@ static BOOL CALLBACK KeyProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		for (i=0;i<16;i++){
 			dev=key[map[i]*2];
 			if (dev==DI_KEYBOARD)
-				sprintf(buf,"%s",keyboad_map[key[map[i]*2+1]]);
+				swprintf(buf, L"%s", keyboad_map[key[map[i] * 2 + 1]]);
 			else if (dev==DI_MOUSE_X)
-				strcpy(buf,key[map[i]*2+1]?"Mouse -X":"Mouse +X");
+				wcscpy(buf,key[map[i]*2+1]?L"Mouse -X":L"Mouse +X");
 			else if (dev==DI_MOUSE_Y)
-				strcpy(buf,key[map[i]*2+1]?"Mouse -Y":"Mouse +Y");
+				wcscpy(buf, key[map[i] * 2 + 1] ? L"Mouse -Y" : L"Mouse +Y");
 			else if (dev==DI_MOUSE)
-				sprintf(buf,"Mouse %d",key[map[i]*2+1]);
+				swprintf(buf, L"Mouse %d", key[map[i] * 2 + 1]);
 			else{
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					sprintf(buf,"Pad%d %s",pad_id,key[map[i]*2+1]?"-X":"+X");
+					swprintf(buf, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-X" : "+X");
 				else if (pad_dir==1)
-					sprintf(buf,"Pad%d %s",pad_id,key[map[i]*2+1]?"-Y":"+Y");
+					swprintf(buf, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-Y" : "+Y");
 				else
-					sprintf(buf,"Pad%d %d",pad_id,key[map[i]*2+1]);
+					swprintf(buf, L"Pad%d %d", pad_id, key[map[i] * 2 + 1]);
 			}
-			SetDlgItemText(hwnd,IDC_1A+i,buf);
+			SetDlgItemTextW(hwnd,IDC_1A+i,buf);
 		}
 
 		int tmp_type[5]={config->fast_forwerd[0],config->save_key[0],config->load_key[0],config->auto_key[0],config->pause_key[0]};
@@ -1197,24 +1201,24 @@ static BOOL CALLBACK KeyProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		for (i=0;i<5;i++){
 			dev=tmp_type[i];
 			if (dev==DI_KEYBOARD)
-				sprintf(buf,"%s",keyboad_map[tmp_code[i]]);
+				swprintf(buf, L"%s", keyboad_map[tmp_code[i]]);
 			else if (dev==DI_MOUSE_X)
-				strcpy(buf,tmp_code[i]?"Mouse -X":"Mouse +X");
+				wcscpy(buf, tmp_code[i] ? L"Mouse -X" : L"Mouse +X");
 			else if (dev==DI_MOUSE_Y)
-				strcpy(buf,tmp_code[i]?"Mouse -Y":"Mouse +Y");
+				wcscpy(buf, tmp_code[i] ? L"Mouse -Y" : L"Mouse +Y");
 			else if (dev==DI_MOUSE)
-				sprintf(buf,"Mouse %d",tmp_code[i]);
+				swprintf(buf, L"Mouse %d", tmp_code[i]);
 			else{
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					sprintf(buf,"Pad%d %s",pad_id,tmp_code[i]?"-X":"+X");
+					swprintf(buf, L"Pad%d %s", pad_id, tmp_code[i] ? "-X" : "+X");
 				else if (pad_dir==1)
-					sprintf(buf,"Pad%d %s",pad_id,tmp_code[i]?"-Y":"+Y");
+					swprintf(buf, L"Pad%d %s", pad_id, tmp_code[i] ? "-Y" : "+Y");
 				else
-					sprintf(buf,"Pad%d %d",pad_id,tmp_code[i]);
+					swprintf(buf, L"Pad%d %d", pad_id, tmp_code[i]);
 			}
-			SetDlgItemText(hwnd,IDC_1A+16+i,buf);
+			SetDlgItemTextW(hwnd,IDC_1A+16+i,buf);
 		}
 
 		break;
@@ -1585,29 +1589,29 @@ static BOOL CALLBACK KorokoroProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPara
 	case WM_USER+1:
 	{
 		int i,dev,pad_id,pad_dir;
-		char buf[16];
+		wchar_t buf[16];
 
 		for (i=0;i<4;i++){
 			dev=config->koro_key[i*2];
 			if (dev==DI_KEYBOARD)
-				sprintf(buf,"%s",keyboad_map[config->koro_key[i*2+1]]);
+				swprintf(buf,L"%s",keyboad_map[config->koro_key[i*2+1]]);
 			else if (dev==DI_MOUSE_X)
-				strcpy(buf,config->koro_key[i*2+1]?"Mouse -X":"Mouse +X");
+				wcscpy(buf,config->koro_key[i*2+1]?L"Mouse -X":L"Mouse +X");
 			else if (dev==DI_MOUSE_Y)
-				strcpy(buf,config->koro_key[i*2+1]?"Mouse -Y":"Mouse +Y");
+				wcscpy(buf,config->koro_key[i*2+1]?L"Mouse -Y":L"Mouse +Y");
 			else if (dev==DI_MOUSE)
-				sprintf(buf,"Mouse %d",config->koro_key[i*2+1]);
+				swprintf(buf,L"Mouse %d",config->koro_key[i*2+1]);
 			else{
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					sprintf(buf,"Pad%d %s",pad_id,config->koro_key[i*2+1]?"-X":"+X");
+					swprintf(buf,L"Pad%d %s",pad_id,config->koro_key[i*2+1]?"-X":"+X");
 				else if (pad_dir==1)
-					sprintf(buf,"Pad%d %s",pad_id,config->koro_key[i*2+1]?"-Y":"+Y");
+					swprintf(buf,L"Pad%d %s",pad_id,config->koro_key[i*2+1]?"-Y":"+Y");
 				else
-					sprintf(buf,"Pad%d %d",pad_id,config->koro_key[i*2+1]);
+					swprintf(buf,L"Pad%d %d",pad_id,config->koro_key[i*2+1]);
 			}
-			SetDlgItemText(hwnd,IDC_KUP+i,buf);
+			SetDlgItemTextW(hwnd,IDC_KUP+i,buf);
 		}
 
 		SetDlgItemInt(hwnd,IDC_SENSITIVE,config->koro_sensitive,TRUE);
@@ -2179,7 +2183,7 @@ static void add_cheat_list(HWND list,char *code,char *name,bool add=true,bool en
 		cheat_dat tmp_dat;
 		cheat_dat *tmp=&tmp_dat;
 
-		for (i=0;i<len;i++){//‘å•¶š‚É
+		for (i=0;i<len;i++){//å¤§æ–‡å­—ã«
 			if (islower(buf[i])){
 				buf[i]=toupper(buf[i]);
 			}
@@ -2217,7 +2221,7 @@ static void add_cheat_list(HWND list,char *code,char *name,bool add=true,bool en
 	lvi.pszText=buf;
 	lvi.mask=LVIF_TEXT;
 	lvi.iSubItem=0;
-	strcpy(buf,enable?" ›":" ~");
+	strcpy(buf,enable?" O":" X");
 	place=ListView_InsertItem(list,&lvi);
 
 	ListView_SetItemText(list,place,1,code);
@@ -2251,19 +2255,19 @@ static BOOL CALLBACK CheatProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 	case WM_INITDIALOG:
 		hlist=GetDlgItem(hwnd,IDC_LIST);
 
-		LVCOLUMN lvc;
+		LVCOLUMNW lvc;
 		lvc.mask=LVCF_TEXT|LVCF_ORDER|LVCF_WIDTH|LVCF_FMT;
 		lvc.fmt=LVCFMT_LEFT;
 		lvc.iOrder=0;
-		lvc.pszText="–¼‘O";
+		lvc.pszText=L"åå‰";
 		lvc.cx=180;
-		ListView_InsertColumn(hlist,0,&lvc);
-		lvc.pszText="ƒR[ƒh";
+		ListView_InsertColumnW(hlist,0,&lvc);
+		lvc.pszText=L"ã‚³ãƒ¼ãƒ‰";
 		lvc.cx=80;
-		ListView_InsertColumn(hlist,0,&lvc);
-		lvc.pszText="—LŒø";
+		ListView_InsertColumnW(hlist,0,&lvc);
+		lvc.pszText=L"æœ‰åŠ¹";
 		lvc.cx=40;
-		ListView_InsertColumn(hlist,0,&lvc);
+		ListView_InsertColumnW(hlist,0,&lvc);
 
 		struct_list(hlist);
 
@@ -2291,7 +2295,7 @@ static BOOL CALLBACK CheatProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			}
 		}
 		else if (LOWORD(wParam)==ID_ALL_DELETE){
-			if (MessageBox(hwnd,"‚æ‚ë‚µ‚¢‚Å‚·‚©H","TGB Cheat Code",MB_OKCANCEL)==IDOK){
+			if (MessageBoxW(hWnd,L"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",L"TGB Cheat Code",MB_OKCANCEL)==IDOK){
 				ListView_DeleteAllItems(hlist);
 				g_gb[0]->get_cheat()->clear();
 			}
@@ -2360,7 +2364,7 @@ static BOOL CALLBACK CheatProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					ListView_GetItemText(hlist,sel,2,buf,256);
 					std::list<cheat_dat>::iterator ite=g_gb[0]->get_cheat()->find_cheat(buf);
 					ite->enable=!ite->enable;
-					ListView_SetItemText(hlist,sel,0,ite->enable?" ›":" ~");
+					ListView_SetItemText(hlist,sel,0,ite->enable?" â—‹":" Ã—");
 				}
 			}
 			else if (pnm->code==NM_RCLICK){
@@ -2468,7 +2472,7 @@ static BOOL CALLBACK ParProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			p=buf;
 			cheat_dat *tmp=&tmp_dat;
 
-			for (i=0;i<len;i++){//‘å•¶š‚É
+			for (i=0;i<len;i++){//å¤§æ–‡å­—ã«
 				if (islower(buf[i])){
 					buf[i]=toupper(buf[i]);
 				}
@@ -2830,7 +2834,7 @@ static BOOL CALLBACK ParProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
     return FALSE;
 }
 
-// ’ÊMƒ‹[ƒ`ƒ“
+// é€šä¿¡ãƒ«ãƒ¼ãƒãƒ³
 
 /*
 static bool b_terminal=false;
@@ -2853,7 +2857,7 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			CheckDlgButton(hwnd,IDC_SERVER,BST_CHECKED);
 			EnableWindow(GetDlgItem(hwnd,IDC_IPADDR),FALSE);
 
-			SetDlgItemText(hwnd,IDC_STATUS,"–¢Ú‘±‚Å‚·");
+			SetDlgItemText(hwnd,IDC_STATUS,"æœªæ¥ç¶šã§ã™");
 			EnableWindow(GetDlgItem(hwnd,IDC_START),TRUE);
 			EnableWindow(GetDlgItem(hwnd,IDC_TERMINATE),FALSE);
 
@@ -2870,13 +2874,13 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 	
 	case WM_COMMAND:
 		if(LOWORD(wParam)==IDCANCEL){
-			// Ú‘±€”õ’†‚É‰Ÿ‚³‚ê‚½‚çÚ‘±‚ğƒLƒƒƒ“ƒZƒ‹‚·‚é
+			// æ¥ç¶šæº–å‚™ä¸­ã«æŠ¼ã•ã‚ŒãŸã‚‰æ¥ç¶šã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹
 			DestroyWindow(hwnd);
 			trans_hwnd=NULL;
 			return TRUE;
 		}
 		else if (LOWORD(wParam)==IDC_TERMINATE){
-			SetDlgItemText(hwnd,IDC_STATUS,"–¢Ú‘±‚Å‚·");
+			SetDlgItemText(hwnd,IDC_STATUS,"æœªæ¥ç¶šã§ã™");
 			EnableWindow(GetDlgItem(hwnd,IDC_START),TRUE);
 			EnableWindow(GetDlgItem(hwnd,IDC_TERMINATE),FALSE);
 		}
@@ -2912,14 +2916,14 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 				GetDlgItemText(hwnd,IDC_PORT,tmp,sizeof(tmp));
 				port=atoi(tmp);
 				if (port<1024||port>65535){
-					SetDlgItemText(hwnd,IDC_STATUS,"ƒ|[ƒg”Ô†‚ª•s³‚Å‚·");
+					SetDlgItemText(hwnd,IDC_STATUS,"ãƒãƒ¼ãƒˆç•ªå·ãŒä¸æ­£ã§ã™");
 					return TRUE;
 				}
 			}
 			char target[256];
 			SendDlgItemMessage(hwnd,IDC_IPADDR,WM_GETTEXT,256,(LPARAM)target);
 			if (!b_server&&target[0]=='\0'){
-				SetDlgItemText(hwnd,IDC_STATUS,"IPƒAƒhƒŒƒX‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+				SetDlgItemText(hwnd,IDC_STATUS,"IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
 				return TRUE;
 			}
 
@@ -2937,20 +2941,20 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			if (!load_rom_only(my_rom,0)||!load_rom_only(tar_rom,1)){
 				delete g_gb[0];g_gb[0]=NULL;
 				delete g_gb[1];g_gb[1]=NULL;
-				SetDlgItemText(hwnd,IDC_STATUS,"ROMƒCƒ[ƒW‚ª“Ç‚İ‚ß‚Ü‚¹‚ñ");
+				SetDlgItemText(hwnd,IDC_STATUS,"ROMã‚¤ãƒ¡ãƒ¼ã‚¸ãŒèª­ã¿è¾¼ã‚ã¾ã›ã‚“");
 				return TRUE;
 			}
 
 			if (b_server){
-				SetDlgItemText(hwnd,IDC_STATUS,"Ú‘±‚ğ‘Ò‚Á‚Ä‚¢‚Ü‚·...");
+				SetDlgItemText(hwnd,IDC_STATUS,"æ¥ç¶šã‚’å¾…ã£ã¦ã„ã¾ã™...");
 
-				// ‚Æ‚è‚ ‚¦‚¸ƒT[ƒo‚ğ‹N“®
+				// ã¨ã‚Šã‚ãˆãšã‚µãƒ¼ãƒã‚’èµ·å‹•
 				net=new tgb_netplay(port);
 				net->send_sram((char*)g_gb[0]->get_rom()->get_sram(),
 					g_gb[0]->get_rom()->get_sram_size());
 			}
 			else{
-				// ipƒAƒhƒŒƒX—š—ğ‚ÌXV
+				// ipã‚¢ãƒ‰ãƒ¬ã‚¹å±¥æ­´ã®æ›´æ–°
 				char (*p)[20]=config->ip_addrs;
 				int i;
 				for (i=0;i<4;i++)
@@ -2959,8 +2963,8 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 					strcpy(p[j],p[j-1]);
 				strcpy(p[0],target);
 
-				SetDlgItemText(hwnd,IDC_STATUS,"Ú‘±‚µ‚Ä‚¢‚Ü‚·...");
-				// ƒNƒ‰ƒCƒAƒ“ƒg‹N“®
+				SetDlgItemText(hwnd,IDC_STATUS,"æ¥ç¶šã—ã¦ã„ã¾ã™...");
+				// ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆèµ·å‹•
 				net=new tgb_netplay(string(target),port);
 				net->send_sram((char*)g_gb[0]->get_rom()->get_sram(),
 					g_gb[0]->get_rom()->get_sram_size());
@@ -3038,7 +3042,7 @@ static BOOL CALLBACK ChatProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			SendMessage( hRich, EM_SCROLLCARET, 0, 0);
 		}
 		chat_hwnd=hwnd;
-		// ©g‚ğƒƒCƒ“ƒEƒCƒ“ƒhƒE‚Ì‰¡‚ÉˆÚ“®‚³‚¹‚é
+		// è‡ªèº«ã‚’ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®æ¨ªã«ç§»å‹•ã•ã›ã‚‹
 		RECT rect;
 		GetWindowRect(hWnd,&rect);
 		SetWindowPos(hwnd,NULL,rect.right,rect.top,0,0,SWP_NOSIZE|SWP_NOZORDER);
