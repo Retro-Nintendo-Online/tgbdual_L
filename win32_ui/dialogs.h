@@ -155,7 +155,7 @@ BYTE *load_archive(char *path, int *size)
 	if (strstr(path,".lzh")){ // LZH
 		hModule=LoadLibrary("UnLha32.dll");
 		if (!hModule){
-			MessageBoxW(hWnd,L"UnLha32.dllが存在しません。LZH書庫を解凍できません。",L"TGB Dual",MB_OK);
+			MessageBox(hWnd,"UnLha32.dll not found - cannot extract LZH archive.","TGB Dual",MB_OK);
 			return NULL;
 		}
 		arc=(unarc)GetProcAddress(hModule,"Unlha");
@@ -167,7 +167,7 @@ BYTE *load_archive(char *path, int *size)
 		if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
 			sprintf(ext_filename,"%s*.gbc",tmp_dir,tmp_dir);
 			if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
-				MessageBoxW(hWnd,L"LZH ファイルが GB ファイルを含んでいません",L"TGB Dual",MB_OK);
+				MessageBox(hWnd,"No .gb/.gbc file was found inside the LZH archive.","TGB Dual",MB_OK);
 				FreeLibrary(hModule);
 				return NULL;
 			}
@@ -178,7 +178,7 @@ BYTE *load_archive(char *path, int *size)
 	else if (strstr(path,".zip")){ // ZIP
 		hModule=LoadLibrary("UnZip32.dll");
 		if (!hModule){
-			MessageBoxW(hWnd,L"UnZip32.dllが存在しません。ZIP書庫を解凍できません。",L"TGB Dual",MB_OK);
+			MessageBox(hWnd,"UnZip32.dll not found - cannot extract ZIP archive.","TGB Dual",MB_OK);
 			return NULL;
 		}
 		arc=(unarc)GetProcAddress(hModule,"UnZip");
@@ -193,7 +193,7 @@ BYTE *load_archive(char *path, int *size)
 
 			sprintf(ext_filename,"%s*.gbc",tmp_dir,tmp_dir);
 			if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
-				MessageBoxW(hWnd,L"ZIP ファイルが GB ファイルを含んでいません",L"TGB Dual",MB_OK);
+				MessageBox(hWnd,"No .gb/.gbc file was found inside the ZIP archive.","TGB Dual",MB_OK);
 				FreeLibrary(hModule);
 				return NULL;
 			}
@@ -204,7 +204,7 @@ BYTE *load_archive(char *path, int *size)
 	else if (strstr(path,".rar")){//RAR書庫
 		hModule=LoadLibrary("UnRAR32.dll");
 		if (!hModule){
-			MessageBoxW(hWnd,L"UnRAR32.dllが存在しません。RAR書庫を解凍できません。",L"TGB Dual",MB_OK);
+			MessageBox(hWnd,"UnRAR32.dll not found - cannot extract RAR archive.","TGB Dual",MB_OK);
 			return NULL;
 		}
 		arc=(unarc)GetProcAddress(hModule,"Unrar");
@@ -219,7 +219,7 @@ BYTE *load_archive(char *path, int *size)
 
 			sprintf(ext_filename,"%s*.gbc",tmp_dir,tmp_dir);
 			if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
-				MessageBoxW(hWnd,L"RAR ファイルが GB ファイルを含んでいません",L"TGB Dual",MB_OK);
+				MessageBox(hWnd,"No .gb/.gbc file was found inside the RAR archive.","TGB Dual",MB_OK);
 				FreeLibrary(hModule);
 				return NULL;
 			}
@@ -230,7 +230,7 @@ BYTE *load_archive(char *path, int *size)
 	else if (strstr(path,".cab")){//CAB書庫
 		hModule=LoadLibrary("cab32.dll");
 		if (!hModule){
-			MessageBoxW(hWnd,L"cab32.dllが存在しません。cab書庫を解凍できません。",L"TGB Dual",MB_OK);
+			MessageBox(hWnd,"cab32.dll not found - cannot extract CAB archive.","TGB Dual",MB_OK);
 			return NULL;
 		}
 		arc=(unarc)GetProcAddress(hModule,"Cab");
@@ -245,7 +245,7 @@ BYTE *load_archive(char *path, int *size)
 
 			sprintf(ext_filename,"%s*.gbc",tmp_dir,tmp_dir);
 			if ((hFind=FindFirstFile(ext_filename,&wfd))==INVALID_HANDLE_VALUE){
-				MessageBoxW(hWnd,L"CAB ファイルが GB ファイルを含んでいません",L"TGB Dual",MB_OK);
+				MessageBox(hWnd,"No .gb/.gbc file was found inside the CAB archive.","TGB Dual",MB_OK);
 				FreeLibrary(hModule);
 				return NULL;
 			}
@@ -254,7 +254,7 @@ BYTE *load_archive(char *path, int *size)
 		FindClose(hFind);
 	}
 	else{
-		//MessageBoxW(hWnd,L"このファイルを実行することはできません",L"TGB Dual",MB_OK);
+		//MessageBoxW(hWnd,L"TGB Dual cannot run this file.",L"TGB Dual",MB_OK);
 		return NULL;
 	}
 
@@ -372,7 +372,7 @@ bool load_rom(char *buf,int num)
 			SendMessage(hWnd,WM_OUTLOG,0,(LPARAM)tmp);
 		}
 		else{
-			MessageBoxW(hWnd,L"tgbr_dll.dllが存在しません。このファイルは実行できません。",L"TGB Dual Notice",MB_OK);
+			MessageBox(hWnd,"Unable to execute file - tgbr_dll.dll does not exist.","TGB Dual Notice",MB_OK);
 		}
 		SetCurrentDirectory(cur_di);
 
@@ -871,7 +871,7 @@ static void construct_help_menu(HMENU menu)
 		InsertMenuItem(menu,count,TRUE,&mii);
 	}
 
-	AppendMenuW(menu,MF_ENABLED,ID_VERSION,L"バージョン情報(&V)");
+	AppendMenuW(menu,MF_ENABLED,ID_VERSION,L"Version (&V)");
 
 	SetCurrentDirectory(buf);
 }
@@ -2261,13 +2261,13 @@ static BOOL CALLBACK CheatProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		lvc.mask=LVCF_TEXT|LVCF_ORDER|LVCF_WIDTH|LVCF_FMT;
 		lvc.fmt=LVCFMT_LEFT;
 		lvc.iOrder=0;
-		lvc.pszText=L"名前";
+		lvc.pszText=L"Name";
 		lvc.cx=180;
 		ListView_InsertColumnW(hlist,0,&lvc);
-		lvc.pszText=L"コード";
+		lvc.pszText=L"Code";
 		lvc.cx=80;
 		ListView_InsertColumnW(hlist,0,&lvc);
-		lvc.pszText=L"有効";
+		lvc.pszText=L"On/Off";
 		lvc.cx=40;
 		ListView_InsertColumnW(hlist,0,&lvc);
 
@@ -2297,7 +2297,7 @@ static BOOL CALLBACK CheatProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			}
 		}
 		else if (LOWORD(wParam)==ID_ALL_DELETE){
-			if (MessageBoxW(hWnd,L"よろしいですか？",L"TGB Cheat Code",MB_OKCANCEL)==IDOK){
+			if (MessageBox(hwnd,"Are you sure?","TGB Cheat Code",MB_OKCANCEL)==IDOK){
 				ListView_DeleteAllItems(hlist);
 				g_gb[0]->get_cheat()->clear();
 			}
@@ -2859,7 +2859,7 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			CheckDlgButton(hwnd,IDC_SERVER,BST_CHECKED);
 			EnableWindow(GetDlgItem(hwnd,IDC_IPADDR),FALSE);
 
-			SetDlgItemTextW(hwnd,IDC_STATUS,L"未接続です");
+			SetDlgItemTextW(hwnd,IDC_STATUS,L"Not connected");
 			EnableWindow(GetDlgItem(hwnd,IDC_START),TRUE);
 			EnableWindow(GetDlgItem(hwnd,IDC_TERMINATE),FALSE);
 
@@ -2882,7 +2882,7 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			return TRUE;
 		}
 		else if (LOWORD(wParam)==IDC_TERMINATE){
-			SetDlgItemTextW(hwnd,IDC_STATUS,L"未接続です");
+			SetDlgItemTextW(hwnd,IDC_STATUS,L"Not connected");
 			EnableWindow(GetDlgItem(hwnd,IDC_START),TRUE);
 			EnableWindow(GetDlgItem(hwnd,IDC_TERMINATE),FALSE);
 		}
@@ -2918,14 +2918,14 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 				GetDlgItemText(hwnd,IDC_PORT,tmp,sizeof(tmp));
 				port=atoi(tmp);
 				if (port<1024||port>65535){
-					SetDlgItemTextW(hwnd,IDC_STATUS,L"ポート番号が不正です");
+					SetDlgItemTextW(hwnd,IDC_STATUS,L"Invalid port number");
 					return TRUE;
 				}
 			}
 			char target[256];
 			SendDlgItemMessage(hwnd,IDC_IPADDR,WM_GETTEXT,256,(LPARAM)target);
 			if (!b_server&&target[0]=='\0'){
-				SetDlgItemTextW(hwnd,IDC_STATUS,L"IPアドレスを入力してください");
+				SetDlgItemTextW(hwnd,IDC_STATUS,L"Please enter the IP address");
 				return TRUE;
 			}
 
@@ -2943,12 +2943,12 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			if (!load_rom_only(my_rom,0)||!load_rom_only(tar_rom,1)){
 				delete g_gb[0];g_gb[0]=NULL;
 				delete g_gb[1];g_gb[1]=NULL;
-				SetDlgItemTextW(hwnd,IDC_STATUS,L"ROMイメージが読み込めません");
+				SetDlgItemTextW(hwnd,IDC_STATUS,L"Cannot read ROM image");
 				return TRUE;
 			}
 
 			if (b_server){
-				SetDlgItemTextW(hwnd,IDC_STATUS,L"接続を待っています...");
+				SetDlgItemTextW(hwnd,IDC_STATUS,L"Waiting for connection...");
 
 				// とりあえずサーバを起動
 				net=new tgb_netplay(port);
@@ -2965,7 +2965,7 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 					strcpy(p[j],p[j-1]);
 				strcpy(p[0],target);
 
-				SetDlgItemTextW(hwnd,IDC_STATUS,L"接続しています...");
+				SetDlgItemTextW(hwnd,IDC_STATUS,L"Connected...");
 				// クライアント起動
 				net=new tgb_netplay(string(target),port);
 				net->send_sram((char*)g_gb[0]->get_rom()->get_sram(),
