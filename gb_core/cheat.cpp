@@ -71,7 +71,8 @@ std::list<cheat_dat>::iterator cheat::find_cheat(char *name)
 			return ite;
 		}
 	}
-	return NULL;
+	// If the cheat is not found in the list, or if the list is empty, "ite" will be equal to cheat_list.end()
+	return ite;
 }
 
 void cheat::create_unique_name(char *buf)

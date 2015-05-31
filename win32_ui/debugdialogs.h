@@ -842,7 +842,7 @@ int MemDumpSelCheck(int selpos) {
 		selcheck = (selcheck % MEMDUMPNEXTLINE) + 1; //　1行75文字のため75で割る。0始まりなので+1
 
 		// 2文字+空白1文字 = 3 * 16個で48文字
-		// 3文字目は空白のため3の倍数は選択不能
+		// 3文字目は空白のため3の倍数は選択不能 
 		if (48 >= selcheck && selcheck % 3) {
 			return 1;
 		}

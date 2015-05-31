@@ -20,7 +20,11 @@
 #include "setting.h"
 #include <windows.h>
 #include <stdio.h>
+#ifdef TGBDUAL_USE_DINPUT8
+#define DIRECTINPUT_VERSION 0x0800
+#else
 #define DIRECTINPUT_VERSION 0x0500
+#endif
 #include <dinput.h>
 
 setting::setting()

@@ -9,3 +9,5 @@ Release/
 Debug/
 *~
 *.old
+*.sdf
+*.opensdf

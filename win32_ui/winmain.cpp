@@ -323,7 +323,8 @@ static void menu_save_state(HMENU hMenu, int slot, UINT_PTR id, const char *ext)
 	while(DeleteMenu(hMenu, 0, MF_BYPOSITION));
 
 	for (int i = 0; i < 10; i++) {
-		for (int j = 0 ; j < 2; j++) {
+		int j;
+		for (j = 0 ; j < 2; j++) {
 			char name[256], *p;
 			strcpy(name, tmp_sram_name[slot]);
 
@@ -375,7 +376,8 @@ static void menu_load_state(HMENU hMenu, int slot, UINT_PTR id, const char *ext)
 	while(DeleteMenu(hMenu, 0, MF_BYPOSITION));
 
 	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 2; j++) {
+		int j;
+		for (j = 0; j < 2; j++) {
 			char name[256], *p;
 			strcpy(name, tmp_sram_name[slot]);
 
