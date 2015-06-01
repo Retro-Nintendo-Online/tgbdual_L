@@ -135,7 +135,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hPrev,LPSTR lpCmdLine,int nCmdSho
 	hModule=LoadLibrary("RICHED32.dll");
 	hAccel=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_ACCELERATOR));
 
-	mes_list.push_back("TGB Dual Ver.  Vol.8'''\n");
+	mes_list.push_back("TGB Dual \"L\" Ver 1.2\n");
 
 	// プロセスのプライオリティ
 	static DWORD priol[]={REALTIME_PRIORITY_CLASS,HIGH_PRIORITY_CLASS,0x00008000,NORMAL_PRIORITY_CLASS,0x00004000,IDLE_PRIORITY_CLASS};

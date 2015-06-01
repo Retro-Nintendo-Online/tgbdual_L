@@ -264,14 +264,14 @@ END
 IDD_VERSION DIALOGEX 0, 0, 130, 72
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "TGB バージョン情報"
-FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x0
+FONT 9, "Tahoma", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,39,52,50,13
-    LTEXT           "TGB Dual kai Ver",IDC_STATIC,28,7,53,8
-    LTEXT           "2000-2004 Hii",IDC_STATIC,66,25,42,8
-    LTEXT           "1.1.4.1",IDC_STATIC,84,7,18,8
-    LTEXT           "2006-2013 gbm",IDC_STATIC,66,37,46,8
-    LTEXT           "Copyright(C)",IDC_STATIC,22,26,38,8
+    CONTROL         "☁ TGB Dual ""L"" - Ver 1.2 ☁",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,21,7,87,8
+    LTEXT           "2000-2004 Hii",IDC_STATIC,44,19,79,8
+    LTEXT           "2006-2013 gbm",IDC_STATIC,44,28,79,8
+    LTEXT           "Copyright ©",IDC_STATIC,7,19,36,8
+    LTEXT           "2014-2015 libertyernie",IDC_STATIC,44,37,79,8
 END
 
 IDD_LOG DIALOGEX 0, 0, 186, 156
@@ -1149,15 +1149,15 @@ BEGIN
         BLOCK "041104b0"
         BEGIN
             VALUE "Comments", "Game Boy / Game Boy COLOR Emulator debuger ver"
-            VALUE "CompanyName", "not  original : T's Emulator Laboratry Inc."
-            VALUE "FileDescription", "TGB Dual kai"
-            VALUE "FileVersion", "1, 1, 4, 1"
-            VALUE "InternalName", "TGB_Dual kai"
-            VALUE "LegalCopyright", "Copyright (C) gbm 2006-2013 Hii 2000-2004"
-            VALUE "LegalTrademarks", "TGB Dual kai (R)"
+            VALUE "CompanyName", "lakora.us"
+            VALUE "FileDescription", "TGB Dual ""L"""
+            VALUE "FileVersion", "1, 2, 0, 0"
+            VALUE "InternalName", "TGB_Dual ""L"""
+            VALUE "LegalCopyright", "Copyright (C) libertyernie 2014-2015 gbm 2006-2013 Hii 2000-2004"
+            VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", "TGB_Dual_kai.exe"
-            VALUE "ProductName", "Yet Another ""TGB Dual kai"" ..."
-            VALUE "ProductVersion", "1, 1, 4, 1"
+            VALUE "ProductName", "TGB Dual ""L"""
+            VALUE "ProductVersion", "1, 2, 0, 0"
         END
     END
     BLOCK "VarFileInfo"
