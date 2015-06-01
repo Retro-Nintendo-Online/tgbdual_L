@@ -1132,8 +1132,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,1,4,1
- PRODUCTVERSION 1,1,4,1
+ FILEVERSION 1,2,0,0
+ PRODUCTVERSION 1,2,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1155,7 +1155,7 @@ BEGIN
             VALUE "InternalName", "TGB_Dual ""L"""
             VALUE "LegalCopyright", "Copyright (C) libertyernie 2014-2015 gbm 2006-2013 Hii 2000-2004"
             VALUE "LegalTrademarks", ""
-            VALUE "OriginalFilename", "TGB_Dual_kai.exe"
+            VALUE "OriginalFilename", "TGB_Dual_L.exe"
             VALUE "ProductName", "TGB Dual ""L"""
             VALUE "ProductVersion", "1, 2, 0, 0"
         END
