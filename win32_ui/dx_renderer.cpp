@@ -929,7 +929,7 @@ void dx_renderer::init_di()
 	cdat.lpdev=m_pjoystick;
 	cdat.devs=&joysticks;
 #if DIRECTINPUT_VERSION == 0x0800
-	m_pdi->EnumDevices(DI8DEVTYPE_JOYSTICK,pad_callback,&cdat,DIEDFL_ATTACHEDONLY/*DIEDFL_ALLDEVICES*/);
+	m_pdi->EnumDevices(DI8DEVCLASS_GAMECTRL, pad_callback, &cdat, DIEDFL_ATTACHEDONLY/*DIEDFL_ALLDEVICES*/);
 #else
 	m_pdi->EnumDevices(DIDEVTYPE_JOYSTICK,pad_callback,&cdat,DIEDFL_ATTACHEDONLY/*DIEDFL_ALLDEVICES*/);
 #endif
@@ -957,8 +957,14 @@ void dx_renderer::init_di()
 		m_pjoystick[i]->SetProperty(DIPROP_RANGE,&pr.diph);
 //		m_pjoystick[i]->SetProperty(DIPROP_DEADZONE,&pw.diph);
 
+#if DIRECTINPUT_VERSION == 0x0800
+		const IID riid = IID_IDirectInputDevice8;
+#else
+		const IID riid = IID_IDirectInputDevice2;
+#endif
+
 		m_pjoystick[i]->Acquire();
-		m_pjoystick[i]->QueryInterface(IID_IDirectInputDevice2,(void**)&m_pjoystick2[i]);
+		m_pjoystick[i]->QueryInterface(riid,(void**)&m_pjoystick2[i]);
 
 		DIJOYSTATE js[16];
 		m_pjoystick2[i]->Poll();
