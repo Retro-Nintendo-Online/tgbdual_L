@@ -50,6 +50,10 @@ static const char mbc_types[0x101][40]={"ROM Only","ROM + MBC1","ROM + MBC1 + RA
 									"","","","","","","","","","","","","","Bandai TAMA5","Hudson HuC-3","Hudson HuC-1",//#FF
 									"mmm01" // 逃げ
 };
+static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.cab;*.rar;*.zip;*.lzh\0"
+"Game Boy ROMs (*.gb;*.sgb;*.gbc)\0*.gb;*.sgb;*.gbc\0"
+"Archive files (external DLLs required) (*.cab;*.zip;*.rar;*.lzh)\0*.cab;*.zip;*.rar;*.lzh\0"
+"All Files (*.*)\0*.*\0\0";
 static byte org_gbtype[2];
 static bool sys_win2000;
 
@@ -294,6 +298,12 @@ BYTE *load_archive(char *path, int *size)
 	return ret;
 }
 
+bool is_gb_ext(const char* buf) {
+	const char* period = strrchr(buf, '.');
+	if (period == NULL) return false;
+	return (strcmp(period, ".gb") == 0 || strcmp(period, ".gbc") == 0 || strcmp(period, ".sgb") == 0);
+}
+
 HMODULE h_gbr_dll;
 
 bool load_rom(char *buf,int num)
@@ -378,7 +388,7 @@ bool load_rom(char *buf,int num)
 
 		return true;
 	}
-	else if (strstr(buf,".gb")||strstr(buf,".gbc")){
+	else if (is_gb_ext(buf)){
 		file=fopen(buf,"rb");
 		if (!file) return false;
 		fseek(file,0,SEEK_END);
@@ -387,6 +397,12 @@ bool load_rom(char *buf,int num)
 		dat=(BYTE*)malloc(size);
 		fread(dat,1,size,file);
 		fclose(file);
+
+		if (dat[0x149] < 0 || dat[0x149] >= 6) {
+			MessageBoxW(hWnd, L"Invalid ROM image", L"TGB Dual Notice", MB_OK);
+			free(dat);
+			return false;
+		}
 	}
 	else
 		if (!(dat=load_archive(buf,&size)))
@@ -435,7 +451,9 @@ bool load_rom(char *buf,int num)
 	char sram_name[256],cur_di[256],sv_dir[256];
 	BYTE *ram;
 	int ram_size=0x2000*tbl_ram[dat[0x149]];
-	char *suffix=num?".sa2":".sav";
+	char suffix[16];
+	suffix[0] = '.';
+	config->get_sram_ext(suffix + 1, num);
 	{
 		char *p=(char*)_mbsrchr((unsigned char*)buf,(unsigned char)'\\');
 		if (!p) p=buf; else p++;
@@ -538,7 +556,9 @@ bool load_rom_only(char *buf,int num)
 	char sram_name[256],cur_di[256],sv_dir[256];
 	BYTE *ram;
 	int ram_size=0x2000*tbl_ram[dat[0x149]];
-	char *suffix=num?".sa2":".sav";
+	char suffix[16];
+	suffix[0] = '.';
+	config->get_sram_ext(suffix + 1, num);
 	{
 		char *p=(char*)_mbsrchr((unsigned char*)buf,(unsigned char)'\\');
 		if (!p) p=buf; else p++;
@@ -1321,20 +1341,32 @@ static BOOL CALLBACK DirectoryProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lPar
 {
 	static char cur_sv_dir[256];
 	static char cur_md_dir[256];
+	static char cur_sram1_ext[16];
+	static char cur_sram2_ext[16];
 
 	switch(uMsg)
 	{
 	case WM_INITDIALOG:
 		config->get_save_dir(cur_sv_dir);
 		config->get_media_dir(cur_md_dir);
+		config->get_sram_ext(cur_sram1_ext, 0);
+		config->get_sram_ext(cur_sram2_ext, 1);
 		SetDlgItemText(hwnd,IDC_SAVE_PATH,cur_sv_dir);
 		SetDlgItemText(hwnd,IDC_MEDIA_PATH,cur_md_dir);
+		SetDlgItemText(hwnd,IDC_SRAM1_PATH,cur_sram1_ext);
+		SetDlgItemText(hwnd,IDC_SRAM2_PATH,cur_sram2_ext);
 		return TRUE;
 	
 	case WM_COMMAND:
 		if(LOWORD(wParam)==IDOK){
+			GetDlgItemText(hwnd, IDC_SAVE_PATH, cur_sv_dir, 255);
+			GetDlgItemText(hwnd, IDC_MEDIA_PATH, cur_md_dir, 255);
+			GetDlgItemText(hwnd, IDC_SRAM1_PATH, cur_sram1_ext, 15);
+			GetDlgItemText(hwnd, IDC_SRAM2_PATH, cur_sram2_ext, 15);
 			config->set_save_dir(cur_sv_dir);
 			config->set_media_dir(cur_md_dir);
+			config->set_sram_ext(cur_sram1_ext, 0);
+			config->set_sram_ext(cur_sram2_ext, 1);
 			DestroyWindow(hwnd);
 			return TRUE;
 		}
@@ -2899,7 +2931,7 @@ static BOOL CALLBACK ConnectProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam
 			ofn.hwndOwner=hWnd;
 			ofn.lStructSize=sizeof(ofn);
 			ofn.lpstrDefExt="gb";
-			ofn.lpstrFilter="Game Boy Rom Image (include archive file) (*.gb;*.gbc;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.gbc;*.cab;*.rar;*.zip;*.lzh\0All Files (*.*)\0*.*\0\0";
+			ofn.lpstrFilter=FILE_FILTERS;
 			ofn.nMaxFile=256;
 			ofn.nMaxFileTitle=256;
 			ofn.lpstrFile=buf;

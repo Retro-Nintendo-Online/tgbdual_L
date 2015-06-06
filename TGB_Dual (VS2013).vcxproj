@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>TGB_Dual_Kai</ProjectName>
+    <ProjectName>TGB_Dual_L</ProjectName>
     <SccProjectName />
     <SccLocalPath />
     <ProjectGuid>{854D1B57-B18D-4291-A621-C76F1DED4A1E}</ProjectGuid>
@@ -72,7 +72,7 @@
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>dsound.lib;dinput8.lib;winmm.lib;htmlhelp.lib;wsock32.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Release/TGB_Dual_Kai.exe</OutputFile>
+      <OutputFile>.\Release/TGB_Dual_L.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -121,7 +121,7 @@
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>dsound.lib;dinput8.lib;winmm.lib;htmlhelp.lib;wsock32.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Debug/TGB_Dual_Kai.exe</OutputFile>
+      <OutputFile>.\Debug/TGB_Dual_L.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/TGB_Dual.pdb</ProgramDatabaseFile>

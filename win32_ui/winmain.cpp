@@ -135,7 +135,7 @@ int APIENTRY WinMain(HINSTANCE hInst,HINSTANCE hPrev,LPSTR lpCmdLine,int nCmdSho
 	hModule=LoadLibrary("RICHED32.dll");
 	hAccel=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_ACCELERATOR));
 
-	mes_list.push_back("TGB Dual Ver.  Vol.8'''\n");
+	mes_list.push_back("TGB Dual \"L\" Ver 1.2\n");
 
 	// プロセスのプライオリティ
 	static DWORD priol[]={REALTIME_PRIORITY_CLASS,HIGH_PRIORITY_CLASS,0x00008000,NORMAL_PRIORITY_CLASS,0x00004000,IDLE_PRIORITY_CLASS};
@@ -823,7 +823,7 @@ LRESULT CALLBACK WndProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			ofn.hwndOwner=hWnd;
 			ofn.lStructSize=sizeof(ofn);
 			ofn.lpstrDefExt="gb";
-			ofn.lpstrFilter="Game Boy Rom Image (include archive file) (*.gb;*.gbc;*.cab;*.zip;*.rar;*.lzh;*.gbr)\0*.gb;*.gbc;*.cab;*.rar;*.zip;*.lzh;*.gbr\0All Files (*.*)\0*.*\0\0";
+			ofn.lpstrFilter=FILE_FILTERS;
 			ofn.nMaxFile=256;
 			ofn.nMaxFileTitle=256;
 			ofn.lpstrFile=buf;
