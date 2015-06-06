@@ -1174,9 +1174,9 @@ static BOOL CALLBACK KeyProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-X" : "+X");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? L"←" : L"→");
 				else if (pad_dir==1)
-					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-Y" : "+Y");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? L"↑" : L"↓");
 				else
 					swprintf(buf, 20, L"Pad%d %d", pad_id, key[map[i] * 2 + 1]);
 			}
@@ -1200,9 +1200,9 @@ static BOOL CALLBACK KeyProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? "-X" : "+X");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? L"←" : L"→");
 				else if (pad_dir==1)
-					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? "-Y" : "+Y");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? L"↑" : L"↓");
 				else
 					swprintf(buf, 20, L"Pad%d %d", pad_id, tmp_code[i]);
 			}
