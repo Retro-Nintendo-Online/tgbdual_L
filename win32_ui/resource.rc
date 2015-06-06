@@ -54,7 +54,7 @@ END
 
 IDR_MENU MENU 
 BEGIN
-    POPUP "ファイル(&F)"
+    POPUP "File (&F)"
     BEGIN
         MENUITEM "Slot1 Load (&1)",         ID_LOADROM
         MENUITEM "Slot1 Reset (&R)",           ID_RESET1
@@ -70,7 +70,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Exit (&X)",                    ID_EXIT
     END
-    POPUP "通信(&T)"
+    POPUP "Slot2 (&T)"
     BEGIN
         MENUITEM "Slot2 Load (&2)",         ID_LOADROM2
         MENUITEM "Slot2 Reset (&E)",           ID_RESET2
@@ -101,7 +101,7 @@ BEGIN
             MENUITEM "x4",                          ID_S2_X4
         END
         MENUITEM SEPARATOR
-        MENUITEM "Slot2メモリダンプの表示(&M)", ID_S2_DBG_MEMDUMP
+        MENUITEM "Slot2 Memory Dump (&M)", ID_S2_DBG_MEMDUMP
         MENUITEM SEPARATOR
         MENUITEM "Netplay (&T)",                ID_CONNECT
     END
@@ -191,7 +191,7 @@ BEGIN
     BEGIN
         MENUITEM "dummy(&H)",                   ID_TGBHELP
     END
-    POPUP "デバッグ(&D)"
+    POPUP "Debug (&D)"
     BEGIN
         MENUITEM "設定(&A)",                    ID_DEBUG
         MENUITEM SEPARATOR
