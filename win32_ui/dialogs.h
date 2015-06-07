@@ -1,6 +1,6 @@
 /*--------------------------------------------------
    TGB Dual - Gameboy Emulator -
-   Copyright (C) 2001-2012  Hii & gbm
+   Copyright (C) 2001-2015  Hii, gbm, libertyernie
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -18,6 +18,20 @@
 */
 
 #include "keymap.h"
+#ifdef TGBDUAL_USE_GOOMBASAV
+#include "../goombasav/goombarom.h"
+static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.gba;*.tar;*.iso;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.gba;*.tar;*.iso;*.cab;*.rar;*.zip;*.lzh\0"
+"Game Boy ROMs (*.gb;*.sgb;*.gbc)\0*.gb;*.sgb;*.gbc\0"
+"Files that may contain uncompressed ROMs (*.gba;*.tar;*.iso)\0*.gba;*.tar;*.iso\0"
+"Archive files (external DLLs required) (*.cab;*.zip;*.rar;*.lzh)\0*.cab;*.zip;*.rar;*.lzh\0"
+"Uncompressed, contiguous archives (*.tar;*.iso)\0*.tarl*.iso\0"
+"All Files (*.*)\0*.*\0\0";
+#else
+static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.cab;*.rar;*.zip;*.lzh\0"
+"Game Boy ROMs (*.gb;*.sgb;*.gbc)\0*.gb;*.sgb;*.gbc\0"
+"Archive files (external DLLs required) (*.cab;*.zip;*.rar;*.lzh)\0*.cab;*.zip;*.rar;*.lzh\0"
+"All Files (*.*)\0*.*\0\0";
+#endif
 
 // For Unicode columns in ListView
 #define ListView_InsertColumnW(hwnd, iCol, pcol) \
@@ -50,10 +64,7 @@ static const char mbc_types[0x101][40]={"ROM Only","ROM + MBC1","ROM + MBC1 + RA
 									"","","","","","","","","","","","","","Bandai TAMA5","Hudson HuC-3","Hudson HuC-1",//#FF
 									"mmm01" // 逃げ
 };
-static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.cab;*.rar;*.zip;*.lzh\0"
-"Game Boy ROMs (*.gb;*.sgb;*.gbc)\0*.gb;*.sgb;*.gbc\0"
-"Archive files (external DLLs required) (*.cab;*.zip;*.rar;*.lzh)\0*.cab;*.zip;*.rar;*.lzh\0"
-"All Files (*.*)\0*.*\0\0";
+
 static byte org_gbtype[2];
 static bool sys_win2000;
 
@@ -258,8 +269,53 @@ BYTE *load_archive(char *path, int *size)
 		FindClose(hFind);
 	}
 	else{
+#ifdef TGBDUAL_USE_GOOMBASAV
+		// For any other kind of file
+		// If the ROMs are uncompressed and stored contiguously, goombarom.c can find them
+		// This works for Goomba / Goomba Color ROMs, and for TAR archives
+
+		// First step: read the whole file
+		FILE *file;
+		file = fopen(path, "rb");
+		fseek(file, 0, SEEK_END);
+		size_t archive_size = ftell(file);
+		fseek(file, 0, SEEK_SET);
+		void* buf = malloc(archive_size);
+		fread(buf, 1, archive_size, file);
+		fclose(file);
+
+		// Count number of roms
+		int num_roms = 0;
+		for (const void* rom = gb_first_rom(buf, archive_size); rom != NULL; rom = gb_next_rom(buf, archive_size, rom)) {
+			num_roms++;
+		}
+
+		if (num_roms == 0) {
+			MessageBoxW(hWnd, L"This file does not contain any Game Boy ROM images.", L"TGB Dual", MB_OK | MB_ICONERROR);
+		}
+
+		char msgbuf[32];
+		ret = NULL;
+		int curr_rom = 1; // For dialog
+		for (const void* rom = gb_first_rom(buf, archive_size); rom != NULL; rom = gb_next_rom(buf, archive_size, rom)) {
+			sprintf(msgbuf, "(%d/%d) Load %s?", curr_rom, num_roms, gb_get_title(rom, NULL));
+			int r = num_roms == 1 ? IDYES : MessageBoxA(hWnd, msgbuf, "TGB Dual", MB_YESNOCANCEL);
+			if (r == IDYES) {
+				*size = gb_rom_size(rom);
+				ret = (BYTE*)malloc(*size);
+				memcpy(ret, rom, *size);
+				break;
+			} else if (r == IDCANCEL) {
+				break;
+			}
+			curr_rom++;
+		}
+		free(buf);
+		return ret;
+#else
 		//MessageBoxW(hWnd,L"このファイルを実行することはできません",L"TGB Dual",MB_OK);
 		return NULL;
+#endif
 	}
 
 	FILE *file;

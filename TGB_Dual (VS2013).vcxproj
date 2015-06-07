@@ -57,7 +57,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <PreprocessorDefinitions>WIN32;TGBDUAL_USE_DINPUT8;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;TGBDUAL_USE_DINPUT8;TGBDUAL_USE_GOOMBASAV;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -68,6 +68,7 @@
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
@@ -106,7 +107,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;TGBDUAL_USE_DINPUT8;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;TGBDUAL_USE_DINPUT8;TGBDUAL_USE_GOOMBASAV;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader />
@@ -117,6 +118,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
@@ -168,6 +170,9 @@
     <ClCompile Include="gb_core\lcd.cpp" />
     <ClCompile Include="gb_core\mbc.cpp" />
     <ClCompile Include="gb_core\rom.cpp" />
+    <ClCompile Include="goombasav\goombarom.c" />
+    <ClCompile Include="goombasav\goombasav.c" />
+    <ClCompile Include="goombasav\minilzo-2.06\minilzo.c" />
     <ClCompile Include="win32_ui\dmy_renderer.cpp" />
     <ClCompile Include="win32_ui\dx_renderer.cpp" />
     <ClCompile Include="win32_ui\lib\socket_lib.cpp" />
@@ -192,6 +197,11 @@
     <ClInclude Include="gb_core\op_cb.h" />
     <ClInclude Include="gb_core\op_normal.h" />
     <ClInclude Include="gb_core\renderer.h" />
+    <ClInclude Include="goombasav\goombarom.h" />
+    <ClInclude Include="goombasav\goombasav.h" />
+    <ClInclude Include="goombasav\minilzo-2.06\lzoconf.h" />
+    <ClInclude Include="goombasav\minilzo-2.06\lzodefs.h" />
+    <ClInclude Include="goombasav\minilzo-2.06\minilzo.h" />
     <ClInclude Include="win32_ui\debugdialogs.h" />
     <ClInclude Include="win32_ui\debugregisteredit.h" />
     <ClInclude Include="win32_ui\dialogs.h" />

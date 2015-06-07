@@ -42,6 +42,18 @@
       <UniqueIdentifier>{8269a61c-be56-48c8-bf8f-58f11a6fe9a2}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Header Files\goombasav">
+      <UniqueIdentifier>{72112a2f-6a29-4f97-bfd6-6709018f89ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\goombasav">
+      <UniqueIdentifier>{3690493a-adf9-461c-bc4a-ac28271cd4db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\goombasav\minilzo-2.06">
+      <UniqueIdentifier>{f2e5ec50-eb96-45f6-a8c3-2e52e87ea250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\goombasav\minilzo-2.06">
+      <UniqueIdentifier>{8cbd9ce8-e359-41ec-9457-36f1e5bad409}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gb_core\apu.cpp">
@@ -97,6 +109,15 @@
     </ClCompile>
     <ClCompile Include="debugtool\z80cdisasm.cpp">
       <Filter>Source Files\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="goombasav\goombasav.c">
+      <Filter>Header Files\goombasav</Filter>
+    </ClCompile>
+    <ClCompile Include="goombasav\goombarom.c">
+      <Filter>Header Files\goombasav</Filter>
+    </ClCompile>
+    <ClCompile Include="goombasav\minilzo-2.06\minilzo.c">
+      <Filter>Header Files\goombasav\minilzo-2.06</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +194,21 @@
     </ClInclude>
     <ClInclude Include="debugtool\z80cdisasm.h">
       <Filter>Header Files\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="goombasav\goombarom.h">
+      <Filter>Source Files\goombasav</Filter>
+    </ClInclude>
+    <ClInclude Include="goombasav\goombasav.h">
+      <Filter>Source Files\goombasav</Filter>
+    </ClInclude>
+    <ClInclude Include="goombasav\minilzo-2.06\lzoconf.h">
+      <Filter>Source Files\goombasav\minilzo-2.06</Filter>
+    </ClInclude>
+    <ClInclude Include="goombasav\minilzo-2.06\lzodefs.h">
+      <Filter>Source Files\goombasav\minilzo-2.06</Filter>
+    </ClInclude>
+    <ClInclude Include="goombasav\minilzo-2.06\minilzo.h">
+      <Filter>Source Files\goombasav\minilzo-2.06</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
