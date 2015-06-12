@@ -1,5 +1,5 @@
-TGB Dual Kai - Unicode Version
-http://github.com/libertyernie/tgbdual_kai
+TGB Dual L
+http://github.com/libertyernie/tgbdual_L
 
 Based on TGB Dual Kai from http://blog.gameboymania.com/2014/03/tgbdualkaiv1141.html
 
@@ -25,3 +25,17 @@ Important code changes:
     (TGB_Dual (VS2013).sln), and it uses the endian_conv.exe helper app.
 * The VS2013 project also defines the preprocessor macro TGBDUAL_USE_DINPUT8,
   so dx_renderer.h and settings.cpp will use dinput8.lib (DirectInput 8).
+
+New features:
+  * TGB Dual can now load ROMs built with Goomba and Goomba Color (GB emulators
+    for the GBA), and can read and write to those emulators' save files. This
+    is helpful if you want to share your save data between PC and GBA, because
+    the ROMs run faster in a GB emulator than they would in a GBA emulator
+    trying to run Goomba. (Also, you can use link cable emulation for games
+    like Pokémon.) See goomba.txt for more information.
+  * Supported file extensions added: .gba (for Goomba/Goomba Color) and .sgb.
+* Windows version only:
+  * All dialogs/menus have been translated to English at the source code level
+    ("english" branch in git.)
+  * Along with the ROM and SRAM folders, users can now specify the SRAM file
+    extensions used for Slot1 and Slot2 (the defaults are still .sav and .sa2.)
