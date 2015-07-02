@@ -172,7 +172,7 @@
     <ClCompile Include="gb_core\rom.cpp" />
     <ClCompile Include="goombasav\goombarom.c" />
     <ClCompile Include="goombasav\goombasav.c" />
-    <ClCompile Include="goombasav\minilzo-2.06\minilzo.c" />
+    <ClCompile Include="goombasav\minilzo\minilzo.c" />
     <ClCompile Include="win32_ui\dmy_renderer.cpp" />
     <ClCompile Include="win32_ui\dx_renderer.cpp" />
     <ClCompile Include="win32_ui\lib\socket_lib.cpp" />
@@ -199,9 +199,9 @@
     <ClInclude Include="gb_core\renderer.h" />
     <ClInclude Include="goombasav\goombarom.h" />
     <ClInclude Include="goombasav\goombasav.h" />
-    <ClInclude Include="goombasav\minilzo-2.06\lzoconf.h" />
-    <ClInclude Include="goombasav\minilzo-2.06\lzodefs.h" />
-    <ClInclude Include="goombasav\minilzo-2.06\minilzo.h" />
+    <ClInclude Include="goombasav\minilzo\lzoconf.h" />
+    <ClInclude Include="goombasav\minilzo\lzodefs.h" />
+    <ClInclude Include="goombasav\minilzo\minilzo.h" />
     <ClInclude Include="win32_ui\debugdialogs.h" />
     <ClInclude Include="win32_ui\debugregisteredit.h" />
     <ClInclude Include="win32_ui\dialogs.h" />
