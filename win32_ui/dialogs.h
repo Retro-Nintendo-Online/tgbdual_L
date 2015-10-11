@@ -21,11 +21,10 @@
 #ifdef TGBDUAL_USE_GOOMBASAV
 #include "../goombasav/goombarom.h"
 #include "../goombasav/goombasav.h"
-static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.gba;*.tar;*.iso;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.gba;*.tar;*.iso;*.cab;*.rar;*.zip;*.lzh\0"
+static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.gba;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.gba;*.cab;*.rar;*.zip;*.lzh\0"
 "Game Boy ROMs (*.gb;*.sgb;*.gbc)\0*.gb;*.sgb;*.gbc\0"
-"Files that may contain uncompressed ROMs (*.gba;*.tar;*.iso)\0*.gba;*.tar;*.iso\0"
+"Goomba / Goomba Color ROMs (*.gba)\0*.gba\0"
 "Archive files (external DLLs required) (*.cab;*.zip;*.rar;*.lzh)\0*.cab;*.zip;*.rar;*.lzh\0"
-"Uncompressed, contiguous archives (*.tar;*.iso)\0*.tar;*.iso\0"
 "All Files (*.*)\0*.*\0\0";
 #else
 static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.cab;*.rar;*.zip;*.lzh\0"
