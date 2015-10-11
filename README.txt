@@ -23,12 +23,14 @@ New features (compared to TGB Dual Kai):
     trying to run Goomba. (Also, you can use link cable emulation for games
     like Pokémon.) See goomba.txt for more information.
   * Supported file extensions added: .gba (for Goomba/Goomba Color) and .sgb.
-* Windows version only:
   * All dialogs/menus have been translated to English at the source code level
     ("english" branch in git.)
   * Along with the ROM and SRAM folders, users can now specify the SRAM file
     extensions used for Slot1 and Slot2 (the defaults are still .sav and .sa2.)
   * The options for showing the FPS meter are now Off, Slot1, Slot2, and Both.
+  * A new "mirror mode" flips the entire display horizontally and also swaps
+    the inputs for the left and right directions on the D-pad. It can be
+    turned on through Options > Display > Mirror Mode.
 
 Important code changes:
 * Previously, the files in win32_ui were encoded in Shift-JIS, but this did
