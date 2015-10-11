@@ -1,6 +1,6 @@
 /*--------------------------------------------------
    TGB Dual - Gameboy Emulator -
-   Copyright (C) 2001-2012  Hii & gbm
+   Copyright (C) 2001-2015  Hii, gbm, libertyernie
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -18,6 +18,21 @@
 */
 
 #include "keymap.h"
+#ifdef TGBDUAL_USE_GOOMBASAV
+#include "../goombasav/goombarom.h"
+#include "../goombasav/goombasav.h"
+static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.gba;*.tar;*.iso;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.gba;*.tar;*.iso;*.cab;*.rar;*.zip;*.lzh\0"
+"Game Boy ROMs (*.gb;*.sgb;*.gbc)\0*.gb;*.sgb;*.gbc\0"
+"Files that may contain uncompressed ROMs (*.gba;*.tar;*.iso)\0*.gba;*.tar;*.iso\0"
+"Archive files (external DLLs required) (*.cab;*.zip;*.rar;*.lzh)\0*.cab;*.zip;*.rar;*.lzh\0"
+"Uncompressed, contiguous archives (*.tar;*.iso)\0*.tar;*.iso\0"
+"All Files (*.*)\0*.*\0\0";
+#else
+static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.cab;*.rar;*.zip;*.lzh\0"
+"Game Boy ROMs (*.gb;*.sgb;*.gbc)\0*.gb;*.sgb;*.gbc\0"
+"Archive files (external DLLs required) (*.cab;*.zip;*.rar;*.lzh)\0*.cab;*.zip;*.rar;*.lzh\0"
+"All Files (*.*)\0*.*\0\0";
+#endif
 
 // For Unicode columns in ListView
 #define ListView_InsertColumnW(hwnd, iCol, pcol) \
@@ -50,24 +65,92 @@ static const char mbc_types[0x101][40]={"ROM Only","ROM + MBC1","ROM + MBC1 + RA
 									"","","","","","","","","","","","","","Bandai TAMA5","Hudson HuC-3","Hudson HuC-1",//#FF
 									"mmm01" // 逃げ
 };
-static const char* FILE_FILTERS = "All formats (*.gb;*.sgb;*.gbc;*.cab;*.zip;*.rar;*.lzh)\0*.gb;*.sgb;*.gbc;*.cab;*.rar;*.zip;*.lzh\0"
-"Game Boy ROMs (*.gb;*.sgb;*.gbc)\0*.gb;*.sgb;*.gbc\0"
-"Archive files (external DLLs required) (*.cab;*.zip;*.rar;*.lzh)\0*.cab;*.zip;*.rar;*.lzh\0"
-"All Files (*.*)\0*.*\0\0";
+
 static byte org_gbtype[2];
 static bool sys_win2000;
+static int sram_tbl[] = { 1, 1, 1, 4, 16, 8 };
+
+static bool goomba_load_error;
+
+// Used for showing a goombasav error (in English) with custom Unicode text before and after it.
+// Allocates (with malloc) a buffer to hold the formatted string.
+wchar_t* format_ascii_to_utf16(const wchar_t* before, const char* inner_message, const wchar_t* after) {
+	size_t L = strlen(inner_message) + 1;
+
+	wchar_t* conv = (wchar_t*)malloc(2 * L);
+	for (int i = 0; i < L; i++) {
+		conv[i] = inner_message[i];
+	}
+
+	size_t L2 = 2 * (wcslen(before) + L-1 + wcslen(after) + 1);
+	wchar_t* buf = (wchar_t*)malloc(L2);
+	swprintf(buf, L"%s%s%s", before, conv, after);
+	free(conv);
+	return buf;
+}
+
+bool save_goomba(const void* buf, int size, int num, FILE* fs) {
+	if (goomba_load_error) {
+		// don't save any data - an error occured when first loading, and user was notified
+		return true;
+	} else {
+		byte gba_data[GOOMBA_COLOR_SRAM_SIZE];
+		fread(gba_data, 1, GOOMBA_COLOR_SRAM_SIZE, fs);
+		fseek(fs, 0, SEEK_SET);
+
+		void* cleaned = goomba_cleanup(gba_data);
+		if (cleaned == NULL) {
+			return false;
+		} else if (cleaned != gba_data) {
+			memcpy(gba_data, cleaned, GOOMBA_COLOR_SRAM_SIZE);
+			free(cleaned);
+		}
+
+		stateheader* sh = stateheader_for(gba_data,
+			g_gb[num]->get_rom()->get_info()->cart_name);
+		if (sh == NULL) {
+			return false; // don't try to save sram
+		}
+		void* new_data = goomba_new_sav(gba_data, sh, buf, 0x2000 * sram_tbl[size]);
+		if (new_data == NULL) {
+			return false;
+		}
+		fwrite(new_data, 1, GOOMBA_COLOR_SRAM_SIZE, fs);
+		return true;
+	}
+}
 
 void save_sram(BYTE *buf,int size,int num)
 {
 	if (strstr(tmp_sram_name[num],".srt"))
 		return;
 
-	int sram_tbl[]={1,1,1,4,16,8};
 	char cur_di[256],sv_dir[256];
 	GetCurrentDirectory(256,cur_di);
 	config->get_save_dir(sv_dir);
 	SetCurrentDirectory(sv_dir);
-	FILE *fs=fopen(tmp_sram_name[num],"wb");
+
+	FILE* fs = fopen(tmp_sram_name[num], "r+b");
+	if (fs != NULL) {
+		// if file exists, check for goomba
+		unsigned __int32 stateid = 0;
+		fread(&stateid, 1, 4, fs);
+		fseek(fs, 0, SEEK_SET);
+		if (stateid == GOOMBA_STATEID) {
+			if (!save_goomba(buf, size, num, fs)) {
+				wchar_t* buf = format_ascii_to_utf16(
+					L"Could not save SRAM (Goomba format).\n(", goomba_last_error(), L")");
+				MessageBoxW(hWnd, buf, L"TGB Dual", MB_OK | MB_ICONERROR);
+				free(buf);
+			}
+			fclose(fs);
+			SetCurrentDirectory(cur_di);
+			return;
+		}
+	}
+
+	// Create file if it does not exist
+	if (fs == NULL) fs = fopen(tmp_sram_name[num], "wb");
 	fwrite(buf,1,0x2000*sram_tbl[size],fs);
 	if ((g_gb[num]->get_rom()->get_info()->cart_type>=0x0f)&&(g_gb[num]->get_rom()->get_info()->cart_type<=0x13)){
 		int tmp=render[0]->get_timer_state();
@@ -258,8 +341,53 @@ BYTE *load_archive(char *path, int *size)
 		FindClose(hFind);
 	}
 	else{
-		//MessageBoxW(hWnd,L"TGB Dual cannot run this file.",L"TGB Dual",MB_OK);
+#ifdef TGBDUAL_USE_GOOMBASAV
+		// For any other kind of file
+		// If the ROMs are uncompressed and stored contiguously, goombarom.c can find them
+		// This works for Goomba / Goomba Color ROMs, and for TAR archives
+
+		// First step: read the whole file
+		FILE *file;
+		file = fopen(path, "rb");
+		fseek(file, 0, SEEK_END);
+		size_t archive_size = ftell(file);
+		fseek(file, 0, SEEK_SET);
+		void* buf = malloc(archive_size);
+		fread(buf, 1, archive_size, file);
+		fclose(file);
+
+		// Count number of roms
+		int num_roms = 0;
+		for (const void* rom = gb_first_rom(buf, archive_size); rom != NULL; rom = gb_next_rom(buf, archive_size, rom)) {
+			num_roms++;
+		}
+
+		if (num_roms == 0) {
+			MessageBoxW(hWnd, L"This file does not contain any Game Boy ROM images.", L"TGB Dual", MB_OK | MB_ICONERROR);
+		}
+
+		char msgbuf[32];
+		ret = NULL;
+		int curr_rom = 1; // For dialog
+		for (const void* rom = gb_first_rom(buf, archive_size); rom != NULL; rom = gb_next_rom(buf, archive_size, rom)) {
+			sprintf(msgbuf, "(%d/%d) Load %s?", curr_rom, num_roms, gb_get_title(rom, NULL));
+			int r = num_roms == 1 ? IDYES : MessageBoxA(hWnd, msgbuf, "TGB Dual", MB_YESNOCANCEL);
+			if (r == IDYES) {
+				*size = gb_rom_size(rom);
+				ret = (BYTE*)malloc(*size);
+				memcpy(ret, rom, *size);
+				break;
+			} else if (r == IDCANCEL) {
+				break;
+			}
+			curr_rom++;
+		}
+		free(buf);
+		return ret;
+#else
+		//MessageBoxW(hWnd,L"このファイルを実行することはできません",L"TGB Dual",MB_OK);
 		return NULL;
+#endif
 	}
 
 	FILE *file;
@@ -305,6 +433,79 @@ bool is_gb_ext(const char* buf) {
 }
 
 HMODULE h_gbr_dll;
+
+bool try_load_goomba(void* ram, int ram_size, FILE* fs, const char* cart_name, int num) {
+	fseek(fs, 0, SEEK_SET);
+	char gba_data[GOOMBA_COLOR_SRAM_SIZE];
+	fread(gba_data, 1, GOOMBA_COLOR_SRAM_SIZE, fs);
+	fclose(fs);
+
+	void* cleaned = goomba_cleanup(gba_data);
+	if (cleaned == NULL) {
+		return false;
+	} else if (cleaned != gba_data) {
+		memcpy(gba_data, cleaned, GOOMBA_COLOR_SRAM_SIZE);
+		free(cleaned);
+	}
+
+	stateheader* sh = stateheader_for(gba_data, cart_name);
+	if (sh == NULL) {
+		return false;
+	}
+
+	size_t output_size;
+	void* gbc_data = goomba_extract(gba_data, sh, &output_size);
+	if (gbc_data == NULL) {
+		return false;
+	}
+	
+	if (output_size > ram_size) {
+		goomba_set_last_error("The extracted SRAM is too big for this ROM.");
+		free(gbc_data);
+		return false;
+	} else {
+		memcpy(ram, gbc_data, output_size);
+		free(gbc_data);
+		return true;
+	}
+}
+
+BYTE* ram_load_helper(int ram_size, const char* sram_name, const char* cart_name, int num) {
+	BYTE* ram;
+	char tmp_sram[256];
+	strcpy(tmp_sram, sram_name);
+
+	// Only check one SRAM path. Original program looked for two or three.
+	FILE *fs = fopen(tmp_sram, "rb");
+	if (fs) {
+		ram = (BYTE*)malloc(ram_size);
+		fread(ram, 1, ram_size, fs);
+		if (*(unsigned __int32*)ram == GOOMBA_STATEID) {
+			memset(ram, 0, ram_size); // in case try_load_goomba fails
+			goomba_load_error = !try_load_goomba(ram, ram_size, fs, cart_name, num);
+			if (goomba_load_error) {
+				wchar_t* buf = format_ascii_to_utf16(
+					L"Goomba SRAM load error - your progress will not be saved.\n(", goomba_last_error(), L")");
+				MessageBoxW(hWnd, buf, L"TGB Dual", MB_OK | MB_ICONERROR);
+				free(buf);
+			}
+			return ram;
+		}
+		fseek(fs, 0, SEEK_END);
+		if (ftell(fs) & 0xff){
+			int tmp;
+			fseek(fs, -4, SEEK_END);
+			fread(&tmp, 4, 1, fs);
+			if (render[num])
+				render[num]->set_timer_state(tmp);
+		}
+		fclose(fs);
+	} else {
+		ram = (BYTE*)malloc(ram_size);
+		memset(ram, 0, ram_size);
+	}
+	return ram;
+}
 
 bool load_rom(char *buf,int num)
 {
@@ -411,6 +612,8 @@ bool load_rom(char *buf,int num)
 	if ((num==1)&&(!render[1])){
 		render[1]=new dx_renderer(hWnd_sub,hInstance);
 		render[1]->set_render_pass(config->render_pass);
+		render[1]->show_fps(config->show_fps & 0x2);
+		render[1]->set_mirror(false);
 		load_key_config(1);
 	}
 	if (!g_gb[num]){
@@ -466,37 +669,8 @@ bool load_rom(char *buf,int num)
 	config->get_save_dir(sv_dir);
 	SetCurrentDirectory(sv_dir);
 
-	{
-		char tmp_sram[256];
-		strcpy(tmp_sram,sram_name);
-
-		// そのまま、先頭のピリオドから拡張子に、さらにそれを拡張子RAM化、の3通りしらべないかん…
-		int i;
-		for (i=0;i<3;i++){
-			if (i==1) strcpy(strstr(tmp_sram,"."),suffix);
-			else if (i==2) strcpy(strstr(tmp_sram,"."),num?".ra2":"ram");
-
-			FILE *fs=fopen(tmp_sram,"rb");
-			if (fs){
-				ram=(BYTE*)malloc(ram_size);
-				fread(ram,1,ram_size,fs);
-				fseek(fs,0,SEEK_END);
-				if (ftell(fs)&0xff){
-					int tmp;
-					fseek(fs,-4,SEEK_END);
-					fread(&tmp,4,1,fs);
-					if (render[num])
-						render[num]->set_timer_state(tmp);
-				}
-				fclose(fs);
-				break;
-			}
-		}
-		if (i==3){
-			ram=(BYTE*)malloc(ram_size);
-			memset(ram,0,ram_size);
-		}
-	}
+	const char* cart_name = (const char*)dat + 0x134;
+	ram = ram_load_helper(ram_size, sram_name, cart_name, num);
 	strcpy(tmp_sram_name[num],sram_name);
 
 	SetCurrentDirectory(cur_di);
@@ -571,37 +745,8 @@ bool load_rom_only(char *buf,int num)
 	config->get_save_dir(sv_dir);
 	SetCurrentDirectory(sv_dir);
 
-	{
-		char tmp_sram[256];
-		strcpy(tmp_sram,sram_name);
-
-		// そのまま、先頭のピリオドから拡張子に、さらにそれを拡張子RAM化、の3通りしらべないかん…
-		int i;
-		for (i=0;i<3;i++){
-			if (i==1) strcpy(strstr(tmp_sram,"."),suffix);
-			else if (i==2) strcpy(strstr(tmp_sram,"."),num?".ra2":"ram");
-
-			FILE *fs=fopen(tmp_sram,"rb");
-			if (fs){
-				ram=(BYTE*)malloc(ram_size);
-				fread(ram,1,ram_size,fs);
-				fseek(fs,0,SEEK_END);
-				if (ftell(fs)&0xff){
-					int tmp;
-					fseek(fs,-4,SEEK_END);
-					fread(&tmp,4,1,fs);
-					if (render[num])
-						render[num]->set_timer_state(tmp);
-				}
-				fclose(fs);
-				break;
-			}
-		}
-		if (i==3){
-			ram=(BYTE*)malloc(ram_size);
-			memset(ram,0,ram_size);
-		}
-	}
+	const char* cart_name = (const char*)dat + 0x134;
+	ram = ram_load_helper(ram_size, sram_name, cart_name, num);
 	strcpy(tmp_sram_name[num],sram_name);
 
 	SetCurrentDirectory(cur_di);
@@ -655,7 +800,7 @@ void free_rom(int slot)
 		buf=(BYTE*)calloc(160*144,2);
 		render[slot]->show_fps(false);
 		render[slot]->render_screen(buf,160,144,16);
-		render[slot]->show_fps(config->show_fps);
+		render[slot]->show_fps(config->show_fps & 0x1);
 		free(buf);
 
 		SetWindowText(hWnd,WINDOW_TITLE_UNLOADED);
@@ -845,19 +990,14 @@ static void construct_help_menu(HMENU menu)
 	strcat(hlp_dir,"\\docs");
 	SetCurrentDirectory(hlp_dir);
 
-	sprintf(hf,"%s\\*.hlp",hlp_dir);
+	// find files with any extension
+	sprintf(hf,"%s\\*",hlp_dir);
 	hSearch=FindFirstFile(hf,&wfd);
 	if (hSearch!=INVALID_HANDLE_VALUE){
 		do{
-			sprintf(tgb_help[count],"%s\\%s",hlp_dir,wfd.cFileName);
-			AppendMenu(menu,MF_ENABLED,ID_TGBHELP+count++,wfd.cFileName);
-		}while(FindNextFile(hSearch,&wfd));
-		FindClose(hSearch);
-	}
-	sprintf(hf,"%s\\*.chm",hlp_dir);
-	hSearch=FindFirstFile(hf,&wfd);
-	if (hSearch!=INVALID_HANDLE_VALUE){
-		do{
+			// skip ".", "..", and folders
+			if (wfd.cFileName[0] == '.') continue;
+			if (wfd.dwFileAttributes & 16) continue;
 			sprintf(tgb_help[count],"%s\\%s",hlp_dir,wfd.cFileName);
 			AppendMenu(menu,MF_ENABLED,ID_TGBHELP+count++,wfd.cFileName);
 		}while(FindNextFile(hSearch,&wfd));
@@ -873,13 +1013,35 @@ static void construct_help_menu(HMENU menu)
 	}
 	int bef_count=count;
 
-	sprintf(hf,"%s\\*.txt",hlp_dir);
+	sprintf(hf,"%s\\*",hlp_dir);
 	hSearch=FindFirstFile(hf,&wfd);
 	if (hSearch!=INVALID_HANDLE_VALUE){
 		do{
-			sprintf(tgb_help[count],"%s\\%s",hlp_dir,wfd.cFileName);
-			AppendMenu(menu,MF_ENABLED,ID_TGBHELP+count++,wfd.cFileName);
-		}while(FindNextFile(hSearch,&wfd));
+			// skip ".", "..", and anything that's not a folder
+			if (wfd.cFileName[0] == '.') continue;
+			if (!(wfd.dwFileAttributes & 16)) continue;
+
+			WIN32_FIND_DATA wfd2;
+			HANDLE hSearch2;
+			// find files with any extension
+			sprintf(hf, "%s\\%s\\*", hlp_dir, wfd.cFileName);
+			hSearch2 = FindFirstFile(hf, &wfd2);
+			if (hSearch2 != INVALID_HANDLE_VALUE){
+				HMENU submenu = NULL;
+				do{
+					// skip ".", "..", and folders
+					if (wfd2.cFileName[0] == '.') continue;
+					if (wfd2.dwFileAttributes & 16) continue;
+					if (submenu == NULL) {
+						submenu = CreatePopupMenu();
+						AppendMenu(menu, MF_POPUP, (UINT_PTR)submenu, wfd.cFileName);
+					}
+					sprintf(tgb_help[count], "%s\\%s\\%s", hlp_dir, wfd.cFileName, wfd2.cFileName);
+					AppendMenu(submenu, MF_ENABLED, ID_TGBHELP + count++, wfd2.cFileName);
+				} while (FindNextFile(hSearch2, &wfd2));
+				FindClose(hSearch2);
+			}
+		} while (FindNextFile(hSearch, &wfd));
 		FindClose(hSearch);
 	}
 
@@ -904,20 +1066,8 @@ static void view_help(HWND hwnd,char *name)
 		WinHelp(hwnd,name,HELP_INDEX,0);
 	else if (_mbsstr((BYTE*)name,(BYTE*)".chm")||_mbsstr((BYTE*)name,(BYTE*)".CHM"))
 		HtmlHelp(hwnd,name,HH_DISPLAY_TOC,0);
-	else if (_mbsstr((BYTE*)name,(BYTE*)".txt")||_mbsstr((BYTE*)name,(BYTE*)".TXT")){
-		FILE *file=fopen(name,"rb");
-		fseek(file,0,SEEK_END);
-		int size;
-		char *dat=new char[(size=ftell(file))+1];
-		fseek(file,0,SEEK_SET);
-		fread(dat,1,size,file);
-		fclose(file);
-		dat[size]='\0';
-		HWND text_hwnd;
-
-		ShowWindow(text_hwnd=CreateDialogW(hInstance,MAKEINTRESOURCEW(IDD_TEXTVIEW),hwnd,TextProc),SW_SHOW);
-		SendMessage(text_hwnd,WM_OUTLOG,0,(LPARAM)dat);
-		delete []dat;
+	else {
+		ShellExecute(hwnd, "open", name, NULL, NULL, SW_SHOWNORMAL);
 	}
 }
 
@@ -1208,9 +1358,9 @@ static BOOL CALLBACK KeyProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-X" : "+X");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? L"←" : L"→");
 				else if (pad_dir==1)
-					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? "-Y" : "+Y");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, key[map[i] * 2 + 1] ? L"↑" : L"↓");
 				else
 					swprintf(buf, 20, L"Pad%d %d", pad_id, key[map[i] * 2 + 1]);
 			}
@@ -1234,9 +1384,9 @@ static BOOL CALLBACK KeyProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				pad_id=(dev-DI_PAD_X)/NEXT_PAD;
 				pad_dir=(dev-DI_PAD_X)%NEXT_PAD;
 				if (pad_dir==0)
-					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? "-X" : "+X");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? L"←" : L"→");
 				else if (pad_dir==1)
-					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? "-Y" : "+Y");
+					swprintf(buf, 20, L"Pad%d %s", pad_id, tmp_code[i] ? L"↑" : L"↓");
 				else
 					swprintf(buf, 20, L"Pad%d %d", pad_id, tmp_code[i]);
 			}
@@ -1846,7 +1996,7 @@ static BOOL CALLBACK SpeedProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			EnableWindow(GetDlgItem(hwnd,IDC_FPS2),FALSE);
 		}
 		if (config->show_fps)
-			CheckDlgButton(hwnd,IDC_SHOWFPS,BST_CHECKED);
+			CheckRadioButton(hwnd, IDC_SHOWFPS0, IDC_SHOWFPS3, IDC_SHOWFPS0 + config->show_fps);
 		return TRUE;
 	case WM_COMMAND:
 		if(LOWORD(wParam)==IDOK){
@@ -1885,9 +2035,15 @@ static BOOL CALLBACK SpeedProc(HWND hwnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			else
 				EnableWindow(GetDlgItem(hwnd,IDC_FPS2),TRUE);
 		}
-		else if (LOWORD(wParam)==IDC_SHOWFPS){
-			config->show_fps=(IsDlgButtonChecked(hwnd,IDC_SHOWFPS)==BST_CHECKED);
-			render[0]->show_fps(config->show_fps);
+		else if (LOWORD(wParam) >= IDC_SHOWFPS0 && LOWORD(wParam) <= IDC_SHOWFPS3){
+			for (int i = 0; i < 4; i++) {
+				if (IsDlgButtonChecked(hwnd, IDC_SHOWFPS0 + i) == BST_CHECKED) {
+					config->show_fps = i;
+					break;
+				}
+			}
+			render[0]->show_fps(config->show_fps & 1);
+			if (render[1]) render[1]->show_fps(config->show_fps & 2);
 		}
 		break;
 	case WM_CLOSE:

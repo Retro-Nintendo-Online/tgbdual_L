@@ -1,5 +1,5 @@
-TGB Dual Kai - Unicode Version
-http://github.com/libertyernie/tgbdual_kai
+TGB Dual L
+http://github.com/libertyernie/tgbdual_L
 
 Based on TGB Dual Kai from http://blog.gameboymania.com/2014/03/tgbdualkaiv1141.html
 
@@ -14,6 +14,23 @@ check or change them with Options > Keys.
 My branch of TGB Dual was originally based on the libretro port, but since
 libretro has removed the Win32 code from its repository, and because TGB Dual
 Kai has Win32-specific features, it makes more sense to use this as the base.
+
+New features (compared to TGB Dual Kai):
+  * TGB Dual can now load ROMs built with Goomba and Goomba Color (GB emulators
+    for the GBA), and can read and write to those emulators' save files. This
+    is helpful if you want to share your save data between PC and GBA, because
+    the ROMs run faster in a GB emulator than they would in a GBA emulator
+    trying to run Goomba. (Also, you can use link cable emulation for games
+    like Pokémon.) See goomba.txt for more information.
+  * Supported file extensions added: .gba (for Goomba/Goomba Color) and .sgb.
+  * All dialogs/menus have been translated to English at the source code level
+    ("english" branch in git.)
+  * Along with the ROM and SRAM folders, users can now specify the SRAM file
+    extensions used for Slot1 and Slot2 (the defaults are still .sav and .sa2.)
+  * The options for showing the FPS meter are now Off, Slot1, Slot2, and Both.
+  * A new "mirror mode" flips the entire display horizontally and also swaps
+    the inputs for the left and right directions on the D-pad. It can be
+    turned on through Options > Display > Mirror Mode.
 
 Important code changes:
 * Previously, the files in win32_ui were encoded in Shift-JIS, but this did

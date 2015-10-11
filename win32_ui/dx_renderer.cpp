@@ -559,12 +559,23 @@ void dx_renderer::render_screen(byte *buf,int width,int height,int depth)
 			DWORD *ddat=(DWORD*)sdat,*spare=ddat;
 			WORD *wbuf=(WORD*)buf;
 			int dpitch=ddsd.lPitch/4;
-			for (i=0;i<height;i++){
-				for (j=0;j<width;j++){
-					*(ddat++)=map_24[*(wbuf++)];
+			if (b_mirror) {
+				for (i=0;i<height;i++){
+					ddat += dpitch;
+					for (j=0;j<width;j++){
+						*(--ddat)=map_24[*(wbuf++)];
+					}
+					spare+=dpitch;
+					ddat=spare;
 				}
-				spare+=dpitch;
-				ddat=spare;
+			} else {
+				for (i=0;i<height;i++){
+					for (j=0;j<width;j++){
+						*(ddat++)=map_24[*(wbuf++)];
+					}
+					spare+=dpitch;
+					ddat=spare;
+				}
 			}
 		}
 		else if (bpp==24){
@@ -572,13 +583,26 @@ void dx_renderer::render_screen(byte *buf,int width,int height,int depth)
 			BYTE *spare=ddat;
 			WORD *wbuf=(WORD*)buf;
 			int dpitch=ddsd.lPitch;
-			for (i=0;i<height;i++){
-				for (j=0;j<width;j++){
-					*((DWORD*)ddat)=map_24[*(wbuf++)];
-					ddat+=3;
+			if (b_mirror) {
+				memset(ddat, 0, height * width * 3);
+				for (i=0;i<height;i++){
+					ddat += dpitch;
+					for (j=0;j<width;j++){
+						ddat-=3;
+						*((DWORD*)ddat) |= map_24[*(wbuf++)]; // avoid overwriting the color bits by using |=
+					}
+					spare+=dpitch;
+					ddat=spare;
 				}
-				spare+=dpitch;
-				ddat=spare;
+			} else {
+				for (i=0;i<height;i++){
+					for (j=0;j<width;j++){
+						*((DWORD*)ddat)=map_24[*(wbuf++)];
+						ddat+=3;
+					}
+					spare+=dpitch;
+					ddat=spare;
+				}
 			}
 		}
 	}
@@ -929,7 +953,7 @@ void dx_renderer::init_di()
 	cdat.lpdev=m_pjoystick;
 	cdat.devs=&joysticks;
 #if DIRECTINPUT_VERSION == 0x0800
-	m_pdi->EnumDevices(DI8DEVTYPE_JOYSTICK,pad_callback,&cdat,DIEDFL_ATTACHEDONLY/*DIEDFL_ALLDEVICES*/);
+	m_pdi->EnumDevices(DI8DEVCLASS_GAMECTRL, pad_callback, &cdat, DIEDFL_ATTACHEDONLY/*DIEDFL_ALLDEVICES*/);
 #else
 	m_pdi->EnumDevices(DIDEVTYPE_JOYSTICK,pad_callback,&cdat,DIEDFL_ATTACHEDONLY/*DIEDFL_ALLDEVICES*/);
 #endif
@@ -957,8 +981,14 @@ void dx_renderer::init_di()
 		m_pjoystick[i]->SetProperty(DIPROP_RANGE,&pr.diph);
 //		m_pjoystick[i]->SetProperty(DIPROP_DEADZONE,&pw.diph);
 
+#if DIRECTINPUT_VERSION == 0x0800
+		const IID riid = IID_IDirectInputDevice8;
+#else
+		const IID riid = IID_IDirectInputDevice2;
+#endif
+
 		m_pjoystick[i]->Acquire();
-		m_pjoystick[i]->QueryInterface(IID_IDirectInputDevice2,(void**)&m_pjoystick2[i]);
+		m_pjoystick[i]->QueryInterface(riid,(void**)&m_pjoystick2[i]);
 
 		DIJOYSTATE js[16];
 		m_pjoystick2[i]->Poll();
@@ -1169,12 +1199,15 @@ void dx_renderer::update_pad()
 		if (phase)
 			for (i=0;i<2;i++)
 				pad_state|=check_press(key_config+i)?(1<<i):0;
-		for (i=2;i<8;i++)
+		for (i=2;i<6;i++)
 			pad_state|=check_press(key_config+i)?(1<<i):0;
 	}
 	else
-		for (i=0;i<8;i++)
+		for (i=0;i<6;i++)
 			pad_state|=check_press(key_config+i)?(1<<i):0;
+
+	for (i=6;i<8;i++)
+		pad_state|=check_press(key_config+(b_mirror?13-i:i))?(1<<i):0;
 
 	phase=!phase;
 
