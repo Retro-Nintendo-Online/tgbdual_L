@@ -254,6 +254,7 @@
 #define ID_RELEASE_2                    40040
 #define ID_SNAPSHOT                     40041
 #define ID_SOUNDRECORD                  40042
+#define ID_MIRROR                       40044
 #define ID_FILTER                       40045
 #define ID_NOMEM_DUMP                   40046
 #define ID_PAUSE                        40047
