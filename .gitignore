@@ -11,3 +11,6 @@ Debug/
 *.old
 *.sdf
 *.opensdf
+.vs/TGB_Dual (VS2013)/v15/Browse.VC.db
+.vs/TGB_Dual (VS2013)/v15/ipch/AutoPCH/7be33ea8d2ce7b5f/OPCODETONEMONIC.ipch
+.vs/TGB_Dual (VS2013)/v15/ipch/AutoPCH/af838ddc42f7b5e3/WINMAIN.ipch
